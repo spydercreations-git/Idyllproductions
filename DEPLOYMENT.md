@@ -2,12 +2,19 @@
 
 ## 🚀 Ready for Production
 
-Your website is now fully optimized and ready for deployment!
+Your website is now fully optimized and ready for deployment with Firebase video storage!
 
 ## Build Status
 ✅ **Build Successful** - No errors or warnings
 ✅ **Assets Optimized** - 325.66 kB main bundle (95.21 kB gzipped)
 ✅ **All Features Implemented** - Complete functionality ready
+✅ **Video Storage** - Firebase integration for compressed video delivery
+
+## Prerequisites
+
+1. **Firebase Setup**: Complete the Firebase setup following `FIREBASE_SETUP.md`
+2. **Environment Variables**: Update `.env.local` with your Firebase config
+3. **Video Upload**: Upload compressed videos to Firebase Storage
 
 ## Deployment Options
 
@@ -20,6 +27,11 @@ npm i -g vercel
 vercel --prod
 ```
 
+**Environment Variables for Vercel:**
+- Add all `REACT_APP_FIREBASE_*` variables in Vercel dashboard
+- Go to Project Settings > Environment Variables
+- Add each Firebase config variable
+
 ### 2. **Netlify**
 ```bash
 # Build locally
@@ -29,21 +41,27 @@ npm run build
 # Or connect your GitHub repo for auto-deployment
 ```
 
-### 3. **GitHub Pages**
-```bash
-# Build
-npm run build
+**Environment Variables for Netlify:**
+- Add Firebase config in Site Settings > Environment Variables
 
-# Deploy dist/ folder to gh-pages branch
-```
-
-### 4. **Custom Server**
+### 3. **Custom Server**
 ```bash
 # Build
 npm run build
 
 # Upload dist/ folder to your web server
 # Ensure server serves index.html for all routes (SPA routing)
+```
+
+## Environment Variables Required
+
+```env
+REACT_APP_FIREBASE_API_KEY=your_api_key
+REACT_APP_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+REACT_APP_FIREBASE_PROJECT_ID=your_project_id
+REACT_APP_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
+REACT_APP_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+REACT_APP_FIREBASE_APP_ID=your_app_id
 ```
 
 ## Environment Variables

@@ -7,6 +7,7 @@ import {
   Zap, Monitor, Headphones, Target, Volume2, VolumeX
 } from 'lucide-react';
 import Button from '../components/Button';
+import { FIREBASE_VIDEO_URLS, HERO_VIDEO_URL } from '../constants/firebaseVideoUrls';
 
 // Counter Animation Component
 const CounterStat: React.FC<{
@@ -84,48 +85,28 @@ const Home: React.FC = () => {
       description: "Reels, Shorts, TikTok",
       text: "Built for retention and scroll-stopping hooks.",
       icon: <Video className="w-8 h-8" />,
-      videos: [
-        "/Videos For Home/Short Form/Ad 1.mp4",
-        "/Videos For Home/Short Form/Ad 2.mp4", 
-        "/Videos For Home/Short Form/Ad 3.mp4",
-        "/Videos For Home/Short Form/Ad 4.mp4"
-      ]
+      videos: FIREBASE_VIDEO_URLS["short-form"]
     },
     {
       name: "SaaS & Tech Videos", 
       description: "Explainers, product demos, ads",
       text: "We simplify complex products into clear stories.",
       icon: <Monitor className="w-8 h-8" />,
-      videos: [
-        "/Videos For Home/Saas And Tech Videos/Doks Ai Fiinal.mp4",
-        "/Videos For Home/Saas And Tech Videos/Final Thoka Thoki.mp4",
-        "/Videos For Home/Saas And Tech Videos/Shapes.mp4",
-        "/Videos For Home/Saas And Tech Videos/waves final.mp4"
-      ]
+      videos: FIREBASE_VIDEO_URLS["saas-tech"]
     },
     {
       name: "Gaming Content",
       description: "YouTube & short-form gaming", 
       text: "Fast, energetic edits without chaos.",
       icon: <Gamepad2 className="w-8 h-8" />,
-      videos: [
-        "/Videos For Home/Gaming Content/1 g.mp4",
-        "/Videos For Home/Gaming Content/2.mp4",
-        "/Videos For Home/Gaming Content/3 g.mp4", 
-        "/Videos For Home/Gaming Content/4.mp4"
-      ]
+      videos: FIREBASE_VIDEO_URLS["gaming"]
     },
     {
       name: "YouTube Long-Form",
       description: "Creators & storytelling",
       text: "Edited for watch time and flow.",
       icon: <Play className="w-8 h-8" />,
-      videos: [
-        "/Videos For Home/Saas And Tech Videos/Doks Ai Fiinal.mp4",
-        "/Videos For Home/Saas And Tech Videos/Final Thoka Thoki.mp4",
-        "/Videos For Home/Saas And Tech Videos/Shapes.mp4",
-        "/Videos For Home/Saas And Tech Videos/waves final.mp4"
-      ]
+      videos: FIREBASE_VIDEO_URLS["youtube-long-form"]
     }
   ];
 
@@ -279,7 +260,7 @@ const Home: React.FC = () => {
                   controlsList="nodownload nofullscreen noremoteplayback noplaybackrate"
                   disablePictureInPicture disableRemotePlayback
                 >
-                  <source src="/Idyll-White.mp4" type="video/mp4" />
+                  <source src={HERO_VIDEO_URL} type="video/mp4" />
                 </video>
                 
                 {/* Progressive Blur Overlay */}

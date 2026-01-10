@@ -12,9 +12,10 @@ dist
 dist-ssr
 *.local
 
-# Large video files (temporarily excluded)
+# Large video files (use Firebase Storage instead)
 Videos For Home/
 public/videos/
+compressed-videos/
 *.mp4
 
 # Editor directories and files
