@@ -12,13 +12,9 @@ dist
 dist-ssr
 *.local
 
-# Large video files (use Firebase Storage instead)
+# Large video files (keep compressed-videos local only)
 Videos For Home/
-public/videos/
 compressed-videos/
-*.mp4
-*.mov
-*.avi
 
 # Editor directories and files
 .vscode/*
