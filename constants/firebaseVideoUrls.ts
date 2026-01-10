@@ -1,31 +1,31 @@
-// Using compressed videos from public folder
+// Placeholder URLs - Replace with Firebase URLs after setup
 export const FIREBASE_VIDEO_URLS = {
   "short-form": [
-    "/videos/short-form/Ad 1.mp4",
-    "/videos/short-form/Ad 2.mp4",
-    "/videos/short-form/Ad 3.mp4",
-    "/videos/short-form/Ad 4.mp4"
+    "https://via.placeholder.com/400x600/000000/FFFFFF?text=Video+1",
+    "https://via.placeholder.com/400x600/000000/FFFFFF?text=Video+2",
+    "https://via.placeholder.com/400x600/000000/FFFFFF?text=Video+3",
+    "https://via.placeholder.com/400x600/000000/FFFFFF?text=Video+4"
   ],
   "saas-tech": [
-    "/videos/saas-tech/Doks Ai Fiinal.mp4",
-    "/videos/saas-tech/Final Thoka Thoki.mp4",
-    "/videos/saas-tech/Shapes.mp4",
-    "/videos/saas-tech/Waves Final.mp4"
+    "https://via.placeholder.com/800x450/000000/FFFFFF?text=SaaS+Demo+1",
+    "https://via.placeholder.com/800x450/000000/FFFFFF?text=SaaS+Demo+2",
+    "https://via.placeholder.com/800x450/000000/FFFFFF?text=SaaS+Demo+3",
+    "https://via.placeholder.com/800x450/000000/FFFFFF?text=SaaS+Demo+4"
   ],
   "gaming": [
-    "/videos/gaming/1 G.mp4",
-    "/videos/gaming/2.mp4",
-    "/videos/gaming/3 G.mp4",
-    "/videos/gaming/4.mp4"
+    "https://via.placeholder.com/800x450/000000/FFFFFF?text=Gaming+1",
+    "https://via.placeholder.com/800x450/000000/FFFFFF?text=Gaming+2",
+    "https://via.placeholder.com/800x450/000000/FFFFFF?text=Gaming+3",
+    "https://via.placeholder.com/800x450/000000/FFFFFF?text=Gaming+4"
   ],
   "hero": [
-    "/main white.mp4"
+    "https://via.placeholder.com/1200x675/000000/FFFFFF?text=Hero+Video"
   ],
   "youtube-long-form": [
-    "/videos/saas-tech/Doks Ai Fiinal.mp4",
-    "/videos/saas-tech/Final Thoka Thoki.mp4",
-    "/videos/saas-tech/Shapes.mp4",
-    "/videos/saas-tech/Waves Final.mp4"
+    "https://via.placeholder.com/800x450/000000/FFFFFF?text=YouTube+1",
+    "https://via.placeholder.com/800x450/000000/FFFFFF?text=YouTube+2",
+    "https://via.placeholder.com/800x450/000000/FFFFFF?text=YouTube+3",
+    "https://via.placeholder.com/800x450/000000/FFFFFF?text=YouTube+4"
   ]
 };
 

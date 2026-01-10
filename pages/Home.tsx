@@ -252,16 +252,24 @@ const Home: React.FC = () => {
                   transformStyle: 'preserve-3d'
                 }}
               >
-                <video
-                  className="w-full h-full object-cover"
-                  autoPlay loop muted playsInline preload="auto"
-                  onContextMenu={(e) => e.preventDefault()}
-                  onDragStart={(e) => e.preventDefault()}
-                  controlsList="nodownload nofullscreen noremoteplayback noplaybackrate"
-                  disablePictureInPicture disableRemotePlayback
-                >
-                  <source src={HERO_VIDEO_URL} type="video/mp4" />
-                </video>
+                {HERO_VIDEO_URL.includes('placeholder') ? (
+                  <img 
+                    src={HERO_VIDEO_URL}
+                    alt="Hero video placeholder"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <video
+                    className="w-full h-full object-cover"
+                    autoPlay loop muted playsInline preload="auto"
+                    onContextMenu={(e) => e.preventDefault()}
+                    onDragStart={(e) => e.preventDefault()}
+                    controlsList="nodownload nofullscreen noremoteplayback noplaybackrate"
+                    disablePictureInPicture disableRemotePlayback
+                  >
+                    <source src={HERO_VIDEO_URL} type="video/mp4" />
+                  </video>
+                )}
                 
                 {/* Progressive Blur Overlay */}
                 <div 
@@ -370,9 +378,17 @@ const Home: React.FC = () => {
                 className="group cursor-pointer bg-white/80 backdrop-blur-sm rounded-lg overflow-hidden shadow-sm border border-slate-200/50 hover:shadow-xl hover:border-slate-300/60 transition-all duration-500 hover:bg-white hover:scale-105 transform"
               >
                 <div className="aspect-video relative overflow-hidden bg-slate-100">
-                  <video className="w-full h-full object-cover" autoPlay loop muted playsInline style={{ filter: 'blur(6px) brightness(0.8)' }}>
-                    <source src={category.videos[0]} type="video/mp4" />
-                  </video>
+                  {category.videos[0].includes('placeholder') ? (
+                    <img 
+                      src={category.videos[0]} 
+                      alt={`${category.name} preview`}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <video className="w-full h-full object-cover" autoPlay loop muted playsInline style={{ filter: 'blur(6px) brightness(0.8)' }}>
+                      <source src={category.videos[0]} type="video/mp4" />
+                    </video>
+                  )}
                   <div className="absolute inset-0 bg-slate-900/10 group-hover:bg-slate-900/5 transition-all duration-500" />
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                     <div className="w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-sm">

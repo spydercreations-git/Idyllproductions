@@ -17,6 +17,8 @@ Videos For Home/
 public/videos/
 compressed-videos/
 *.mp4
+*.mov
+*.avi
 
 # Editor directories and files
 .vscode/*
