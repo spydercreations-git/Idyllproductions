@@ -4,15 +4,15 @@
 <img width="1200" height="475" alt="Idyll Productions Banner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
 </div>
 
-A modern, high-performance video editing portfolio website built with React, TypeScript, and Firebase.
+A modern, high-performance video editing portfolio website built with React, TypeScript, and **100% FREE** video hosting.
 
 ## 🚀 Features
 
 - **Modern Design** - Clean, professional interface with smooth animations
 - **Video Portfolio** - Showcase of video editing work across multiple categories
-- **Firebase Integration** - Cloud-based video storage and delivery
+- **FREE Video Hosting** - Using GitHub + jsDelivr CDN (no costs!)
 - **Responsive** - Optimized for all devices and screen sizes
-- **Performance Optimized** - Fast loading with lazy loading and CDN delivery
+- **Performance Optimized** - Fast loading with global CDN delivery
 - **SEO Ready** - Optimized for search engines
 
 ## 🛠️ Tech Stack
@@ -20,26 +20,22 @@ A modern, high-performance video editing portfolio website built with React, Typ
 - **Frontend**: React 18, TypeScript, Vite
 - **Styling**: Tailwind CSS
 - **Icons**: Lucide React
-- **Storage**: Firebase Storage
+- **Video Hosting**: GitHub + jsDelivr CDN (FREE!)
 - **Deployment**: Vercel/Netlify ready
 
-## 📁 Project Structure
+## 🆓 Free Video Hosting Solution
 
-```
-├── components/          # Reusable UI components
-├── pages/              # Main page components
-├── constants/          # Configuration and constants
-├── hooks/              # Custom React hooks
-├── utils/              # Utility functions
-├── scripts/            # Helper scripts
-└── firebase.config.ts  # Firebase configuration
-```
+This project uses a completely free video hosting solution:
+- **GitHub repository** for video storage
+- **jsDelivr CDN** for global delivery
+- **No bandwidth limits** or costs
+- **Unlimited traffic** and fast worldwide access
 
 ## 🔧 Setup & Installation
 
 ### Prerequisites
 - Node.js 18+
-- Firebase project (for video storage)
+- GitHub account (for video hosting)
 
 ### Local Development
 
@@ -54,22 +50,17 @@ A modern, high-performance video editing portfolio website built with React, Typ
    npm install
    ```
 
-3. **Set up environment variables**
-   ```bash
-   cp .env.local.example .env.local
-   ```
-   Update `.env.local` with your Firebase configuration.
-
-4. **Run the development server**
+3. **Run the development server**
    ```bash
    npm run dev
    ```
 
-### Firebase Setup
+### Video Setup
 
-1. **Follow the setup guide**: See `FIREBASE_SETUP.md` for detailed instructions
-2. **Upload videos**: Use `UPLOAD_GUIDE.md` to upload your video content
-3. **Update URLs**: Modify `constants/firebaseVideoUrls.ts` with your Firebase URLs
+1. **Follow the guide**: See `FREE_VIDEO_SETUP.md` for complete instructions
+2. **Create video repository**: Set up a separate GitHub repo for videos
+3. **Upload videos**: Add your compressed videos to the video repo
+4. **Update URLs**: Videos will automatically work via CDN
 
 ## 🚀 Deployment
 
@@ -85,14 +76,12 @@ npm run build
 # Upload dist/ folder to Netlify
 ```
 
-**Important**: Add your Firebase environment variables to your deployment platform.
+**No environment variables needed** - everything is free and public!
 
 ## 📖 Documentation
 
-- `FIREBASE_SETUP.md` - Complete Firebase setup guide
-- `UPLOAD_GUIDE.md` - Video upload instructions
+- `FREE_VIDEO_SETUP.md` - Complete free video hosting guide
 - `DEPLOYMENT.md` - Deployment guide
-- `QUICK_SETUP.md` - Quick start guide
 
 ## 🎥 Video Categories
 
@@ -105,7 +94,6 @@ npm run build
 
 - Content protection (no right-click, dev tools disabled)
 - Video download protection
-- Firebase security rules
 - Environment variable protection
 
 ## 📱 Browser Support
@@ -114,6 +102,14 @@ npm run build
 - Firefox 88+
 - Safari 14+
 - Edge 90+
+
+## 💰 Cost
+
+**$0.00** - Completely free forever!
+- Free GitHub hosting
+- Free jsDelivr CDN
+- Free Netlify/Vercel deployment
+- No hidden costs or limits
 
 ## 🤝 Contributing
 
@@ -135,4 +131,4 @@ This project is proprietary and confidential. All rights reserved.
 
 ---
 
-Built with ❤️ by Idyll Productions
+Built with ❤️ by Idyll Productions | 100% Free Solution

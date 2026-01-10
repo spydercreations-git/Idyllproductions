@@ -1,10 +1,10 @@
-// Using smaller local videos temporarily - will be replaced with Firebase URLs
+// Direct video URLs from public folder
 export const FIREBASE_VIDEO_URLS = {
   "short-form": [
-    "/videos/saas-tech/Final Thoka Thoki.mp4", // Using smaller video as placeholder
-    "/videos/saas-tech/Waves Final.mp4",
-    "/videos/saas-tech/Shapes.mp4", 
-    "/videos/saas-tech/Doks Ai Fiinal.mp4"
+    "/videos/short-form/Ad 1.mp4",
+    "/videos/short-form/Ad 2.mp4",
+    "/videos/short-form/Ad 3.mp4",
+    "/videos/short-form/Ad 4.mp4"
   ],
   "saas-tech": [
     "/videos/saas-tech/Doks Ai Fiinal.mp4",
@@ -19,7 +19,7 @@ export const FIREBASE_VIDEO_URLS = {
     "/videos/gaming/4.mp4"
   ],
   "hero": [
-    "/videos/saas-tech/Shapes.mp4" // Using as hero placeholder
+    "/videos/hero/main white.mp4"
   ],
   "youtube-long-form": [
     "/videos/saas-tech/Doks Ai Fiinal.mp4",
