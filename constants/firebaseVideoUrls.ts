@@ -1,33 +1,31 @@
-// Firebase video URLs - Update these after uploading to Firebase
+// Using compressed videos from public folder
 export const FIREBASE_VIDEO_URLS = {
   "short-form": [
-    // Replace with your Firebase URLs after upload
-    "https://firebasestorage.googleapis.com/v0/b/YOUR_PROJECT/o/videos%2Fshort-form%2FAd%201.mp4?alt=media",
-    "https://firebasestorage.googleapis.com/v0/b/YOUR_PROJECT/o/videos%2Fshort-form%2FAd%202.mp4?alt=media",
-    "https://firebasestorage.googleapis.com/v0/b/YOUR_PROJECT/o/videos%2Fshort-form%2FAd%203.mp4?alt=media",
-    "https://firebasestorage.googleapis.com/v0/b/YOUR_PROJECT/o/videos%2Fshort-form%2FAd%204.mp4?alt=media"
+    "/videos/short-form/Ad 1.mp4",
+    "/videos/short-form/Ad 2.mp4",
+    "/videos/short-form/Ad 3.mp4",
+    "/videos/short-form/Ad 4.mp4"
   ],
   "saas-tech": [
-    "https://firebasestorage.googleapis.com/v0/b/YOUR_PROJECT/o/videos%2Fsaas-tech%2FDoks%20Ai%20Fiinal.mp4?alt=media",
-    "https://firebasestorage.googleapis.com/v0/b/YOUR_PROJECT/o/videos%2Fsaas-tech%2FFinal%20Thoka%20Thoki.mp4?alt=media",
-    "https://firebasestorage.googleapis.com/v0/b/YOUR_PROJECT/o/videos%2Fsaas-tech%2FShapes.mp4?alt=media",
-    "https://firebasestorage.googleapis.com/v0/b/YOUR_PROJECT/o/videos%2Fsaas-tech%2FWaves%20Final.mp4?alt=media"
+    "/videos/saas-tech/Doks Ai Fiinal.mp4",
+    "/videos/saas-tech/Final Thoka Thoki.mp4",
+    "/videos/saas-tech/Shapes.mp4",
+    "/videos/saas-tech/Waves Final.mp4"
   ],
   "gaming": [
-    "https://firebasestorage.googleapis.com/v0/b/YOUR_PROJECT/o/videos%2Fgaming%2F1%20G.mp4?alt=media",
-    "https://firebasestorage.googleapis.com/v0/b/YOUR_PROJECT/o/videos%2Fgaming%2F2.mp4?alt=media",
-    "https://firebasestorage.googleapis.com/v0/b/YOUR_PROJECT/o/videos%2Fgaming%2F3%20G.mp4?alt=media",
-    "https://firebasestorage.googleapis.com/v0/b/YOUR_PROJECT/o/videos%2Fgaming%2F4.mp4?alt=media"
+    "/videos/gaming/1 G.mp4",
+    "/videos/gaming/2.mp4",
+    "/videos/gaming/3 G.mp4",
+    "/videos/gaming/4.mp4"
   ],
   "hero": [
-    "https://firebasestorage.googleapis.com/v0/b/YOUR_PROJECT/o/videos%2Fhero%2Fmain%20white.mp4?alt=media"
+    "/main white.mp4"
   ],
   "youtube-long-form": [
-    // Using saas-tech videos as fallback for YouTube long-form
-    "https://firebasestorage.googleapis.com/v0/b/YOUR_PROJECT/o/videos%2Fsaas-tech%2FDoks%20Ai%20Fiinal.mp4?alt=media",
-    "https://firebasestorage.googleapis.com/v0/b/YOUR_PROJECT/o/videos%2Fsaas-tech%2FFinal%20Thoka%20Thoki.mp4?alt=media",
-    "https://firebasestorage.googleapis.com/v0/b/YOUR_PROJECT/o/videos%2Fsaas-tech%2FShapes.mp4?alt=media",
-    "https://firebasestorage.googleapis.com/v0/b/YOUR_PROJECT/o/videos%2Fsaas-tech%2FWaves%20Final.mp4?alt=media"
+    "/videos/saas-tech/Doks Ai Fiinal.mp4",
+    "/videos/saas-tech/Final Thoka Thoki.mp4",
+    "/videos/saas-tech/Shapes.mp4",
+    "/videos/saas-tech/Waves Final.mp4"
   ]
 };
 
