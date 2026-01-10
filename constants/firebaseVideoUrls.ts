@@ -1,31 +1,31 @@
-// Placeholder URLs - Replace with Firebase URLs after setup
+// Using smaller local videos temporarily - will be replaced with Firebase URLs
 export const FIREBASE_VIDEO_URLS = {
   "short-form": [
-    "https://via.placeholder.com/400x600/000000/FFFFFF?text=Video+1",
-    "https://via.placeholder.com/400x600/000000/FFFFFF?text=Video+2",
-    "https://via.placeholder.com/400x600/000000/FFFFFF?text=Video+3",
-    "https://via.placeholder.com/400x600/000000/FFFFFF?text=Video+4"
+    "/videos/saas-tech/Final Thoka Thoki.mp4", // Using smaller video as placeholder
+    "/videos/saas-tech/Waves Final.mp4",
+    "/videos/saas-tech/Shapes.mp4", 
+    "/videos/saas-tech/Doks Ai Fiinal.mp4"
   ],
   "saas-tech": [
-    "https://via.placeholder.com/800x450/000000/FFFFFF?text=SaaS+Demo+1",
-    "https://via.placeholder.com/800x450/000000/FFFFFF?text=SaaS+Demo+2",
-    "https://via.placeholder.com/800x450/000000/FFFFFF?text=SaaS+Demo+3",
-    "https://via.placeholder.com/800x450/000000/FFFFFF?text=SaaS+Demo+4"
+    "/videos/saas-tech/Doks Ai Fiinal.mp4",
+    "/videos/saas-tech/Final Thoka Thoki.mp4",
+    "/videos/saas-tech/Shapes.mp4",
+    "/videos/saas-tech/Waves Final.mp4"
   ],
   "gaming": [
-    "https://via.placeholder.com/800x450/000000/FFFFFF?text=Gaming+1",
-    "https://via.placeholder.com/800x450/000000/FFFFFF?text=Gaming+2",
-    "https://via.placeholder.com/800x450/000000/FFFFFF?text=Gaming+3",
-    "https://via.placeholder.com/800x450/000000/FFFFFF?text=Gaming+4"
+    "/videos/gaming/1 G.mp4",
+    "/videos/gaming/2.mp4",
+    "/videos/gaming/3 G.mp4",
+    "/videos/gaming/4.mp4"
   ],
   "hero": [
-    "https://via.placeholder.com/1200x675/000000/FFFFFF?text=Hero+Video"
+    "/videos/saas-tech/Shapes.mp4" // Using as hero placeholder
   ],
   "youtube-long-form": [
-    "https://via.placeholder.com/800x450/000000/FFFFFF?text=YouTube+1",
-    "https://via.placeholder.com/800x450/000000/FFFFFF?text=YouTube+2",
-    "https://via.placeholder.com/800x450/000000/FFFFFF?text=YouTube+3",
-    "https://via.placeholder.com/800x450/000000/FFFFFF?text=YouTube+4"
+    "/videos/saas-tech/Doks Ai Fiinal.mp4",
+    "/videos/saas-tech/Final Thoka Thoki.mp4",
+    "/videos/saas-tech/Shapes.mp4",
+    "/videos/saas-tech/Waves Final.mp4"
   ]
 };
 
