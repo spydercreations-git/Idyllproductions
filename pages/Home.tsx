@@ -232,9 +232,17 @@ const Home: React.FC = () => {
             <h2 className="font-inter text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight text-slate-700 leading-[1.3] mb-10 animate-slide-up" style={{ animationDelay: '0.3s' }}>
               High-Performance Video Editing<br />
               for Modern{' '}
-              <span className="inline-block text-blue-600">
-                {rotatingWords[currentWord]}
-              </span>
+              <div className="inline-block">
+                <div className="loader">
+                  <div className="words">
+                    <span className="word">creators</span>
+                    <span className="word">brands</span>
+                    <span className="word">audiences</span>
+                    <span className="word">stories</span>
+                    <span className="word">creators</span>
+                  </div>
+                </div>
+              </div>
             </h2>
             
             <p className="font-inter text-2xl text-slate-500 max-w-3xl mx-auto mb-24 leading-relaxed animate-slide-up" style={{ animationDelay: '0.6s' }}>
