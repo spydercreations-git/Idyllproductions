@@ -32,13 +32,13 @@ const Footer: React.FC = () => {
                 onClick={() => document.getElementById('our-work')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
                 className="hover:text-[#007AFF] transition-colors text-left"
               >
-                Our Work
+                Work
               </button>
               <button 
                 onClick={() => document.getElementById('our-services')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
                 className="hover:text-[#007AFF] transition-colors text-left"
               >
-                Our Services
+                Services
               </button>
               <Link to="/films" className="hover:text-[#007AFF] transition-colors">Films</Link>
               <Link to="/about" className="hover:text-[#007AFF] transition-colors">About</Link>
@@ -94,7 +94,7 @@ const Footer: React.FC = () => {
         
         <div className="pt-6 flex justify-center">
           <p className="text-[8px] font-black uppercase tracking-[0.4em] text-gray-400 text-center">
-            © 2025 Idyll Productions. All Rights Reserved. Developed by Harsh Pawar
+            © 2023 Idyll Productions. All Rights Reserved. Developed by Harsh Pawar
           </p>
         </div>
       </div>

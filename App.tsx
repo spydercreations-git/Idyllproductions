@@ -30,7 +30,7 @@ const App: React.FC = () => {
     setTimeout(() => {
       setShowContent(true);
       setLoading(false);
-    }, 1200); // Match slide duration
+    }, 400); // Match the slide duration
   };
 
   return (

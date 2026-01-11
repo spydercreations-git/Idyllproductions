@@ -1,4 +1,4 @@
-// Direct video URLs from public folder
+// Direct video URLs from public folder - Optimized for fast loading
 export const FIREBASE_VIDEO_URLS = {
   "short-form": [
     "/videos/short-form/Ad 1.mp4",
@@ -22,10 +22,10 @@ export const FIREBASE_VIDEO_URLS = {
     "/videos/hero/main white.mp4"
   ],
   "youtube-long-form": [
-    "/videos/saas-tech/Doks Ai Fiinal.mp4",
-    "/videos/saas-tech/Final Thoka Thoki.mp4",
-    "/videos/saas-tech/Shapes.mp4",
-    "/videos/saas-tech/Waves Final.mp4"
+    "/videos/other/empty.mp4",
+    "/videos/other/empty.mp4",
+    "/videos/other/empty.mp4",
+    "/videos/other/empty.mp4"
   ]
 };
 

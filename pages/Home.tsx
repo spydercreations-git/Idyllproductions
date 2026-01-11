@@ -8,6 +8,9 @@ import {
 } from 'lucide-react';
 import Button from '../components/Button';
 import { FIREBASE_VIDEO_URLS, HERO_VIDEO_URL } from '../constants/firebaseVideoUrls';
+import { TiltCard } from '../components/ui/tilt-card';
+import { useScrollProgress } from '../hooks/useScrollProgress';
+import ProgressBar from '../components/ProgressBar';
 
 // Counter Animation Component
 const CounterStat: React.FC<{
@@ -49,9 +52,9 @@ const CounterStat: React.FC<{
   }, [number, delay, isVisible]);
 
   return (
-    <div ref={elementRef} className="text-center opacity-100">
-      <div className="text-4xl lg:text-5xl font-bold text-blue-600 mb-3 opacity-100">{count}{suffix}</div>
-      <div className="text-base lg:text-lg font-medium text-slate-700 opacity-100">{label}</div>
+    <div ref={elementRef} className="inline-flex items-center">
+      <span className="text-3xl lg:text-4xl font-bold text-current">{count}{suffix}</span>
+      {label && <span className="text-base lg:text-lg font-medium text-slate-700 ml-2">{label}</span>}
     </div>
   );
 };
@@ -60,7 +63,6 @@ const Home: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [currentWord, setCurrentWord] = useState(0);
   const [scrollY, setScrollY] = useState(0);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 });
   const [videoMuted, setVideoMuted] = useState<{ [key: number]: boolean }>({});
   const [cardOrigin, setCardOrigin] = useState({ x: 0, y: 0, width: 0, height: 0 });
@@ -79,33 +81,151 @@ const Home: React.FC = () => {
     { name: "Emily Watson", company: "Creative Collective", rating: 5, text: "Consistently delivers premium quality on tight deadlines. Our go-to partner for all video projects." }
   ];
 
+  // How It Works Progress Component
+  const HowItWorksProgress = () => {
+    const steps = [
+      { 
+        step: 1, 
+        title: "Share Your Vision", 
+        desc: "Send us your raw footage and creative brief. We'll understand your goals.", 
+        color: "blue",
+        icon: (
+          <div className="relative w-10 h-10">
+            <div className="w-8 h-6 bg-blue-500 rounded-lg transform rotate-3"></div>
+            <div className="absolute top-1 left-1 w-6 h-4 bg-blue-300 rounded-md"></div>
+            <div className="absolute -top-1 -right-1 w-3 h-3 bg-blue-600 rounded-full animate-pulse"></div>
+            <div className="absolute bottom-0 left-2 w-4 h-1 bg-blue-400 rounded-full"></div>
+          </div>
+        )
+      },
+      { 
+        step: 2, 
+        title: "Strategic Planning", 
+        desc: "We analyze your content and create a detailed editing strategy.", 
+        color: "green",
+        icon: (
+          <div className="relative w-10 h-10 flex items-center justify-center">
+            <div className="w-8 h-8 border-2 border-green-500 rounded-full"></div>
+            <div className="absolute w-6 h-6 border-2 border-green-400 rounded-full"></div>
+            <div className="absolute w-4 h-4 border-2 border-green-300 rounded-full"></div>
+            <div className="absolute w-2 h-2 bg-green-600 rounded-full animate-ping"></div>
+          </div>
+        )
+      },
+      { 
+        step: 3, 
+        title: "Expert Editing", 
+        desc: "Our team crafts your video with precision, focusing on engagement.", 
+        color: "purple",
+        icon: (
+          <div className="relative w-10 h-10 flex items-center justify-center">
+            <div className="w-6 h-1 bg-purple-500 rounded-full transform rotate-45"></div>
+            <div className="w-6 h-1 bg-purple-400 rounded-full transform -rotate-45"></div>
+            <div className="w-1 h-6 bg-purple-300 rounded-full"></div>
+            <div className="absolute w-2 h-2 bg-purple-600 rounded-full animate-spin"></div>
+          </div>
+        )
+      },
+      { 
+        step: 4, 
+        title: "Deliver & Optimize", 
+        desc: "Receive your polished video with platform-specific formats.", 
+        color: "orange",
+        icon: (
+          <div className="relative w-10 h-10">
+            <div className="w-6 h-4 bg-orange-500 rounded-t-lg"></div>
+            <div className="absolute top-2 left-1 w-4 h-2 bg-orange-300 rounded-sm"></div>
+            <div className="absolute bottom-0 left-0 w-8 h-2 bg-orange-600 rounded-b-lg"></div>
+            <div className="absolute -top-1 right-1 w-2 h-2 bg-orange-400 rounded-full animate-bounce"></div>
+          </div>
+        )
+      }
+    ];
+
+    const { progress, activeSteps, sectionRef } = useScrollProgress();
+
+    return (
+      <div className="space-y-8" ref={sectionRef}>
+        {/* Progress Bar */}
+        <ProgressBar steps={steps} progress={progress} activeSteps={activeSteps} />
+      </div>
+    );
+  };
+
   const editingCategories = [
     {
       name: "Short-Form Content",
       description: "Reels, Shorts, TikTok",
       text: "Built for retention and scroll-stopping hooks.",
-      icon: <Video className="w-8 h-8" />,
+      icon: (
+        <div className="relative">
+          {/* Mobile phone icon */}
+          <div className="w-4 h-6 bg-gradient-to-b from-purple-500 to-pink-500 rounded-lg border-2 border-purple-600"></div>
+          <div className="absolute top-0.5 left-0.5 w-3 h-4 bg-white/20 rounded-sm"></div>
+          <div className="absolute bottom-0.5 left-1.5 w-1 h-1 bg-white rounded-full"></div>
+          {/* Sparkle effect */}
+          <div className="absolute -top-1 -right-1 w-2 h-2 bg-yellow-400 rounded-full animate-bounce"></div>
+          <div className="absolute -bottom-1 -left-1 w-1 h-1 bg-pink-400 rounded-full animate-pulse"></div>
+        </div>
+      ),
       videos: FIREBASE_VIDEO_URLS["short-form"]
     },
     {
       name: "SaaS & Tech Videos", 
       description: "Explainers, product demos, ads",
       text: "We simplify complex products into clear stories.",
-      icon: <Monitor className="w-8 h-8" />,
+      icon: (
+        <div className="relative">
+          {/* Monitor/screen icon */}
+          <div className="w-6 h-4 bg-blue-500 rounded-md border border-blue-600"></div>
+          <div className="absolute top-0.5 left-0.5 w-5 h-2.5 bg-blue-100 rounded-sm"></div>
+          {/* Code lines */}
+          <div className="absolute top-1 left-1 w-2 h-0.5 bg-blue-600 rounded-full"></div>
+          <div className="absolute top-1.5 left-1 w-3 h-0.5 bg-blue-600 rounded-full"></div>
+          <div className="absolute top-2 left-1 w-1.5 h-0.5 bg-blue-600 rounded-full"></div>
+          {/* Tech indicator */}
+          <div className="absolute -top-1 -right-1 w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+        </div>
+      ),
       videos: FIREBASE_VIDEO_URLS["saas-tech"]
     },
     {
       name: "Gaming Content",
       description: "YouTube & short-form gaming", 
       text: "Fast, energetic edits without chaos.",
-      icon: <Gamepad2 className="w-8 h-8" />,
+      icon: (
+        <div className="relative">
+          {/* Game controller icon */}
+          <div className="w-6 h-4 bg-gradient-to-br from-green-400 to-blue-500 rounded-full"></div>
+          <div className="absolute top-1 left-1 w-1 h-1 bg-white rounded-full"></div>
+          <div className="absolute top-1 right-1 w-1 h-1 bg-white rounded-full"></div>
+          <div className="absolute bottom-1 left-2 w-2 h-1 bg-white/80 rounded-full"></div>
+          {/* Action indicators */}
+          <div className="absolute -top-1 -left-1 w-1.5 h-1.5 bg-red-500 rounded-full animate-ping"></div>
+          <div className="absolute -bottom-1 -right-1 w-1.5 h-1.5 bg-yellow-400 rounded-full animate-bounce"></div>
+        </div>
+      ),
       videos: FIREBASE_VIDEO_URLS["gaming"]
     },
     {
       name: "YouTube Long-Form",
       description: "Creators & storytelling",
       text: "Edited for watch time and flow.",
-      icon: <Play className="w-8 h-8" />,
+      icon: (
+        <div className="relative">
+          {/* YouTube play button icon */}
+          <div className="w-6 h-4 bg-red-500 rounded-lg border border-red-600"></div>
+          <div className="absolute top-0.5 left-0.5 w-5 h-3 bg-red-100 rounded-sm"></div>
+          {/* Play triangle */}
+          <div className="absolute top-1.5 left-2 w-0 h-0 border-l-2 border-l-red-600 border-t-1 border-t-transparent border-b-1 border-b-transparent"></div>
+          {/* Duration indicator */}
+          <div className="absolute bottom-0.5 right-0.5 w-1.5 h-0.5 bg-red-600 rounded-full"></div>
+          {/* View indicator */}
+          <div className="absolute -top-1 -right-1 w-2 h-2 bg-white border border-red-400 rounded-full animate-pulse">
+            <div className="w-1 h-1 bg-red-500 rounded-full m-0.5"></div>
+          </div>
+        </div>
+      ),
       videos: FIREBASE_VIDEO_URLS["youtube-long-form"]
     }
   ];
@@ -159,17 +279,14 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
-    const handleMouseMove = (e: MouseEvent) => setMousePosition({ x: e.clientX, y: e.clientY });
     const wordInterval = setInterval(() => {
       setCurrentWord((prev) => (prev + 1) % rotatingWords.length);
     }, 2000);
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('mousemove', handleMouseMove, { passive: true });
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('mousemove', handleMouseMove);
       clearInterval(wordInterval);
     };
   }, []);
@@ -205,18 +322,15 @@ const Home: React.FC = () => {
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
         <div className="absolute w-2 h-2 bg-blue-400/20 rounded-full animate-pulse" style={{
           left: `${20 + Math.sin(scrollY * 0.001) * 10}%`,
-          top: `${30 + Math.cos(scrollY * 0.002) * 15}%`,
-          transform: `translate(${mousePosition.x * 0.02}px, ${mousePosition.y * 0.02}px)`
+          top: `${30 + Math.cos(scrollY * 0.002) * 15}%`
         }} />
         <div className="absolute w-3 h-3 bg-purple-400/15 rounded-full animate-pulse" style={{
           right: `${15 + Math.cos(scrollY * 0.0015) * 12}%`,
-          top: `${60 + Math.sin(scrollY * 0.001) * 8}%`,
-          transform: `translate(${mousePosition.x * -0.015}px, ${mousePosition.y * 0.025}px)`
+          top: `${60 + Math.sin(scrollY * 0.001) * 8}%`
         }} />
         <div className="absolute w-1.5 h-1.5 bg-green-400/25 rounded-full animate-pulse" style={{
           left: `${70 + Math.sin(scrollY * 0.002) * 20}%`,
-          bottom: `${40 + Math.cos(scrollY * 0.0012) * 10}%`,
-          transform: `translate(${mousePosition.x * 0.01}px, ${mousePosition.y * -0.02}px)`
+          bottom: `${40 + Math.cos(scrollY * 0.0012) * 10}%`
         }} />
       </div>
 
@@ -225,12 +339,12 @@ const Home: React.FC = () => {
         
         <div className="max-w-7xl mx-auto text-center relative z-10">
           <div className="reveal active">
-            <h1 className="font-sf-pro text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-slate-900 leading-[0.9] mb-12 animate-slide-up">
+            <h1 className="font-sf-pro text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-slate-900 leading-[0.9] mb-8 md:mb-12 animate-slide-up">
               Idyll Productions
             </h1>
             
-            <h2 className="font-inter text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight text-slate-700 leading-[1.3] mb-10 animate-slide-up" style={{ animationDelay: '0.3s' }}>
-              High-Performance Video Editing<br />
+            <h2 className="font-inter text-xl sm:text-2xl md:text-4xl lg:text-5xl font-medium tracking-tight text-slate-700 leading-[1.3] mb-8 md:mb-10 animate-slide-up" style={{ animationDelay: '0.3s' }}>
+              High-Performance Video Editing<br className="hidden sm:block" />
               for Modern{' '}
               <div className="inline-block">
                 <div className="loader">
@@ -245,8 +359,8 @@ const Home: React.FC = () => {
               </div>
             </h2>
             
-            <p className="font-inter text-2xl text-slate-500 max-w-3xl mx-auto mb-24 leading-relaxed animate-slide-up" style={{ animationDelay: '0.6s' }}>
-              Short-form, SaaS, Gaming & YouTube<br />
+            <p className="font-inter text-lg sm:text-xl md:text-2xl text-slate-500 max-w-3xl mx-auto mb-16 md:mb-24 leading-relaxed animate-slide-up" style={{ animationDelay: '0.6s' }}>
+              Short-form, SaaS, Gaming & YouTube<br className="hidden sm:block" />
               edited with intent, not noise.
             </p>
             
@@ -267,14 +381,26 @@ const Home: React.FC = () => {
                     loop 
                     muted 
                     playsInline 
-                    preload="metadata"
+                    preload="auto"
+                    loading="eager"
                     onContextMenu={(e) => e.preventDefault()}
                     onDragStart={(e) => e.preventDefault()}
                     controlsList="nodownload nofullscreen noremoteplayback noplaybackrate"
                     disablePictureInPicture 
                     disableRemotePlayback
+                    onLoadStart={() => console.log('Hero video loading started')}
+                    onCanPlay={() => console.log('Hero video can play')}
+                    onLoadedData={() => console.log('Hero video loaded')}
+                    style={{ 
+                      willChange: 'transform',
+                      backfaceVisibility: 'hidden',
+                      transform: 'translateZ(0)',
+                      WebkitTransform: 'translateZ(0)',
+                      WebkitBackfaceVisibility: 'hidden'
+                    }}
                   >
                     <source src={HERO_VIDEO_URL} type="video/mp4" />
+                    Your browser does not support the video tag.
                   </video>
                 ) : (
                   <div className="w-full h-full bg-slate-200 flex items-center justify-center">
@@ -350,17 +476,17 @@ const Home: React.FC = () => {
               </div>
             </div>
             
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center animate-slide-up" style={{ animationDelay: '0.9s' }}>
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center animate-slide-up" style={{ animationDelay: '0.9s' }}>
               <button
                 onClick={() => document.getElementById('our-work')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
-                className="relative h-14 px-10 rounded-lg text-lg font-medium bg-blue-600 text-white hover:bg-blue-700 transition-all duration-300 hover:shadow-lg hover:scale-105 transform"
+                className="w-full sm:w-auto relative h-12 sm:h-14 px-8 sm:px-10 rounded-lg text-base sm:text-lg font-medium bg-blue-600 text-white hover:bg-blue-700 transition-all duration-300 hover:shadow-lg hover:scale-105 transform"
               >
                 View Our Work
-                <ArrowRight className="inline-block w-5 h-5 ml-2" />
+                <ArrowRight className="inline-block w-4 h-4 sm:w-5 sm:h-5 ml-2" />
               </button>
               <button
                 onClick={() => document.getElementById('contact-us')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
-                className="relative h-14 px-10 rounded-lg text-lg font-medium bg-transparent text-slate-700 border border-slate-300 hover:border-blue-500 transition-all duration-300 hover:scale-105 transform"
+                className="w-full sm:w-auto relative h-12 sm:h-14 px-8 sm:px-10 rounded-lg text-base sm:text-lg font-medium bg-transparent text-slate-700 border border-slate-300 hover:border-blue-500 transition-all duration-300 hover:scale-105 transform"
               >
                 Contact Us
               </button>
@@ -373,15 +499,15 @@ const Home: React.FC = () => {
       <section id="our-work" className="py-32 px-8 relative overflow-hidden z-10">
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="text-center mb-20">
-            <h2 className="font-sf-pro text-5xl md:text-6xl font-semibold tracking-tight text-slate-900 mb-8">
+            <h2 className="font-sf-pro text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight text-slate-900 mb-6 md:mb-8">
               Specialized editing for every platform
             </h2>
-            <p className="font-inter text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
+            <p className="font-inter text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
               Crafted with precision and strategic intent for maximum performance.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
             {editingCategories.map((category, i) => (
               <div 
                 key={i}
@@ -396,9 +522,18 @@ const Home: React.FC = () => {
                     muted 
                     playsInline 
                     preload="metadata"
-                    style={{ filter: 'blur(6px) brightness(0.8)' }}
+                    loading="lazy"
+                    style={{ 
+                      filter: 'blur(6px) brightness(0.8)',
+                      willChange: 'transform',
+                      backfaceVisibility: 'hidden',
+                      transform: 'translateZ(0)',
+                      WebkitTransform: 'translateZ(0)',
+                      WebkitBackfaceVisibility: 'hidden'
+                    }}
                   >
                     <source src={category.videos[0]} type="video/mp4" />
+                    Your browser does not support the video tag.
                   </video>
                   <div className="absolute inset-0 bg-slate-900/10 group-hover:bg-slate-900/5 transition-all duration-500" />
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
@@ -487,9 +622,20 @@ const Home: React.FC = () => {
                           loop 
                           muted={videoMuted[i] !== false}
                           playsInline
-                          style={{ pointerEvents: 'auto' }}
+                          preload="metadata"
+                          loading="lazy"
+                          onLoadedData={() => console.log(`Short-form video ${i} loaded`)}
+                          style={{ 
+                            pointerEvents: 'auto',
+                            willChange: 'transform',
+                            backfaceVisibility: 'hidden',
+                            transform: 'translateZ(0)',
+                            WebkitTransform: 'translateZ(0)',
+                            WebkitBackfaceVisibility: 'hidden'
+                          }}
                         >
                           <source src={videoSrc} type="video/mp4" />
+                          Your browser does not support the video tag.
                         </video>
                         
                         {/* Mute/Unmute Button with Bounce Animation */}
@@ -518,9 +664,20 @@ const Home: React.FC = () => {
                           loop 
                           muted={videoMuted[i] !== false}
                           playsInline
-                          style={{ pointerEvents: 'auto' }}
+                          preload="metadata"
+                          loading="lazy"
+                          onLoadedData={() => console.log(`Horizontal video ${i} loaded`)}
+                          style={{ 
+                            pointerEvents: 'auto',
+                            willChange: 'transform',
+                            backfaceVisibility: 'hidden',
+                            transform: 'translateZ(0)',
+                            WebkitTransform: 'translateZ(0)',
+                            WebkitBackfaceVisibility: 'hidden'
+                          }}
                         >
                           <source src={videoSrc} type="video/mp4" />
+                          Your browser does not support the video tag.
                         </video>
                         
                         {/* Mute/Unmute Button with Bounce Animation */}
@@ -549,7 +706,7 @@ const Home: React.FC = () => {
       <section id="our-services" className="py-32 px-8 relative overflow-hidden z-10">
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="text-center mb-20">
-            <h2 className="font-sf-pro text-5xl md:text-6xl font-semibold tracking-tight text-slate-900 mb-8">Our Services</h2>
+            <h2 className="font-sf-pro text-5xl md:text-6xl font-semibold tracking-tight text-slate-900 mb-8 whitespace-nowrap">Our Services</h2>
             <p className="font-inter text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">Comprehensive video editing solutions tailored to your needs.</p>
           </div>
 
@@ -558,47 +715,85 @@ const Home: React.FC = () => {
               { 
                 title: "Video Editing", 
                 desc: "Professional editing with attention to pacing, storytelling, and platform optimization.", 
-                icon: <Edit3 className="w-8 h-8" />,
+                icon: (
+                  <div className="relative">
+                    <div className="w-6 h-6 bg-blue-500 rounded-sm transform rotate-12"></div>
+                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-blue-300 rounded-full"></div>
+                    <div className="absolute -bottom-1 -left-1 w-3 h-3 bg-blue-600 rounded-sm transform rotate-45"></div>
+                  </div>
+                ),
                 color: "blue",
                 shape: "rounded-lg"
               },
               { 
                 title: "Motion Graphics", 
                 desc: "Eye-catching animations and graphics that enhance your message without distraction.", 
-                icon: <Sparkles className="w-8 h-8" />,
+                icon: (
+                  <div className="relative">
+                    <div className="w-5 h-5 border-2 border-green-500 rounded-full animate-spin"></div>
+                    <div className="absolute top-1 left-1 w-3 h-3 bg-green-400 rounded-full"></div>
+                    <div className="absolute -top-1 -right-1 w-2 h-2 bg-green-600 rounded-full animate-pulse"></div>
+                  </div>
+                ),
                 color: "green",
                 shape: "rounded-full"
               },
               { 
                 title: "Color Grading", 
                 desc: "Professional color correction and grading to achieve the perfect mood and aesthetic.", 
-                icon: <Camera className="w-8 h-8" />,
+                icon: (
+                  <div className="relative flex space-x-1">
+                    <div className="w-2 h-6 bg-gradient-to-t from-purple-600 to-purple-300 rounded-full"></div>
+                    <div className="w-2 h-6 bg-gradient-to-t from-pink-600 to-pink-300 rounded-full"></div>
+                    <div className="w-2 h-6 bg-gradient-to-t from-blue-600 to-blue-300 rounded-full"></div>
+                  </div>
+                ),
                 color: "purple",
                 shape: "rounded-xl"
               },
               { 
                 title: "Audio Enhancement", 
                 desc: "Crystal-clear audio mixing, noise reduction, and sound design for immersive experiences.", 
-                icon: <Headphones className="w-8 h-8" />,
+                icon: (
+                  <div className="relative flex items-center space-x-0.5">
+                    <div className="w-1 h-3 bg-orange-500 rounded-full animate-pulse"></div>
+                    <div className="w-1 h-5 bg-orange-400 rounded-full animate-pulse" style={{ animationDelay: '0.1s' }}></div>
+                    <div className="w-1 h-4 bg-orange-600 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+                    <div className="w-1 h-6 bg-orange-500 rounded-full animate-pulse" style={{ animationDelay: '0.3s' }}></div>
+                    <div className="w-1 h-2 bg-orange-400 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+                  </div>
+                ),
                 color: "orange",
                 shape: "rounded-lg"
               },
               { 
                 title: "Film Making", 
                 desc: "We make ad films and short films for you with professional production quality.", 
-                icon: <Video className="w-8 h-8" />,
+                icon: (
+                  <div className="relative">
+                    <div className="w-6 h-4 bg-red-500 rounded-sm"></div>
+                    <div className="absolute top-1 left-1 w-4 h-2 bg-red-300 rounded-sm"></div>
+                    <div className="absolute -top-1 left-2 w-2 h-2 bg-red-600 rounded-full"></div>
+                  </div>
+                ),
                 color: "red",
                 shape: "rounded-full"
               },
               { 
                 title: "Strategy Consultation", 
                 desc: "Expert guidance on content strategy, platform optimization, and audience engagement.", 
-                icon: <Target className="w-8 h-8" />,
+                icon: (
+                  <div className="relative">
+                    <div className="w-5 h-5 border-2 border-cyan-500 rounded-full"></div>
+                    <div className="absolute top-1 left-1 w-3 h-3 border border-cyan-400 rounded-full"></div>
+                    <div className="absolute top-2 left-2 w-1 h-1 bg-cyan-600 rounded-full animate-ping"></div>
+                  </div>
+                ),
                 color: "cyan",
                 shape: "rounded-xl"
               }
             ].map((service, i) => (
-              <div key={i} className="group relative">
+              <TiltCard key={i} className="group relative">
                 <div className="absolute inset-0 rounded-lg opacity-5 group-hover:opacity-8 transition-opacity duration-1000" style={{
                   background: `linear-gradient(45deg, var(--tw-gradient-from), var(--tw-gradient-to))`,
                   backgroundSize: '400% 400%',
@@ -613,7 +808,7 @@ const Home: React.FC = () => {
                   <h3 className={`font-sf-pro text-2xl font-semibold text-slate-900 mb-4 group-hover:text-${service.color}-600 transition-colors`}>{service.title}</h3>
                   <p className="font-inter text-lg text-slate-600 leading-relaxed">{service.desc}</p>
                 </div>
-              </div>
+              </TiltCard>
             ))}
           </div>
         </div>
@@ -634,13 +829,13 @@ const Home: React.FC = () => {
 
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="text-center mb-20">
-            <h2 className="font-sf-pro text-5xl md:text-6xl font-semibold tracking-tight text-slate-900 mb-8">Why Choose Idyll</h2>
+            <h2 className="font-sf-pro text-5xl md:text-6xl font-semibold tracking-tight text-slate-900 mb-8 whitespace-nowrap">Why Choose Idyll</h2>
             <p className="font-inter text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">We don't just edit videos—we engineer content that performs.</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             {/* Clean Storytelling - Animated Timeline */}
-            <div className="group bg-white/80 backdrop-blur-sm rounded-lg p-8 shadow-sm border border-slate-200/50 hover:shadow-md hover:border-slate-300/60 transition-all duration-500 hover:scale-105 transform cursor-pointer">
+            <TiltCard className="group bg-white/80 backdrop-blur-sm rounded-lg p-8 shadow-sm border border-slate-200/50 hover:shadow-md hover:border-slate-300/60 transition-all duration-500 hover:scale-105 transform cursor-pointer">
               <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-blue-500/10 to-blue-600/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
                 <div className="relative w-8 h-8">
                   <div className="absolute inset-0 flex flex-col gap-1">
@@ -654,10 +849,10 @@ const Home: React.FC = () => {
               </div>
               <h3 className="font-sf-pro text-2xl font-semibold text-slate-900 mb-4 group-hover:text-blue-600 transition-colors">Clean Storytelling</h3>
               <p className="font-inter text-lg text-slate-600 leading-relaxed">Every cut serves a purpose. We eliminate noise and focus on narrative flow that keeps viewers engaged.</p>
-            </div>
+            </TiltCard>
 
             {/* Retention-Focused - Animated Graph */}
-            <div className="group bg-white/80 backdrop-blur-sm rounded-lg p-8 shadow-sm border border-slate-200/50 hover:shadow-md hover:border-slate-300/60 transition-all duration-500 hover:scale-105 transform cursor-pointer">
+            <TiltCard className="group bg-white/80 backdrop-blur-sm rounded-lg p-8 shadow-sm border border-slate-200/50 hover:shadow-md hover:border-slate-300/60 transition-all duration-500 hover:scale-105 transform cursor-pointer">
               <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-green-500/10 to-green-600/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
                 <div className="relative w-8 h-8">
                   <svg className="w-full h-full" viewBox="0 0 32 32">
@@ -670,10 +865,10 @@ const Home: React.FC = () => {
               </div>
               <h3 className="font-sf-pro text-2xl font-semibold text-slate-900 mb-4 group-hover:text-green-600 transition-colors">Retention-Focused Pacing</h3>
               <p className="font-inter text-lg text-slate-600 leading-relaxed">Strategic pacing that maximizes watch time. We understand platform algorithms and edit accordingly.</p>
-            </div>
+            </TiltCard>
 
             {/* Platform-Specific - Animated Icons */}
-            <div className="group bg-white/80 backdrop-blur-sm rounded-lg p-8 shadow-sm border border-slate-200/50 hover:shadow-md hover:border-slate-300/60 transition-all duration-500 hover:scale-105 transform cursor-pointer">
+            <TiltCard className="group bg-white/80 backdrop-blur-sm rounded-lg p-8 shadow-sm border border-slate-200/50 hover:shadow-md hover:border-slate-300/60 transition-all duration-500 hover:scale-105 transform cursor-pointer">
               <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-purple-500/10 to-purple-600/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
                 <div className="relative w-8 h-8 grid grid-cols-2 gap-1">
                   <div className="w-3 h-3 bg-purple-500 rounded animate-pulse" />
@@ -684,10 +879,10 @@ const Home: React.FC = () => {
               </div>
               <h3 className="font-sf-pro text-2xl font-semibold text-slate-900 mb-4 group-hover:text-purple-600 transition-colors">Platform-Specific Edits</h3>
               <p className="font-inter text-lg text-slate-600 leading-relaxed">Optimized for each platform's unique requirements. From TikTok hooks to YouTube retention curves.</p>
-            </div>
+            </TiltCard>
 
             {/* Sound Design - Animated Waveform */}
-            <div className="group bg-white/80 backdrop-blur-sm rounded-lg p-8 shadow-sm border border-slate-200/50 hover:shadow-md hover:border-slate-300/60 transition-all duration-500 hover:scale-105 transform cursor-pointer">
+            <TiltCard className="group bg-white/80 backdrop-blur-sm rounded-lg p-8 shadow-sm border border-slate-200/50 hover:shadow-md hover:border-slate-300/60 transition-all duration-500 hover:scale-105 transform cursor-pointer">
               <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-orange-500/10 to-orange-600/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
                 <div className="relative w-8 h-8 flex items-center justify-center gap-0.5">
                   <div className="w-0.5 bg-orange-500 rounded-full animate-pulse" style={{ height: '8px' }} />
@@ -700,108 +895,99 @@ const Home: React.FC = () => {
               </div>
               <h3 className="font-sf-pro text-2xl font-semibold text-slate-900 mb-4 group-hover:text-orange-600 transition-colors">Sound Design & Motion</h3>
               <p className="font-inter text-lg text-slate-600 leading-relaxed">Immersive audio and smooth motion graphics that enhance the story without overwhelming.</p>
-            </div>
+            </TiltCard>
           </div>
         </div>
       </section>
 
-      {/* --- HOW IT WORKS - 4 Columns with Animated Icons --- */}
-      <section className="py-32 px-8 relative overflow-hidden z-10">
+      {/* --- HOW IT WORKS - Progress Bar Design --- */}
+      <section 
+        className="py-32 px-8 relative overflow-hidden z-10" 
+        style={{ 
+          pointerEvents: 'none',
+          userSelect: 'none',
+          WebkitUserSelect: 'none',
+          MozUserSelect: 'none',
+          msUserSelect: 'none'
+        }}
+      >
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="text-center mb-20">
-            <h2 className="font-sf-pro text-5xl md:text-6xl font-semibold tracking-tight text-slate-900 mb-8">How It Works</h2>
+            <h2 className="font-sf-pro text-5xl md:text-6xl font-semibold tracking-tight text-slate-900 mb-8 whitespace-nowrap">How It Works</h2>
             <p className="font-inter text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">A streamlined process designed for speed, quality, and results.</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-            {[
-              { 
-                step: 1, 
-                title: "Share Your Vision", 
-                desc: "Send us your raw footage and creative brief. We'll understand your goals.", 
-                color: "blue",
-                icon: (
-                  <div className="relative w-10 h-10">
-                    <div className="absolute inset-0 bg-blue-500 rounded-lg animate-pulse" style={{ animationDelay: '0s' }} />
-                    <div className="absolute top-1 left-1 w-8 h-8 bg-blue-400 rounded-lg animate-pulse" style={{ animationDelay: '0.3s' }} />
-                    <div className="absolute top-2 left-2 w-6 h-6 bg-blue-300 rounded-lg animate-pulse" style={{ animationDelay: '0.6s' }} />
-                  </div>
-                )
-              },
-              { 
-                step: 2, 
-                title: "Strategic Planning", 
-                desc: "We analyze your content and create a detailed editing strategy.", 
-                color: "green",
-                icon: (
-                  <div className="relative w-10 h-10">
-                    <svg className="w-full h-full" viewBox="0 0 40 40">
-                      <circle cx="20" cy="20" r="18" stroke="currentColor" strokeWidth="2" fill="none" className="text-green-500 animate-pulse" />
-                      <circle cx="20" cy="20" r="12" stroke="currentColor" strokeWidth="2" fill="none" className="text-green-400 animate-pulse" style={{ animationDelay: '0.5s' }} />
-                      <circle cx="20" cy="20" r="6" stroke="currentColor" strokeWidth="2" fill="none" className="text-green-300 animate-pulse" style={{ animationDelay: '1s' }} />
-                      <circle cx="20" cy="20" r="2" className="text-green-600 animate-pulse" fill="currentColor" style={{ animationDelay: '1.5s' }} />
-                    </svg>
-                  </div>
-                )
-              },
-              { 
-                step: 3, 
-                title: "Expert Editing", 
-                desc: "Our team crafts your video with precision, focusing on engagement.", 
-                color: "purple",
-                icon: (
-                  <div className="relative w-10 h-10 flex items-center justify-center">
-                    <div className="absolute w-8 h-1 bg-purple-500 rounded-full animate-pulse transform rotate-0" />
-                    <div className="absolute w-8 h-1 bg-purple-400 rounded-full animate-pulse transform rotate-45" style={{ animationDelay: '0.2s' }} />
-                    <div className="absolute w-8 h-1 bg-purple-300 rounded-full animate-pulse transform rotate-90" style={{ animationDelay: '0.4s' }} />
-                    <div className="absolute w-8 h-1 bg-purple-200 rounded-full animate-pulse transform rotate-135" style={{ animationDelay: '0.6s' }} />
-                    <div className="absolute w-2 h-2 bg-purple-600 rounded-full animate-bounce" />
-                  </div>
-                )
-              },
-              { 
-                step: 4, 
-                title: "Deliver & Optimize", 
-                desc: "Receive your polished video with platform-specific formats.", 
-                color: "orange",
-                icon: (
-                  <div className="relative w-10 h-10">
-                    <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-orange-500 rounded-full animate-bounce" />
-                    <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-orange-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
-                    <div className="absolute top-5 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-orange-300 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }} />
-                    <div className="absolute bottom-0 left-0 right-0 h-1 bg-orange-600 rounded-full" />
-                  </div>
-                )
-              }
-            ].map((item, i) => (
-              <div key={i} className="group text-center hover:scale-105 transform transition-all duration-500 cursor-pointer">
-                <div className="relative mb-8">
-                  <div className={`w-20 h-20 mx-auto rounded-lg bg-gradient-to-br from-${item.color}-500/10 to-${item.color}-600/10 flex items-center justify-center group-hover:scale-110 transition-all duration-500 text-${item.color}-600`}>
-                    {item.icon}
-                  </div>
-                  <div className={`absolute -top-2 -right-2 w-8 h-8 bg-${item.color}-600 text-white rounded-full flex items-center justify-center text-sm font-semibold animate-pulse`}>
-                    {item.step}
-                  </div>
-                </div>
-                <h3 className={`font-sf-pro text-xl font-semibold text-slate-900 mb-4 group-hover:text-${item.color}-600 transition-colors`}>{item.title}</h3>
-                <p className="font-inter text-base text-slate-600 leading-relaxed">{item.desc}</p>
-              </div>
-            ))}
-          </div>
+          <HowItWorksProgress />
         </div>
       </section>
 
-      {/* --- STATS with Counting Animation --- */}
+      {/* --- STATS with Modern Design --- */}
       <section className="py-32 px-8 relative overflow-hidden z-10">
         <div className="max-w-6xl mx-auto relative z-10">
-          <div className="text-center mb-20">
-            <h2 className="font-sf-pro text-5xl md:text-6xl font-semibold tracking-tight text-slate-900 mb-8">Trusted by Creators Worldwide</h2>
-            <p className="font-inter text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">Numbers that speak to our commitment to excellence.</p>
+          <div className="text-center mb-12">
+            <h2 className="font-sf-pro text-4xl md:text-5xl font-semibold tracking-tight text-slate-900 mb-4">
+              See Your <span className="text-blue-600">Content Grow</span>
+            </h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-            <CounterStat number={3000} suffix="+" label="Videos Delivered" delay={0} />
-            <CounterStat number={50} suffix="M+" label="Views Generated" delay={200} />
-            <CounterStat number={98} suffix="%" label="Client Satisfaction" delay={400} />
+
+          {/* Stats Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+            {/* Stat 1 - Success Rate */}
+            <div className="relative">
+              <div className="bg-blue-50 rounded-2xl p-8 text-center relative overflow-hidden">
+                {/* Background Pattern */}
+                <div className="absolute inset-0 opacity-5">
+                  <div className="absolute top-4 left-4 w-8 h-8 text-slate-400">✕</div>
+                  <div className="absolute top-8 right-6 w-6 h-6 text-slate-400">✕</div>
+                  <div className="absolute bottom-6 left-8 w-4 h-4 text-slate-400">✕</div>
+                  <div className="absolute bottom-4 right-4 w-6 h-6 text-slate-400">✕</div>
+                </div>
+                
+                <div className="relative z-10">
+                  <div className="flex items-center justify-center mb-3">
+                    <span className="text-blue-600 mr-2">↗</span>
+                    <CounterStat number={98} suffix="%" label="" delay={0} />
+                  </div>
+                  <p className="text-slate-600 text-sm">
+                    Projects delivered<br />successfully
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Stat 2 - Average Savings */}
+            <div className="relative">
+              <div className="bg-white border border-slate-200 rounded-2xl p-8 text-center">
+                <div className="flex items-center justify-center mb-3">
+                  <CounterStat number={3000} suffix="+" label="" delay={200} />
+                </div>
+                <p className="text-slate-600 text-sm">
+                  Our clients' average<br />video views
+                </p>
+              </div>
+            </div>
+
+            {/* Stat 3 - Growth */}
+            <div className="relative">
+              <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-8 text-center text-white relative overflow-hidden">
+                <div className="relative z-10">
+                  <div className="flex items-center justify-center mb-3">
+                    <span className="mr-2">↗</span>
+                    <CounterStat number={50} suffix="%" label="" delay={400} />
+                  </div>
+                  <p className="text-blue-100 text-sm">
+                    Effective in engagement<br />growth than before
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Text */}
+          <div className="text-center mt-12">
+            <p className="text-slate-500 text-lg max-w-2xl mx-auto">
+              Numbers that speak to our commitment to delivering results that matter.
+            </p>
           </div>
         </div>
       </section>
@@ -810,7 +996,7 @@ const Home: React.FC = () => {
       <section className="py-32 px-8 relative overflow-hidden z-10">
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="text-center mb-20">
-            <h2 className="font-sf-pro text-5xl md:text-6xl font-semibold tracking-tight text-slate-900 mb-8">What Our Clients Say</h2>
+            <h2 className="font-sf-pro text-5xl md:text-6xl font-semibold tracking-tight text-slate-900 mb-8 whitespace-nowrap">What Our Clients Say</h2>
             <p className="font-inter text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">Real feedback from creators who trust us with their content.</p>
           </div>
 

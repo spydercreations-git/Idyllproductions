@@ -7,40 +7,66 @@ interface LoadingScreenProps {
 
 const LoadingScreen: React.FC<LoadingScreenProps> = ({ onSlideStart, slideUp }) => {
   const [isExiting, setIsExiting] = useState(false);
+  const [currentGreeting, setCurrentGreeting] = useState(0);
+
+  // Multilingual greetings - 5 languages only
+  const greetings = [
+    "Hello",
+    "नमस्ते",
+    "Bonjour", 
+    "こんにちは",
+    "Привет"
+  ];
 
   useEffect(() => {
-    // Start exit animation after 3 seconds
+    let timeoutId: NodeJS.Timeout;
+    
+    // Custom timing for each greeting
+    const showGreeting = (index: number, duration: number) => {
+      setCurrentGreeting(index);
+      return setTimeout(() => {
+        if (index < greetings.length - 1) {
+          // Move to next greeting based on custom durations
+          if (index === 0) {
+            timeoutId = showGreeting(1, 600); // Hello -> नमस्ते (600ms)
+          } else if (index === 1) {
+            timeoutId = showGreeting(2, 300); // नमस्ते -> Bonjour (600ms)
+          } else if (index === 2) {
+            timeoutId = showGreeting(3, 300); // Bonjour -> こんにちは (300ms)
+          } else if (index === 3) {
+            timeoutId = showGreeting(4, 300); // こんにちは -> Привет (300ms)
+          }
+        }
+      }, duration);
+    };
+
+    // Start with Hello for 600ms
+    timeoutId = showGreeting(0, 600);
+
+    // Start exit animation after 2 seconds
     const timer = setTimeout(() => {
       setIsExiting(true);
       // Trigger home page transition
       setTimeout(() => {
         onSlideStart();
-      }, 500);
-    }, 3000);
+      }, 100);
+    }, 2000); // 2 seconds loading time
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(timeoutId);
+    };
   }, [onSlideStart]);
 
   return (
     <div className={`loading-container ${slideUp ? 'slide-up' : ''}`}>
       <div className={`content-wrapper ${isExiting ? 'exiting' : ''}`}>
-        {/* Animated Banter Loader */}
-        <div className="banter-loader">
-          <div className="banter-loader__box"></div>
-          <div className="banter-loader__box"></div>
-          <div className="banter-loader__box"></div>
-          <div className="banter-loader__box"></div>
-          <div className="banter-loader__box"></div>
-          <div className="banter-loader__box"></div>
-          <div className="banter-loader__box"></div>
-          <div className="banter-loader__box"></div>
-          <div className="banter-loader__box"></div>
+        {/* Multilingual Greeting Animation */}
+        <div className="greeting-container">
+          <h1 className="greeting-text" key={currentGreeting}>
+            {greetings[currentGreeting]}
+          </h1>
         </div>
-        
-        {/* Welcome Text */}
-        <h1 className="welcome-text">
-          Welcome to Idyll Productions
-        </h1>
       </div>
 
       <style>{`
@@ -56,7 +82,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onSlideStart, slideUp }) 
           justify-content: center;
           overflow: hidden;
           background: #ffffff;
-          transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
         .content-wrapper {
@@ -65,236 +91,48 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onSlideStart, slideUp }) 
           align-items: center;
           justify-content: center;
           opacity: 0;
-          animation: contentFadeIn 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s forwards;
+          animation: contentFadeIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s forwards;
         }
 
         .content-wrapper.exiting {
-          animation: contentSlideUp 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+          animation: contentSlideUp 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
         }
 
-        /* From Uiverse.io by Nawsome - Banter Loader */
-        .banter-loader {
-          position: relative;
-          width: 72px;
-          height: 72px;
-          margin-bottom: 2rem;
+        /* Greeting Container */
+        .greeting-container {
+          height: 150px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          overflow: visible;
+          padding: 20px;
         }
 
-        .banter-loader__box {
-          float: left;
-          position: relative;
-          width: 20px;
-          height: 20px;
-          margin-right: 6px;
-        }
-
-        .banter-loader__box:before {
-          content: "";
-          position: absolute;
-          left: 0;
-          top: 0;
-          width: 100%;
-          height: 100%;
-          background: rgb(37, 99, 235); /* Blue-600 to match theme */
-        }
-
-        .banter-loader__box:nth-child(3n) {
-          margin-right: 0;
-          margin-bottom: 6px;
-        }
-
-        .banter-loader__box:nth-child(1):before, 
-        .banter-loader__box:nth-child(4):before {
-          margin-left: 26px;
-        }
-
-        .banter-loader__box:nth-child(3):before {
-          margin-top: 52px;
-        }
-
-        .banter-loader__box:last-child {
-          margin-bottom: 0;
-        }
-
-        @keyframes moveBox-1 {
-          9.0909090909% { transform: translate(-26px, 0); }
-          18.1818181818% { transform: translate(0px, 0); }
-          27.2727272727% { transform: translate(0px, 0); }
-          36.3636363636% { transform: translate(26px, 0); }
-          45.4545454545% { transform: translate(26px, 26px); }
-          54.5454545455% { transform: translate(26px, 26px); }
-          63.6363636364% { transform: translate(26px, 26px); }
-          72.7272727273% { transform: translate(26px, 0px); }
-          81.8181818182% { transform: translate(0px, 0px); }
-          90.9090909091% { transform: translate(-26px, 0px); }
-          100% { transform: translate(0px, 0px); }
-        }
-
-        .banter-loader__box:nth-child(1) {
-          animation: moveBox-1 4s infinite;
-        }
-
-        @keyframes moveBox-2 {
-          9.0909090909% { transform: translate(0, 0); }
-          18.1818181818% { transform: translate(26px, 0); }
-          27.2727272727% { transform: translate(0px, 0); }
-          36.3636363636% { transform: translate(26px, 0); }
-          45.4545454545% { transform: translate(26px, 26px); }
-          54.5454545455% { transform: translate(26px, 26px); }
-          63.6363636364% { transform: translate(26px, 26px); }
-          72.7272727273% { transform: translate(26px, 26px); }
-          81.8181818182% { transform: translate(0px, 26px); }
-          90.9090909091% { transform: translate(0px, 26px); }
-          100% { transform: translate(0px, 0px); }
-        }
-
-        .banter-loader__box:nth-child(2) {
-          animation: moveBox-2 4s infinite;
-        }
-
-        @keyframes moveBox-3 {
-          9.0909090909% { transform: translate(-26px, 0); }
-          18.1818181818% { transform: translate(-26px, 0); }
-          27.2727272727% { transform: translate(0px, 0); }
-          36.3636363636% { transform: translate(-26px, 0); }
-          45.4545454545% { transform: translate(-26px, 0); }
-          54.5454545455% { transform: translate(-26px, 0); }
-          63.6363636364% { transform: translate(-26px, 0); }
-          72.7272727273% { transform: translate(-26px, 0); }
-          81.8181818182% { transform: translate(-26px, -26px); }
-          90.9090909091% { transform: translate(0px, -26px); }
-          100% { transform: translate(0px, 0px); }
-        }
-
-        .banter-loader__box:nth-child(3) {
-          animation: moveBox-3 4s infinite;
-        }
-
-        @keyframes moveBox-4 {
-          9.0909090909% { transform: translate(-26px, 0); }
-          18.1818181818% { transform: translate(-26px, 0); }
-          27.2727272727% { transform: translate(-26px, -26px); }
-          36.3636363636% { transform: translate(0px, -26px); }
-          45.4545454545% { transform: translate(0px, 0px); }
-          54.5454545455% { transform: translate(0px, -26px); }
-          63.6363636364% { transform: translate(0px, -26px); }
-          72.7272727273% { transform: translate(0px, -26px); }
-          81.8181818182% { transform: translate(-26px, -26px); }
-          90.9090909091% { transform: translate(-26px, 0px); }
-          100% { transform: translate(0px, 0px); }
-        }
-
-        .banter-loader__box:nth-child(4) {
-          animation: moveBox-4 4s infinite;
-        }
-
-        @keyframes moveBox-5 {
-          9.0909090909% { transform: translate(0, 0); }
-          18.1818181818% { transform: translate(0, 0); }
-          27.2727272727% { transform: translate(0, 0); }
-          36.3636363636% { transform: translate(26px, 0); }
-          45.4545454545% { transform: translate(26px, 0); }
-          54.5454545455% { transform: translate(26px, 0); }
-          63.6363636364% { transform: translate(26px, 0); }
-          72.7272727273% { transform: translate(26px, 0); }
-          81.8181818182% { transform: translate(26px, -26px); }
-          90.9090909091% { transform: translate(0px, -26px); }
-          100% { transform: translate(0px, 0px); }
-        }
-
-        .banter-loader__box:nth-child(5) {
-          animation: moveBox-5 4s infinite;
-        }
-
-        @keyframes moveBox-6 {
-          9.0909090909% { transform: translate(0, 0); }
-          18.1818181818% { transform: translate(-26px, 0); }
-          27.2727272727% { transform: translate(-26px, 0); }
-          36.3636363636% { transform: translate(0px, 0); }
-          45.4545454545% { transform: translate(0px, 0); }
-          54.5454545455% { transform: translate(0px, 0); }
-          63.6363636364% { transform: translate(0px, 0); }
-          72.7272727273% { transform: translate(0px, 26px); }
-          81.8181818182% { transform: translate(-26px, 26px); }
-          90.9090909091% { transform: translate(-26px, 0px); }
-          100% { transform: translate(0px, 0px); }
-        }
-
-        .banter-loader__box:nth-child(6) {
-          animation: moveBox-6 4s infinite;
-        }
-
-        @keyframes moveBox-7 {
-          9.0909090909% { transform: translate(26px, 0); }
-          18.1818181818% { transform: translate(26px, 0); }
-          27.2727272727% { transform: translate(26px, 0); }
-          36.3636363636% { transform: translate(0px, 0); }
-          45.4545454545% { transform: translate(0px, -26px); }
-          54.5454545455% { transform: translate(26px, -26px); }
-          63.6363636364% { transform: translate(0px, -26px); }
-          72.7272727273% { transform: translate(0px, -26px); }
-          81.8181818182% { transform: translate(0px, 0px); }
-          90.9090909091% { transform: translate(26px, 0px); }
-          100% { transform: translate(0px, 0px); }
-        }
-
-        .banter-loader__box:nth-child(7) {
-          animation: moveBox-7 4s infinite;
-        }
-
-        @keyframes moveBox-8 {
-          9.0909090909% { transform: translate(0, 0); }
-          18.1818181818% { transform: translate(-26px, 0); }
-          27.2727272727% { transform: translate(-26px, -26px); }
-          36.3636363636% { transform: translate(0px, -26px); }
-          45.4545454545% { transform: translate(0px, -26px); }
-          54.5454545455% { transform: translate(0px, -26px); }
-          63.6363636364% { transform: translate(0px, -26px); }
-          72.7272727273% { transform: translate(0px, -26px); }
-          81.8181818182% { transform: translate(26px, -26px); }
-          90.9090909091% { transform: translate(26px, 0px); }
-          100% { transform: translate(0px, 0px); }
-        }
-
-        .banter-loader__box:nth-child(8) {
-          animation: moveBox-8 4s infinite;
-        }
-
-        @keyframes moveBox-9 {
-          9.0909090909% { transform: translate(-26px, 0); }
-          18.1818181818% { transform: translate(-26px, 0); }
-          27.2727272727% { transform: translate(0px, 0); }
-          36.3636363636% { transform: translate(-26px, 0); }
-          45.4545454545% { transform: translate(0px, 0); }
-          54.5454545455% { transform: translate(0px, 0); }
-          63.6363636364% { transform: translate(-26px, 0); }
-          72.7272727273% { transform: translate(-26px, 0); }
-          81.8181818182% { transform: translate(-52px, 0); }
-          90.9090909091% { transform: translate(-26px, 0); }
-          100% { transform: translate(0px, 0px); }
-        }
-
-        .banter-loader__box:nth-child(9) {
-          animation: moveBox-9 4s infinite;
-        }
-
-        .welcome-text {
-          font-size: 2rem;
-          font-weight: 600;
-          color: rgb(71, 85, 105); /* slate-600 */
-          text-align: center;
-          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-          letter-spacing: -0.02em;
+        /* Multilingual Greeting Animation */
+        .greeting-text {
+          font-size: 4.5rem;
+          font-weight: 500;
           line-height: 1.2;
+          margin: 0;
+          padding: 10px 0;
+          text-align: center;
+          font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+          letter-spacing: -0.02em;
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
-          animation: textFadeIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s forwards;
-          opacity: 0;
+          background: linear-gradient(45deg, #ffffff, #2563eb, #ffffff);
+          background-size: 200% 200%;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          animation: greetingSlideIn 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards,
+                     gradientShift 2s ease-in-out infinite;
         }
 
         /* Slide up transition */
         .slide-up {
           transform: translateY(-100vh);
+          transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
         /* Animations */
@@ -316,64 +154,52 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onSlideStart, slideUp }) 
           }
           to {
             opacity: 0;
-            transform: translateY(-30px);
+            transform: translateY(-40px);
           }
         }
 
-        @keyframes textFadeIn {
-          from {
+        @keyframes greetingSlideIn {
+          0% {
             opacity: 0;
-            transform: translateY(10px);
+            transform: translateY(30px) scale(0.9);
           }
-          to {
+          100% {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
+          }
+        }
+
+        @keyframes gradientShift {
+          0%, 100% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
           }
         }
 
         /* Responsive design */
         @media (max-width: 768px) {
-          .welcome-text {
-            font-size: 1.5rem;
-            padding: 0 1rem;
+          .greeting-text {
+            font-size: 3.5rem;
+            padding: 8px 0;
           }
           
-          .banter-loader {
-            width: 60px;
-            height: 60px;
-            margin-bottom: 1.5rem;
-          }
-          
-          .banter-loader__box {
-            width: 16px;
-            height: 16px;
-            margin-right: 4px;
-          }
-          
-          .banter-loader__box:nth-child(3n) {
-            margin-bottom: 4px;
+          .greeting-container {
+            height: 120px;
+            padding: 15px;
           }
         }
 
         @media (max-width: 480px) {
-          .welcome-text {
-            font-size: 1.25rem;
+          .greeting-text {
+            font-size: 2.8rem;
+            padding: 5px 0;
           }
           
-          .banter-loader {
-            width: 48px;
-            height: 48px;
-            margin-bottom: 1rem;
-          }
-          
-          .banter-loader__box {
-            width: 12px;
-            height: 12px;
-            margin-right: 3px;
-          }
-          
-          .banter-loader__box:nth-child(3n) {
-            margin-bottom: 3px;
+          .greeting-container {
+            height: 100px;
+            padding: 10px;
           }
         }
 
@@ -381,14 +207,13 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onSlideStart, slideUp }) 
         @media (prefers-reduced-motion: reduce) {
           .loading-container,
           .content-wrapper,
-          .welcome-text,
-          .banter-loader__box {
+          .greeting-text {
             animation: none;
             transition-duration: 0.2s;
           }
 
           .content-wrapper,
-          .welcome-text {
+          .greeting-text {
             opacity: 1;
           }
         }

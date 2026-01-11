@@ -502,6 +502,193 @@
         @media (prefers-reduced-motion: reduce) {
           * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
         }
+
+        /* 3D Models CSS */
+        .floating-3d-cube {
+          perspective: 1000px;
+          animation: float 6s ease-in-out infinite;
+        }
+
+        .cube {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          transform-style: preserve-3d;
+          animation: rotateCube 10s infinite linear;
+        }
+
+        .face {
+          position: absolute;
+          width: 64px;
+          height: 64px;
+          background: linear-gradient(45deg, rgba(37, 99, 235, 0.8), rgba(59, 130, 246, 0.6));
+          border: 2px solid rgba(37, 99, 235, 0.3);
+          backdrop-filter: blur(10px);
+        }
+
+        .front { transform: rotateY(0deg) translateZ(32px); }
+        .back { transform: rotateY(180deg) translateZ(32px); }
+        .right { transform: rotateY(90deg) translateZ(32px); }
+        .left { transform: rotateY(-90deg) translateZ(32px); }
+        .top { transform: rotateX(90deg) translateZ(32px); }
+        .bottom { transform: rotateX(-90deg) translateZ(32px); }
+
+        .floating-3d-pyramid {
+          perspective: 1000px;
+          animation: float 8s ease-in-out infinite reverse;
+        }
+
+        .pyramid {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          transform-style: preserve-3d;
+          animation: rotatePyramid 12s infinite linear;
+        }
+
+        .pyramid-face {
+          position: absolute;
+          background: linear-gradient(45deg, rgba(34, 197, 94, 0.8), rgba(74, 222, 128, 0.6));
+          border: 2px solid rgba(34, 197, 94, 0.3);
+          backdrop-filter: blur(10px);
+        }
+
+        .pyramid-front {
+          width: 48px;
+          height: 48px;
+          transform: rotateY(0deg) translateZ(24px);
+          clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        }
+
+        .pyramid-right {
+          width: 48px;
+          height: 48px;
+          transform: rotateY(90deg) translateZ(24px);
+          clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        }
+
+        .pyramid-back {
+          width: 48px;
+          height: 48px;
+          transform: rotateY(180deg) translateZ(24px);
+          clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        }
+
+        .pyramid-left {
+          width: 48px;
+          height: 48px;
+          transform: rotateY(-90deg) translateZ(24px);
+          clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        }
+
+        .floating-3d-sphere {
+          perspective: 1000px;
+          animation: float 7s ease-in-out infinite;
+        }
+
+        .sphere {
+          width: 56px;
+          height: 56px;
+          border-radius: 50%;
+          background: radial-gradient(circle at 30% 30%, rgba(168, 85, 247, 0.9), rgba(147, 51, 234, 0.7));
+          border: 2px solid rgba(168, 85, 247, 0.3);
+          backdrop-filter: blur(10px);
+          animation: rotateSphere 8s infinite linear;
+          box-shadow: 
+            inset -10px -10px 20px rgba(0, 0, 0, 0.2),
+            inset 10px 10px 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .floating-3d-cylinder {
+          perspective: 1000px;
+          animation: float 9s ease-in-out infinite;
+        }
+
+        .cylinder {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          transform-style: preserve-3d;
+          animation: rotateCylinder 15s infinite linear;
+        }
+
+        .cylinder-top, .cylinder-bottom {
+          position: absolute;
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          background: linear-gradient(45deg, rgba(249, 115, 22, 0.8), rgba(251, 146, 60, 0.6));
+          border: 2px solid rgba(249, 115, 22, 0.3);
+          left: 50%;
+          transform: translateX(-50%);
+        }
+
+        .cylinder-top {
+          top: 0;
+          transform: translateX(-50%) rotateX(90deg) translateZ(20px);
+        }
+
+        .cylinder-bottom {
+          bottom: 0;
+          transform: translateX(-50%) rotateX(-90deg) translateZ(20px);
+        }
+
+        .cylinder-side {
+          position: absolute;
+          width: 40px;
+          height: 64px;
+          background: linear-gradient(90deg, rgba(249, 115, 22, 0.8), rgba(251, 146, 60, 0.6));
+          border: 2px solid rgba(249, 115, 22, 0.3);
+          border-radius: 20px;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+
+        /* 3D Animations */
+        @keyframes rotateCube {
+          0% { transform: rotateX(0deg) rotateY(0deg); }
+          100% { transform: rotateX(360deg) rotateY(360deg); }
+        }
+
+        @keyframes rotatePyramid {
+          0% { transform: rotateX(0deg) rotateY(0deg); }
+          100% { transform: rotateX(360deg) rotateY(360deg); }
+        }
+
+        @keyframes rotateSphere {
+          0% { transform: rotateY(0deg); }
+          100% { transform: rotateY(360deg); }
+        }
+
+        @keyframes rotateCylinder {
+          0% { transform: rotateX(0deg) rotateY(0deg); }
+          100% { transform: rotateX(360deg) rotateY(360deg); }
+        }
+
+        /* Hover effects */
+        .floating-3d-cube:hover .cube {
+          animation-play-state: paused;
+          transform: rotateX(45deg) rotateY(45deg) scale(1.2);
+        }
+
+        .floating-3d-pyramid:hover .pyramid {
+          animation-play-state: paused;
+          transform: rotateX(45deg) rotateY(45deg) scale(1.3);
+        }
+
+        .floating-3d-sphere:hover .sphere {
+          animation-play-state: paused;
+          transform: scale(1.4);
+          box-shadow: 
+            inset -15px -15px 30px rgba(0, 0, 0, 0.3),
+            inset 15px 15px 30px rgba(255, 255, 255, 0.2),
+            0 0 30px rgba(168, 85, 247, 0.5);
+        }
+
+        .floating-3d-cylinder:hover .cylinder {
+          animation-play-state: paused;
+          transform: rotateX(45deg) rotateY(45deg) scale(1.2);
+        }
     </style>
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 <script type="importmap">
@@ -609,8 +796,77 @@
             window.outerWidth - window.innerWidth > threshold) {
             if (!devtools.open) {
                 devtools.open = true;
-                // Redirect or show warning
-                document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:Arial;font-size:24px;color:#333;">Access Denied</div>';
+                // Show Access Denied message
+                document.body.innerHTML = `
+                    <div style="
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        height: 100vh;
+                        font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+                        background: #ffffff;
+                        color: #0f172a;
+                        text-align: center;
+                        padding: 20px;
+                    ">
+                        <div style="
+                            background: #ffffff;
+                            border-radius: 20px;
+                            padding: 60px 40px;
+                            border: 1px solid #e2e8f0;
+                            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+                            max-width: 500px;
+                            width: 100%;
+                        ">
+                            <div style="
+                                font-size: 4rem; 
+                                margin-bottom: 30px;
+                                color: #ef4444;
+                            ">🚫</div>
+                            <h1 style="
+                                font-size: 2.5rem; 
+                                font-weight: 700; 
+                                margin-bottom: 20px; 
+                                color: #0f172a;
+                                font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+                                letter-spacing: -0.025em;
+                            ">
+                                ACCESS DENIED
+                            </h1>
+                            <p style="
+                                font-size: 1.125rem; 
+                                margin-bottom: 40px; 
+                                color: #64748b;
+                                line-height: 1.7;
+                                font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+                                font-weight: 400;
+                            ">
+                                Developer tools are not allowed on this website.<br>
+                                Please refresh the website with default settings.
+                            </p>
+                            <button onclick="window.location.reload()" style="
+                                background: #2563eb;
+                                color: white;
+                                border: none;
+                                padding: 16px 32px;
+                                font-size: 1rem;
+                                font-weight: 600;
+                                border-radius: 12px;
+                                cursor: pointer;
+                                transition: all 0.2s ease;
+                                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+                                font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+                                letter-spacing: -0.025em;
+                            " 
+                            onmouseover="this.style.background='#1d4ed8'; this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)'" 
+                            onmouseout="this.style.background='#2563eb'; this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'"
+                            >
+                                Refresh Website
+                            </button>
+                        </div>
+                    </div>
+                `;
             }
         } else {
             devtools.open = false;
@@ -628,6 +884,126 @@
             console.clear();
         }
     }, 1000);
+    
+    // Additional DevTools detection methods
+    let devToolsOpen = false;
+    
+    // Method 1: Console detection
+    let consoleCheck = setInterval(function() {
+        let before = new Date();
+        debugger;
+        let after = new Date();
+        if (after - before > 100) {
+            if (!devToolsOpen) {
+                devToolsOpen = true;
+                showAccessDenied();
+            }
+        }
+    }, 1000);
+    
+    // Method 2: Window size detection (enhanced)
+    let windowCheck = setInterval(function() {
+        if (window.outerWidth - window.innerWidth > 200 || 
+            window.outerHeight - window.innerHeight > 200) {
+            if (!devToolsOpen) {
+                devToolsOpen = true;
+                showAccessDenied();
+            }
+        }
+    }, 1000);
+    
+    // Method 3: Console object detection
+    Object.defineProperty(console, '_commandLineAPI', {
+        get: function() {
+            if (!devToolsOpen) {
+                devToolsOpen = true;
+                showAccessDenied();
+            }
+        }
+    });
+    
+    // Function to show access denied message
+    function showAccessDenied() {
+        document.body.innerHTML = `
+            <div style="
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                height: 100vh;
+                font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+                background: #ffffff;
+                color: #0f172a;
+                text-align: center;
+                padding: 20px;
+            ">
+                <div style="
+                    background: #ffffff;
+                    border-radius: 20px;
+                    padding: 60px 40px;
+                    border: 1px solid #e2e8f0;
+                    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+                    max-width: 500px;
+                    width: 100%;
+                ">
+                    <div style="
+                        font-size: 4rem; 
+                        margin-bottom: 30px;
+                        color: #ef4444;
+                    ">🚫</div>
+                    <h1 style="
+                        font-size: 2.5rem; 
+                        font-weight: 700; 
+                        margin-bottom: 20px; 
+                        color: #0f172a;
+                        font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+                        letter-spacing: -0.025em;
+                    ">
+                        ACCESS DENIED
+                    </h1>
+                    <p style="
+                        font-size: 1.125rem; 
+                        margin-bottom: 40px; 
+                        color: #64748b;
+                        line-height: 1.7;
+                        font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+                        font-weight: 400;
+                    ">
+                        Developer tools are not allowed on this website.<br>
+                        Please refresh the website with default settings.
+                    </p>
+                    <button onclick="window.location.reload()" style="
+                        background: #2563eb;
+                        color: white;
+                        border: none;
+                        padding: 16px 32px;
+                        font-size: 1rem;
+                        font-weight: 600;
+                        border-radius: 12px;
+                        cursor: pointer;
+                        transition: all 0.2s ease;
+                        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+                        font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+                        letter-spacing: -0.025em;
+                    " 
+                    onmouseover="this.style.background='#1d4ed8'; this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)'" 
+                    onmouseout="this.style.background='#2563eb'; this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'"
+                    >
+                        Refresh Website
+                    </button>
+                </div>
+                <style>
+                    @keyframes fadeIn {
+                        from { opacity: 0; transform: translateY(20px); }
+                        to { opacity: 1; transform: translateY(0); }
+                    }
+                    div:first-child > div {
+                        animation: fadeIn 0.4s ease-out;
+                    }
+                </style>
+            </div>
+        `;
+    }
     
     // Disable view source
     document.addEventListener('keydown', function(e) {
