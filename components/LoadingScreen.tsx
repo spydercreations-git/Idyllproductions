@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 
 interface LoadingScreenProps {
@@ -7,59 +6,41 @@ interface LoadingScreenProps {
 }
 
 const LoadingScreen: React.FC<LoadingScreenProps> = ({ onSlideStart, slideUp }) => {
-  const [currentLanguage, setCurrentLanguage] = useState(0);
   const [isExiting, setIsExiting] = useState(false);
 
-  const welcomeMessages = [
-    { text: "Welcome to Idyll Productions", lang: "en" },
-    { text: "आईडल प्रोडक्शन्स में आपका स्वागत है", lang: "hi" },
-    { text: "アイデル・プロダクションズへようこそ", lang: "ja" },
-    { text: "Willkommen bei Idyll Produktionen", lang: "de" },
-    { text: "Bienvenue chez Idyll Productions", lang: "fr" }
-  ];
-
   useEffect(() => {
-    // Start language cycling with proper timing to prevent overlap
-    const interval = setInterval(() => {
-      setCurrentLanguage(prev => {
-        const next = prev + 1;
-        if (next >= welcomeMessages.length) {
-          clearInterval(interval);
-          // Start exit animation after brief pause
-          setTimeout(() => {
-            setIsExiting(true);
-            // Trigger home page transition
-            setTimeout(() => {
-              onSlideStart();
-            }, 800);
-          }, 800); // Longer pause to ensure no overlap
-          return prev;
-        }
-        return next;
-      });
-    }, 1200); // Increased interval to 1.2s to prevent overlap
+    // Start exit animation after 3 seconds
+    const timer = setTimeout(() => {
+      setIsExiting(true);
+      // Trigger home page transition
+      setTimeout(() => {
+        onSlideStart();
+      }, 500);
+    }, 3000);
 
-    return () => clearInterval(interval);
-  }, [onSlideStart, welcomeMessages.length]);
+    return () => clearTimeout(timer);
+  }, [onSlideStart]);
 
   return (
     <div className={`loading-container ${slideUp ? 'slide-up' : ''}`}>
-      {/* Main content - only language text */}
       <div className={`content-wrapper ${isExiting ? 'exiting' : ''}`}>
-        <div className="message-container">
-          {welcomeMessages.map((message, index) => (
-            <div 
-              key={index}
-              className={`welcome-message ${
-                index === currentLanguage ? 'active' : 
-                index < currentLanguage ? 'exited' : 'waiting'
-              }`}
-              data-lang={message.lang}
-            >
-              {message.text}
-            </div>
-          ))}
+        {/* Animated Banter Loader */}
+        <div className="banter-loader">
+          <div className="banter-loader__box"></div>
+          <div className="banter-loader__box"></div>
+          <div className="banter-loader__box"></div>
+          <div className="banter-loader__box"></div>
+          <div className="banter-loader__box"></div>
+          <div className="banter-loader__box"></div>
+          <div className="banter-loader__box"></div>
+          <div className="banter-loader__box"></div>
+          <div className="banter-loader__box"></div>
         </div>
+        
+        {/* Welcome Text */}
+        <h1 className="welcome-text">
+          Welcome to Idyll Productions
+        </h1>
       </div>
 
       <style>{`
@@ -79,141 +60,236 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onSlideStart, slideUp }) 
         }
 
         .content-wrapper {
-          position: relative;
-          z-index: 10;
           display: flex;
+          flex-direction: column;
           align-items: center;
           justify-content: center;
           opacity: 0;
-          animation: contentFadeIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.1s forwards;
+          animation: contentFadeIn 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s forwards;
         }
 
         .content-wrapper.exiting {
-          animation: contentSlideUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+          animation: contentSlideUp 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
         }
 
-        .message-container {
+        /* From Uiverse.io by Nawsome - Banter Loader */
+        .banter-loader {
           position: relative;
-          height: 60px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          min-width: 500px;
+          width: 72px;
+          height: 72px;
+          margin-bottom: 2rem;
         }
 
-        .welcome-message {
-          position: absolute;
-          font-size: 2.1rem;
-          font-weight: 700;
-          background: linear-gradient(135deg, #2563eb 0%, #3b82f6 50%, #60a5fa 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-          text-align: center;
-          opacity: 0;
-          transform: translateY(0);
-          transition: opacity 0.4s ease-in-out;
-          white-space: nowrap;
-          font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-          letter-spacing: -0.02em;
-          line-height: 1.1;
-          -webkit-font-smoothing: antialiased;
-          -moz-osx-font-smoothing: grayscale;
-          position: absolute;
-          left: 50%;
-          top: 50%;
-          transform: translate(-50%, -50%);
-          overflow: hidden;
+        .banter-loader__box {
+          float: left;
+          position: relative;
+          width: 20px;
+          height: 20px;
+          margin-right: 6px;
         }
 
-        .welcome-message::before {
-          content: '';
+        .banter-loader__box:before {
+          content: "";
           position: absolute;
+          left: 0;
           top: 0;
-          left: -100%;
           width: 100%;
           height: 100%;
-          background: linear-gradient(
-            90deg,
-            transparent,
-            rgba(255, 255, 255, 0.4),
-            transparent
-          );
-          transition: left 0.8s ease-in-out;
-          z-index: 1;
+          background: rgb(37, 99, 235); /* Blue-600 to match theme */
         }
 
-        .welcome-message.active {
-          opacity: 1;
-          transform: translate(-50%, -50%);
-          transition-delay: 0.2s;
-          animation: shineText 2s ease-in-out infinite;
+        .banter-loader__box:nth-child(3n) {
+          margin-right: 0;
+          margin-bottom: 6px;
         }
 
-        .welcome-message.active::before {
-          left: 100%;
-          transition: left 1.5s ease-in-out;
-          animation: shine 2s ease-in-out infinite;
+        .banter-loader__box:nth-child(1):before, 
+        .banter-loader__box:nth-child(4):before {
+          margin-left: 26px;
         }
 
-        .welcome-message.exited {
-          opacity: 0;
-          transform: translate(-50%, -50%);
-          transition: opacity 0.2s ease-in-out;
+        .banter-loader__box:nth-child(3):before {
+          margin-top: 52px;
         }
 
-        .welcome-message.waiting {
-          opacity: 0;
-          transform: translate(-50%, -50%);
+        .banter-loader__box:last-child {
+          margin-bottom: 0;
         }
 
-        @keyframes shineText {
-          0%, 100% {
-            background: linear-gradient(135deg, #2563eb 0%, #3b82f6 50%, #60a5fa 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-          }
-          50% {
-            background: linear-gradient(135deg, #60a5fa 0%, #93c5fd 50%, #dbeafe 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-          }
+        @keyframes moveBox-1 {
+          9.0909090909% { transform: translate(-26px, 0); }
+          18.1818181818% { transform: translate(0px, 0); }
+          27.2727272727% { transform: translate(0px, 0); }
+          36.3636363636% { transform: translate(26px, 0); }
+          45.4545454545% { transform: translate(26px, 26px); }
+          54.5454545455% { transform: translate(26px, 26px); }
+          63.6363636364% { transform: translate(26px, 26px); }
+          72.7272727273% { transform: translate(26px, 0px); }
+          81.8181818182% { transform: translate(0px, 0px); }
+          90.9090909091% { transform: translate(-26px, 0px); }
+          100% { transform: translate(0px, 0px); }
         }
 
-        @keyframes shine {
-          0% {
-            left: -100%;
-            opacity: 0;
-          }
-          50% {
-            opacity: 1;
-          }
-          100% {
-            left: 100%;
-            opacity: 0;
-          }
+        .banter-loader__box:nth-child(1) {
+          animation: moveBox-1 4s infinite;
         }
 
-        /* Language-specific styling */
-        .welcome-message[data-lang="hi"] {
-          font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', 'Noto Sans Devanagari', sans-serif;
-          font-size: 1.9rem;
+        @keyframes moveBox-2 {
+          9.0909090909% { transform: translate(0, 0); }
+          18.1818181818% { transform: translate(26px, 0); }
+          27.2727272727% { transform: translate(0px, 0); }
+          36.3636363636% { transform: translate(26px, 0); }
+          45.4545454545% { transform: translate(26px, 26px); }
+          54.5454545455% { transform: translate(26px, 26px); }
+          63.6363636364% { transform: translate(26px, 26px); }
+          72.7272727273% { transform: translate(26px, 26px); }
+          81.8181818182% { transform: translate(0px, 26px); }
+          90.9090909091% { transform: translate(0px, 26px); }
+          100% { transform: translate(0px, 0px); }
         }
 
-        .welcome-message[data-lang="ja"] {
-          font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Hiragino Sans', 'Noto Sans JP', sans-serif;
-          font-size: 1.9rem;
+        .banter-loader__box:nth-child(2) {
+          animation: moveBox-2 4s infinite;
         }
 
-        .welcome-message[data-lang="de"] {
-          font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', sans-serif;
+        @keyframes moveBox-3 {
+          9.0909090909% { transform: translate(-26px, 0); }
+          18.1818181818% { transform: translate(-26px, 0); }
+          27.2727272727% { transform: translate(0px, 0); }
+          36.3636363636% { transform: translate(-26px, 0); }
+          45.4545454545% { transform: translate(-26px, 0); }
+          54.5454545455% { transform: translate(-26px, 0); }
+          63.6363636364% { transform: translate(-26px, 0); }
+          72.7272727273% { transform: translate(-26px, 0); }
+          81.8181818182% { transform: translate(-26px, -26px); }
+          90.9090909091% { transform: translate(0px, -26px); }
+          100% { transform: translate(0px, 0px); }
+        }
+
+        .banter-loader__box:nth-child(3) {
+          animation: moveBox-3 4s infinite;
+        }
+
+        @keyframes moveBox-4 {
+          9.0909090909% { transform: translate(-26px, 0); }
+          18.1818181818% { transform: translate(-26px, 0); }
+          27.2727272727% { transform: translate(-26px, -26px); }
+          36.3636363636% { transform: translate(0px, -26px); }
+          45.4545454545% { transform: translate(0px, 0px); }
+          54.5454545455% { transform: translate(0px, -26px); }
+          63.6363636364% { transform: translate(0px, -26px); }
+          72.7272727273% { transform: translate(0px, -26px); }
+          81.8181818182% { transform: translate(-26px, -26px); }
+          90.9090909091% { transform: translate(-26px, 0px); }
+          100% { transform: translate(0px, 0px); }
+        }
+
+        .banter-loader__box:nth-child(4) {
+          animation: moveBox-4 4s infinite;
+        }
+
+        @keyframes moveBox-5 {
+          9.0909090909% { transform: translate(0, 0); }
+          18.1818181818% { transform: translate(0, 0); }
+          27.2727272727% { transform: translate(0, 0); }
+          36.3636363636% { transform: translate(26px, 0); }
+          45.4545454545% { transform: translate(26px, 0); }
+          54.5454545455% { transform: translate(26px, 0); }
+          63.6363636364% { transform: translate(26px, 0); }
+          72.7272727273% { transform: translate(26px, 0); }
+          81.8181818182% { transform: translate(26px, -26px); }
+          90.9090909091% { transform: translate(0px, -26px); }
+          100% { transform: translate(0px, 0px); }
+        }
+
+        .banter-loader__box:nth-child(5) {
+          animation: moveBox-5 4s infinite;
+        }
+
+        @keyframes moveBox-6 {
+          9.0909090909% { transform: translate(0, 0); }
+          18.1818181818% { transform: translate(-26px, 0); }
+          27.2727272727% { transform: translate(-26px, 0); }
+          36.3636363636% { transform: translate(0px, 0); }
+          45.4545454545% { transform: translate(0px, 0); }
+          54.5454545455% { transform: translate(0px, 0); }
+          63.6363636364% { transform: translate(0px, 0); }
+          72.7272727273% { transform: translate(0px, 26px); }
+          81.8181818182% { transform: translate(-26px, 26px); }
+          90.9090909091% { transform: translate(-26px, 0px); }
+          100% { transform: translate(0px, 0px); }
+        }
+
+        .banter-loader__box:nth-child(6) {
+          animation: moveBox-6 4s infinite;
+        }
+
+        @keyframes moveBox-7 {
+          9.0909090909% { transform: translate(26px, 0); }
+          18.1818181818% { transform: translate(26px, 0); }
+          27.2727272727% { transform: translate(26px, 0); }
+          36.3636363636% { transform: translate(0px, 0); }
+          45.4545454545% { transform: translate(0px, -26px); }
+          54.5454545455% { transform: translate(26px, -26px); }
+          63.6363636364% { transform: translate(0px, -26px); }
+          72.7272727273% { transform: translate(0px, -26px); }
+          81.8181818182% { transform: translate(0px, 0px); }
+          90.9090909091% { transform: translate(26px, 0px); }
+          100% { transform: translate(0px, 0px); }
+        }
+
+        .banter-loader__box:nth-child(7) {
+          animation: moveBox-7 4s infinite;
+        }
+
+        @keyframes moveBox-8 {
+          9.0909090909% { transform: translate(0, 0); }
+          18.1818181818% { transform: translate(-26px, 0); }
+          27.2727272727% { transform: translate(-26px, -26px); }
+          36.3636363636% { transform: translate(0px, -26px); }
+          45.4545454545% { transform: translate(0px, -26px); }
+          54.5454545455% { transform: translate(0px, -26px); }
+          63.6363636364% { transform: translate(0px, -26px); }
+          72.7272727273% { transform: translate(0px, -26px); }
+          81.8181818182% { transform: translate(26px, -26px); }
+          90.9090909091% { transform: translate(26px, 0px); }
+          100% { transform: translate(0px, 0px); }
+        }
+
+        .banter-loader__box:nth-child(8) {
+          animation: moveBox-8 4s infinite;
+        }
+
+        @keyframes moveBox-9 {
+          9.0909090909% { transform: translate(-26px, 0); }
+          18.1818181818% { transform: translate(-26px, 0); }
+          27.2727272727% { transform: translate(0px, 0); }
+          36.3636363636% { transform: translate(-26px, 0); }
+          45.4545454545% { transform: translate(0px, 0); }
+          54.5454545455% { transform: translate(0px, 0); }
+          63.6363636364% { transform: translate(-26px, 0); }
+          72.7272727273% { transform: translate(-26px, 0); }
+          81.8181818182% { transform: translate(-52px, 0); }
+          90.9090909091% { transform: translate(-26px, 0); }
+          100% { transform: translate(0px, 0px); }
+        }
+
+        .banter-loader__box:nth-child(9) {
+          animation: moveBox-9 4s infinite;
+        }
+
+        .welcome-text {
           font-size: 2rem;
-        }
-
-        .welcome-message[data-lang="fr"] {
-          font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', sans-serif;
+          font-weight: 600;
+          color: rgb(71, 85, 105); /* slate-600 */
+          text-align: center;
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+          letter-spacing: -0.02em;
+          line-height: 1.2;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          animation: textFadeIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s forwards;
+          opacity: 0;
         }
 
         /* Slide up transition */
@@ -225,9 +301,11 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onSlideStart, slideUp }) 
         @keyframes contentFadeIn {
           from {
             opacity: 0;
+            transform: translateY(20px);
           }
           to {
             opacity: 1;
+            transform: translateY(0);
           }
         }
 
@@ -242,45 +320,60 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onSlideStart, slideUp }) 
           }
         }
 
+        @keyframes textFadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
         /* Responsive design */
         @media (max-width: 768px) {
-          .welcome-message {
-            font-size: 1.7rem;
+          .welcome-text {
+            font-size: 1.5rem;
             padding: 0 1rem;
           }
-
-          .welcome-message[data-lang="hi"],
-          .welcome-message[data-lang="ja"] {
-            font-size: 1.5rem;
+          
+          .banter-loader {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 1.5rem;
           }
-
-          .welcome-message[data-lang="de"] {
-            font-size: 1.6rem;
+          
+          .banter-loader__box {
+            width: 16px;
+            height: 16px;
+            margin-right: 4px;
           }
-
-          .message-container {
-            min-width: 350px;
-            height: 50px;
+          
+          .banter-loader__box:nth-child(3n) {
+            margin-bottom: 4px;
           }
         }
 
         @media (max-width: 480px) {
-          .welcome-message {
-            font-size: 1.4rem;
+          .welcome-text {
+            font-size: 1.25rem;
           }
-
-          .welcome-message[data-lang="hi"],
-          .welcome-message[data-lang="ja"] {
-            font-size: 1.3rem;
+          
+          .banter-loader {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 1rem;
           }
-
-          .welcome-message[data-lang="de"] {
-            font-size: 1.3rem;
+          
+          .banter-loader__box {
+            width: 12px;
+            height: 12px;
+            margin-right: 3px;
           }
-
-          .message-container {
-            min-width: 300px;
-            height: 45px;
+          
+          .banter-loader__box:nth-child(3n) {
+            margin-bottom: 3px;
           }
         }
 
@@ -288,21 +381,15 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onSlideStart, slideUp }) 
         @media (prefers-reduced-motion: reduce) {
           .loading-container,
           .content-wrapper,
-          .welcome-message {
+          .welcome-text,
+          .banter-loader__box {
             animation: none;
             transition-duration: 0.2s;
           }
 
-          .content-wrapper {
+          .content-wrapper,
+          .welcome-text {
             opacity: 1;
-          }
-        }
-
-        /* High DPI displays */
-        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-          .welcome-message {
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
           }
         }
       `}</style>

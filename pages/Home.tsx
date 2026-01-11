@@ -263,11 +263,16 @@ const Home: React.FC = () => {
                 {HERO_VIDEO_URL && !HERO_VIDEO_URL.includes('placeholder') ? (
                   <video
                     className="w-full h-full object-cover"
-                    autoPlay loop muted playsInline preload="auto"
+                    autoPlay 
+                    loop 
+                    muted 
+                    playsInline 
+                    preload="metadata"
                     onContextMenu={(e) => e.preventDefault()}
                     onDragStart={(e) => e.preventDefault()}
                     controlsList="nodownload nofullscreen noremoteplayback noplaybackrate"
-                    disablePictureInPicture disableRemotePlayback
+                    disablePictureInPicture 
+                    disableRemotePlayback
                   >
                     <source src={HERO_VIDEO_URL} type="video/mp4" />
                   </video>
@@ -384,7 +389,15 @@ const Home: React.FC = () => {
                 className="group cursor-pointer bg-white/80 backdrop-blur-sm rounded-lg overflow-hidden shadow-sm border border-slate-200/50 hover:shadow-xl hover:border-slate-300/60 transition-all duration-500 hover:bg-white hover:scale-105 transform"
               >
                 <div className="aspect-video relative overflow-hidden bg-slate-100">
-                  <video className="w-full h-full object-cover" autoPlay loop muted playsInline style={{ filter: 'blur(6px) brightness(0.8)' }}>
+                  <video 
+                    className="w-full h-full object-cover" 
+                    autoPlay 
+                    loop 
+                    muted 
+                    playsInline 
+                    preload="metadata"
+                    style={{ filter: 'blur(6px) brightness(0.8)' }}
+                  >
                     <source src={category.videos[0]} type="video/mp4" />
                   </video>
                   <div className="absolute inset-0 bg-slate-900/10 group-hover:bg-slate-900/5 transition-all duration-500" />
