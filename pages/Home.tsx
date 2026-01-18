@@ -717,14 +717,14 @@ const Home: React.FC = () => {
 
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="text-center mb-20">
-            <h2 className="font-sf-pro text-5xl md:text-6xl font-semibold tracking-tight text-slate-900 mb-8 whitespace-nowrap">Why Choose Idyll</h2>
-            <p className="font-inter text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">We don't just edit videos—we engineer content that performs.</p>
+            <h2 className="font-sf-pro text-3xl sm:text-5xl md:text-6xl font-semibold tracking-tight text-slate-900 mb-8">Why Choose Idyll</h2>
+            <p className="font-inter text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">We don't just edit videos—we engineer content that performs.</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12">
             {/* Clean Storytelling - Animated Timeline */}
-            <TiltCard className="group bg-white/80 backdrop-blur-sm rounded-lg p-8 shadow-sm border border-slate-200/50 hover:shadow-md hover:border-slate-300/60 transition-all duration-500 hover:scale-105 transform cursor-pointer">
-              <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-blue-500/10 to-blue-600/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
+            <TiltCard className="group bg-white/80 backdrop-blur-sm rounded-lg p-6 sm:p-8 shadow-sm border border-slate-200/50 hover:shadow-md hover:border-slate-300/60 transition-all duration-500 hover:scale-105 transform cursor-pointer text-center">
+              <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-blue-500/10 to-blue-600/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500 mx-auto">
                 <div className="relative w-8 h-8">
                   <div className="absolute inset-0 flex flex-col gap-1">
                     <div className="h-1 bg-blue-500 rounded-full animate-pulse" style={{ animationDelay: '0s' }} />
@@ -735,13 +735,13 @@ const Home: React.FC = () => {
                   <div className="absolute -right-1 top-1 w-2 h-2 bg-blue-500 rounded-full animate-bounce" />
                 </div>
               </div>
-              <h3 className="font-sf-pro text-2xl font-semibold text-slate-900 mb-4 group-hover:text-blue-600 transition-colors">Clean Storytelling</h3>
-              <p className="font-inter text-lg text-slate-600 leading-relaxed">Every cut serves a purpose. We eliminate noise and focus on narrative flow that keeps viewers engaged.</p>
+              <h3 className="font-sf-pro text-xl sm:text-2xl font-semibold text-slate-900 mb-4 group-hover:text-blue-600 transition-colors">Clean Storytelling</h3>
+              <p className="font-inter text-base sm:text-lg text-slate-600 leading-relaxed">Every cut serves a purpose. We eliminate noise and focus on narrative flow that keeps viewers engaged.</p>
             </TiltCard>
 
             {/* Retention-Focused - Animated Graph */}
-            <TiltCard className="group bg-white/80 backdrop-blur-sm rounded-lg p-8 shadow-sm border border-slate-200/50 hover:shadow-md hover:border-slate-300/60 transition-all duration-500 hover:scale-105 transform cursor-pointer">
-              <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-green-500/10 to-green-600/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
+            <TiltCard className="group bg-white/80 backdrop-blur-sm rounded-lg p-6 sm:p-8 shadow-sm border border-slate-200/50 hover:shadow-md hover:border-slate-300/60 transition-all duration-500 hover:scale-105 transform cursor-pointer text-center">
+              <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-green-500/10 to-green-600/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500 mx-auto">
                 <div className="relative w-8 h-8">
                   <svg className="w-full h-full" viewBox="0 0 32 32">
                     <path d="M2 28 L8 20 L14 16 L20 12 L26 8 L30 4" stroke="currentColor" strokeWidth="2" fill="none" className="text-green-500" />
@@ -751,13 +751,13 @@ const Home: React.FC = () => {
                   </svg>
                 </div>
               </div>
-              <h3 className="font-sf-pro text-2xl font-semibold text-slate-900 mb-4 group-hover:text-green-600 transition-colors">Retention-Focused Pacing</h3>
-              <p className="font-inter text-lg text-slate-600 leading-relaxed">Strategic pacing that maximizes watch time. We understand platform algorithms and edit accordingly.</p>
+              <h3 className="font-sf-pro text-xl sm:text-2xl font-semibold text-slate-900 mb-4 group-hover:text-green-600 transition-colors">Retention-Focused Pacing</h3>
+              <p className="font-inter text-base sm:text-lg text-slate-600 leading-relaxed">Strategic pacing that maximizes watch time. We understand platform algorithms and edit accordingly.</p>
             </TiltCard>
 
             {/* Platform-Specific - Animated Icons */}
-            <TiltCard className="group bg-white/80 backdrop-blur-sm rounded-lg p-8 shadow-sm border border-slate-200/50 hover:shadow-md hover:border-slate-300/60 transition-all duration-500 hover:scale-105 transform cursor-pointer">
-              <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-purple-500/10 to-purple-600/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
+            <TiltCard className="group bg-white/80 backdrop-blur-sm rounded-lg p-6 sm:p-8 shadow-sm border border-slate-200/50 hover:shadow-md hover:border-slate-300/60 transition-all duration-500 hover:scale-105 transform cursor-pointer text-center">
+              <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-purple-500/10 to-purple-600/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500 mx-auto">
                 <div className="relative w-8 h-8 grid grid-cols-2 gap-1">
                   <div className="w-3 h-3 bg-purple-500 rounded animate-pulse" />
                   <div className="w-3 h-3 bg-purple-400 rounded-sm animate-pulse" style={{ animationDelay: '0.3s' }} />
@@ -765,13 +765,13 @@ const Home: React.FC = () => {
                   <div className="w-3 h-3 bg-purple-200 rounded animate-pulse" style={{ animationDelay: '0.9s' }} />
                 </div>
               </div>
-              <h3 className="font-sf-pro text-2xl font-semibold text-slate-900 mb-4 group-hover:text-purple-600 transition-colors">Platform-Specific Edits</h3>
-              <p className="font-inter text-lg text-slate-600 leading-relaxed">Optimized for each platform's unique requirements. From TikTok hooks to YouTube retention curves.</p>
+              <h3 className="font-sf-pro text-xl sm:text-2xl font-semibold text-slate-900 mb-4 group-hover:text-purple-600 transition-colors">Platform-Specific Edits</h3>
+              <p className="font-inter text-base sm:text-lg text-slate-600 leading-relaxed">Optimized for each platform's unique requirements. From TikTok hooks to YouTube retention curves.</p>
             </TiltCard>
 
             {/* Sound Design - Animated Waveform */}
-            <TiltCard className="group bg-white/80 backdrop-blur-sm rounded-lg p-8 shadow-sm border border-slate-200/50 hover:shadow-md hover:border-slate-300/60 transition-all duration-500 hover:scale-105 transform cursor-pointer">
-              <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-orange-500/10 to-orange-600/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
+            <TiltCard className="group bg-white/80 backdrop-blur-sm rounded-lg p-6 sm:p-8 shadow-sm border border-slate-200/50 hover:shadow-md hover:border-slate-300/60 transition-all duration-500 hover:scale-105 transform cursor-pointer text-center">
+              <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-orange-500/10 to-orange-600/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500 mx-auto">
                 <div className="relative w-8 h-8 flex items-center justify-center gap-0.5">
                   <div className="w-0.5 bg-orange-500 rounded-full animate-pulse" style={{ height: '8px' }} />
                   <div className="w-0.5 bg-orange-400 rounded-full animate-pulse" style={{ height: '16px', animationDelay: '0.1s' }} />
@@ -781,8 +781,8 @@ const Home: React.FC = () => {
                   <div className="w-0.5 bg-orange-500 rounded-full animate-pulse" style={{ height: '14px', animationDelay: '0.5s' }} />
                 </div>
               </div>
-              <h3 className="font-sf-pro text-2xl font-semibold text-slate-900 mb-4 group-hover:text-orange-600 transition-colors">Sound Design & Motion</h3>
-              <p className="font-inter text-lg text-slate-600 leading-relaxed">Immersive audio and smooth motion graphics that enhance the story without overwhelming.</p>
+              <h3 className="font-sf-pro text-xl sm:text-2xl font-semibold text-slate-900 mb-4 group-hover:text-orange-600 transition-colors">Sound Design & Motion</h3>
+              <p className="font-inter text-base sm:text-lg text-slate-600 leading-relaxed">Immersive audio and smooth motion graphics that enhance the story without overwhelming.</p>
             </TiltCard>
           </div>
         </div>
@@ -790,7 +790,7 @@ const Home: React.FC = () => {
 
       {/* --- HOW IT WORKS - Progress Bar Design --- */}
       <section 
-        className="py-32 px-8 relative overflow-hidden z-10" 
+        className="py-32 px-8 relative overflow-hidden z-10 hidden md:block" 
         style={{ 
           pointerEvents: 'none',
           userSelect: 'none',
