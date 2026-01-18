@@ -504,7 +504,7 @@ const Home: React.FC = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 md:gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 md:gap-12 relative">
             {editingCategories.map((category, i) => (
               <div 
                 key={i}
@@ -560,6 +560,118 @@ const Home: React.FC = () => {
                 </div>
               </div>
             ))}
+
+            {/* --- VIDEO MODAL - Positioned over video cards --- */}
+            {selectedCategory && (
+              <div 
+                className="absolute inset-0 z-[9999] flex items-center justify-center p-4"
+                style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)' }}
+                onClick={closeModal}
+              >
+                {/* Modal container */}
+                <div 
+                  className={`relative bg-white rounded-lg sm:rounded-xl w-full ${
+                    selectedCategory === "Short-Form Content" ? 'max-w-7xl' : 'max-w-5xl'
+                  } max-h-[90vh] sm:max-h-[85vh] overflow-auto shadow-2xl ${
+                    isClosing ? 'animate-contextual-close' : 'animate-contextual-preview'
+                  }`}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {/* Header */}
+                  <div className="flex justify-between items-center p-3 sm:p-4 md:p-6 border-b bg-gray-50 rounded-t-lg sm:rounded-t-xl">
+                    {/* Apple 3 dots */}
+                    <div className="hidden sm:flex items-center gap-2">
+                      <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                      <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                      <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                    </div>
+                    
+                    {/* Category name */}
+                    <h2 className="text-base sm:text-lg md:text-xl font-semibold text-slate-900 sm:absolute sm:left-1/2 sm:transform sm:-translate-x-1/2 truncate max-w-[200px] sm:max-w-none">{selectedCategory}</h2>
+                    
+                    <button 
+                      onClick={closeModal}
+                      className="text-slate-500 hover:text-slate-700 text-xl sm:text-2xl w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full hover:bg-slate-200 transition-all duration-200 flex-shrink-0"
+                    >
+                      ×
+                    </button>
+                  </div>
+                  
+                  {/* Video Grid */}
+                  <div className="p-3 sm:p-4 md:p-6">
+                    {selectedCategory === "Short-Form Content" ? (
+                      /* Vertical layout for Short-Form Content */
+                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
+                        {editingCategories.find(cat => cat.name === selectedCategory)?.videos.map((videoSrc, i) => (
+                          <div key={i} className="relative aspect-[9/16] bg-black rounded-md sm:rounded-lg overflow-hidden group animate-card-bounce" style={{ animationDelay: `${i * 100}ms` }}>
+                            <video 
+                              className="w-full h-full object-cover" 
+                              autoPlay 
+                              loop 
+                              muted={videoMuted[i] !== false}
+                              playsInline
+                              preload="metadata"
+                              loading="lazy"
+                            >
+                              <source src={videoSrc} type="video/mp4" />
+                            </video>
+                            
+                            {/* Mute/Unmute Button */}
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                toggleVideoMute(i);
+                              }}
+                              className="absolute top-1 right-1 sm:top-2 sm:right-2 w-6 h-6 sm:w-7 sm:h-7 bg-black/70 hover:bg-black/90 rounded-full flex items-center justify-center text-white transition-all duration-200 opacity-80 hover:opacity-100 hover:scale-110"
+                            >
+                              {videoMuted[i] === false ? (
+                                <Volume2 className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                              ) : (
+                                <VolumeX className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                              )}
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      /* Horizontal layout for other categories */
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 md:gap-6">
+                        {editingCategories.find(cat => cat.name === selectedCategory)?.videos.map((videoSrc, i) => (
+                          <div key={i} className="relative aspect-video bg-black rounded-md sm:rounded-lg overflow-hidden group animate-card-bounce" style={{ animationDelay: `${i * 100}ms` }}>
+                            <video 
+                              className="w-full h-full object-cover" 
+                              autoPlay 
+                              loop 
+                              muted={videoMuted[i] !== false}
+                              playsInline
+                              preload="metadata"
+                              loading="lazy"
+                            >
+                              <source src={videoSrc} type="video/mp4" />
+                            </video>
+                            
+                            {/* Mute/Unmute Button */}
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                toggleVideoMute(i);
+                              }}
+                              className="absolute top-2 right-2 sm:top-3 sm:right-3 w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 bg-black/70 hover:bg-black/90 rounded-full flex items-center justify-center text-white transition-all duration-200 opacity-80 hover:opacity-100 hover:scale-110"
+                            >
+                              {videoMuted[i] === false ? (
+                                <Volume2 className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5" />
+                              ) : (
+                                <VolumeX className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5" />
+                              )}
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
