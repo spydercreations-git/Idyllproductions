@@ -335,15 +335,15 @@ const Home: React.FC = () => {
       </div>
 
       {/* --- HERO SECTION --- */}
-      <section className="relative pt-64 pb-48 px-8 overflow-hidden z-10">
+      <section className="relative pt-20 sm:pt-32 md:pt-64 pb-24 sm:pb-32 md:pb-48 px-4 sm:px-6 md:px-8 overflow-hidden z-10">
         
         <div className="max-w-7xl mx-auto text-center relative z-10">
           <div className="reveal active">
-            <h1 className="font-sf-pro text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-slate-900 leading-[0.9] mb-8 md:mb-12 animate-slide-up">
+            <h1 className="font-sf-pro text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight text-slate-900 leading-[0.9] mb-6 sm:mb-8 md:mb-12 animate-slide-up">
               Idyll Productions
             </h1>
             
-            <h2 className="font-inter text-xl sm:text-2xl md:text-4xl lg:text-5xl font-medium tracking-tight text-slate-700 leading-[1.3] mb-8 md:mb-10 animate-slide-up" style={{ animationDelay: '0.3s' }}>
+            <h2 className="font-inter text-lg sm:text-xl md:text-3xl lg:text-4xl xl:text-5xl font-medium tracking-tight text-slate-700 leading-[1.3] mb-6 sm:mb-8 md:mb-10 animate-slide-up" style={{ animationDelay: '0.3s' }}>
               High-Performance Video Editing<br className="hidden sm:block" />
               for Modern{' '}
               <div className="inline-block">
@@ -359,17 +359,17 @@ const Home: React.FC = () => {
               </div>
             </h2>
             
-            <p className="font-inter text-lg sm:text-xl md:text-2xl text-slate-500 max-w-3xl mx-auto mb-16 md:mb-24 leading-relaxed animate-slide-up" style={{ animationDelay: '0.6s' }}>
+            <p className="font-inter text-base sm:text-lg md:text-xl lg:text-2xl text-slate-500 max-w-3xl mx-auto mb-12 sm:mb-16 md:mb-24 leading-relaxed animate-slide-up px-4 sm:px-0" style={{ animationDelay: '0.6s' }}>
               Short-form, SaaS, Gaming & YouTube<br className="hidden sm:block" />
               edited with intent, not noise.
             </p>
             
-            {/* Hero Video - Bigger with scroll tilt effect and progressive blur */}
-            <div className="relative max-w-7xl mx-auto mb-16" style={{ perspective: '1200px' }}>
+            {/* Hero Video - Mobile Optimized */}
+            <div className="relative max-w-7xl mx-auto mb-12 sm:mb-16" style={{ perspective: '1200px' }}>
               <div 
-                className="aspect-video rounded-xl overflow-hidden shadow-lg relative group cursor-pointer hover:shadow-xl bg-black"
+                className="aspect-video rounded-lg sm:rounded-xl overflow-hidden shadow-lg relative group cursor-pointer hover:shadow-xl bg-black"
                 style={{
-                  transform: `rotateX(${scrollY * 0.015}deg)`,
+                  transform: `rotateX(${scrollY * 0.01}deg)`,
                   transition: 'transform 0.1s ease-out',
                   transformStyle: 'preserve-3d'
                 }}
@@ -404,66 +404,67 @@ const Home: React.FC = () => {
                   </div>
                 )}
                 
-                {/* Progressive Blur Overlay */}
+                {/* Progressive Blur Overlay - Reduced for mobile */}
                 <div 
                   className="absolute inset-0 pointer-events-none transition-all duration-1000 ease-out"
                   style={{
                     background: `
                       radial-gradient(circle at center, 
                         transparent 0%, 
-                        transparent 20%, 
-                        rgba(255,255,255,0.1) 40%, 
-                        rgba(255,255,255,0.3) 60%, 
-                        rgba(255,255,255,0.5) 80%, 
-                        rgba(255,255,255,0.8) 100%
+                        transparent 30%, 
+                        rgba(255,255,255,0.1) 50%, 
+                        rgba(255,255,255,0.2) 70%, 
+                        rgba(255,255,255,0.4) 90%, 
+                        rgba(255,255,255,0.6) 100%
                       )
                     `,
-                    backdropFilter: `blur(${Math.max(0, 8 - (scrollY * 0.02))}px)`,
-                    WebkitBackdropFilter: `blur(${Math.max(0, 8 - (scrollY * 0.02))}px)`,
-                    opacity: Math.max(0, 1 - (scrollY * 0.002))
+                    backdropFilter: `blur(${Math.max(0, 4 - (scrollY * 0.01))}px)`,
+                    WebkitBackdropFilter: `blur(${Math.max(0, 4 - (scrollY * 0.01))}px)`,
+                    opacity: Math.max(0, 0.8 - (scrollY * 0.001))
                   }}
                 />
                 
-                {/* Progressive Blur Rings */}
-                <div className="absolute inset-0 pointer-events-none">
-                  {[...Array(5)].map((_, i) => (
+                {/* Progressive Blur Rings - Simplified for mobile */}
+                <div className="absolute inset-0 pointer-events-none hidden sm:block">
+                  {[...Array(3)].map((_, i) => (
                     <div
                       key={i}
                       className="absolute rounded-full border border-white/20 animate-pulse"
                       style={{
-                        width: `${20 + i * 15}%`,
-                        height: `${20 + i * 15}%`,
+                        width: `${30 + i * 20}%`,
+                        height: `${30 + i * 20}%`,
                         top: '50%',
                         left: '50%',
                         transform: 'translate(-50%, -50%)',
                         animationDelay: `${i * 0.5}s`,
                         animationDuration: '3s',
-                        opacity: Math.max(0, 0.6 - (scrollY * 0.001) - (i * 0.1))
+                        opacity: Math.max(0, 0.4 - (scrollY * 0.0005) - (i * 0.1))
                       }}
                     />
                   ))}
                 </div>
                 
-                {/* Center Focus Point */}
+                {/* Center Focus Point - Mobile optimized */}
                 <div 
                   className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+                  style={{
+                    opacity: Math.max(0, 0.8 - (scrollY * 0.002))
+                  }}
+                >
+                  <div className="w-3 h-3 sm:w-4 sm:h-4 bg-white/40 rounded-full animate-ping" />
+                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 sm:w-2 sm:h-2 bg-white/60 rounded-full" />
+                </div>
+                
+                {/* Scroll Hint - Mobile optimized */}
+                <div 
+                  className="absolute bottom-2 sm:bottom-4 left-1/2 transform -translate-x-1/2 text-white/80 text-xs sm:text-sm font-medium flex items-center gap-1 sm:gap-2 transition-opacity duration-500"
                   style={{
                     opacity: Math.max(0, 1 - (scrollY * 0.003))
                   }}
                 >
-                  <div className="w-4 h-4 bg-white/40 rounded-full animate-ping" />
-                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-white/60 rounded-full" />
-                </div>
-                
-                {/* Scroll Hint */}
-                <div 
-                  className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white/80 text-sm font-medium flex items-center gap-2 transition-opacity duration-500"
-                  style={{
-                    opacity: Math.max(0, 1 - (scrollY * 0.005))
-                  }}
-                >
-                  <span>Scroll to reveal</span>
-                  <div className="w-1 h-6 bg-white/60 rounded-full animate-bounce" />
+                  <span className="hidden sm:inline">Scroll to reveal</span>
+                  <span className="sm:hidden">Scroll</span>
+                  <div className="w-0.5 h-4 sm:w-1 sm:h-6 bg-white/60 rounded-full" />
                 </div>
                 
                 {/* Security overlays */}
@@ -472,17 +473,17 @@ const Home: React.FC = () => {
               </div>
             </div>
             
-            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center animate-slide-up" style={{ animationDelay: '0.9s' }}>
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-6 justify-center items-center animate-slide-up px-4 sm:px-0" style={{ animationDelay: '0.9s' }}>
               <button
                 onClick={() => document.getElementById('our-work')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
-                className="w-full sm:w-auto relative h-12 sm:h-14 px-8 sm:px-10 rounded-lg text-base sm:text-lg font-medium bg-blue-600 text-white hover:bg-blue-700 transition-all duration-300 hover:shadow-lg hover:scale-105 transform"
+                className="w-full sm:w-auto relative h-11 sm:h-12 md:h-14 px-6 sm:px-8 md:px-10 rounded-lg text-sm sm:text-base md:text-lg font-medium bg-blue-600 text-white hover:bg-blue-700 transition-all duration-300 hover:shadow-lg hover:scale-105 transform"
               >
                 View Our Work
-                <ArrowRight className="inline-block w-4 h-4 sm:w-5 sm:h-5 ml-2" />
+                <ArrowRight className="inline-block w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 ml-2" />
               </button>
               <button
                 onClick={() => document.getElementById('contact-us')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
-                className="w-full sm:w-auto relative h-12 sm:h-14 px-8 sm:px-10 rounded-lg text-base sm:text-lg font-medium bg-transparent text-slate-700 border border-slate-300 hover:border-blue-500 transition-all duration-300 hover:scale-105 transform"
+                className="w-full sm:w-auto relative h-11 sm:h-12 md:h-14 px-6 sm:px-8 md:px-10 rounded-lg text-sm sm:text-base md:text-lg font-medium bg-transparent text-slate-700 border border-slate-300 hover:border-blue-500 transition-all duration-300 hover:scale-105 transform"
               >
                 Contact Us
               </button>
@@ -492,18 +493,18 @@ const Home: React.FC = () => {
       </section>
 
       {/* --- WORK SHOWCASE --- */}
-      <section id="our-work" className="py-32 px-8 relative overflow-hidden z-10">
+      <section id="our-work" className="py-16 sm:py-24 md:py-32 px-4 sm:px-6 md:px-8 relative overflow-hidden z-10">
         <div className="max-w-6xl mx-auto relative z-10">
-          <div className="text-center mb-20">
-            <h2 className="font-sf-pro text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight text-slate-900 mb-6 md:mb-8">
+          <div className="text-center mb-12 sm:mb-16 md:mb-20">
+            <h2 className="font-sf-pro text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-semibold tracking-tight text-slate-900 mb-4 sm:mb-6 md:mb-8">
               Specialized editing for every platform
             </h2>
-            <p className="font-inter text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
+            <p className="font-inter text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed px-4 sm:px-0">
               Crafted with precision and strategic intent for maximum performance.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 md:gap-12">
             {editingCategories.map((category, i) => (
               <div 
                 key={i}
@@ -533,27 +534,27 @@ const Home: React.FC = () => {
                   </video>
                   <div className="absolute inset-0 bg-slate-900/10 group-hover:bg-slate-900/5 transition-all duration-500" />
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                    <div className="w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-sm">
-                      <Play className="w-5 h-5 text-slate-700 ml-0.5" />
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-sm">
+                      <Play className="w-4 h-4 sm:w-5 sm:h-5 text-slate-700 ml-0.5" />
                     </div>
                   </div>
                 </div>
                 
-                <div className="p-8">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="w-12 h-12 rounded-lg bg-slate-100 flex items-center justify-center text-slate-600 group-hover:bg-slate-200 transition-all duration-500">
+                <div className="p-4 sm:p-6 md:p-8">
+                  <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-slate-100 flex items-center justify-center text-slate-600 group-hover:bg-slate-200 transition-all duration-500">
                       {category.icon}
                     </div>
                     <div className="flex-1">
-                      <h3 className="font-sf-pro text-xl font-semibold text-slate-900 group-hover:text-blue-600 transition-colors duration-500 mb-2">{category.name}</h3>
-                      <p className="font-inter text-sm font-medium text-slate-500 uppercase tracking-wider">{category.description}</p>
+                      <h3 className="font-sf-pro text-lg sm:text-xl font-semibold text-slate-900 group-hover:text-blue-600 transition-colors duration-500 mb-1 sm:mb-2">{category.name}</h3>
+                      <p className="font-inter text-xs sm:text-sm font-medium text-slate-500 uppercase tracking-wider">{category.description}</p>
                     </div>
                   </div>
-                  <p className="font-inter text-lg text-slate-600 leading-relaxed mb-6">{category.text}</p>
+                  <p className="font-inter text-base sm:text-lg text-slate-600 leading-relaxed mb-4 sm:mb-6">{category.text}</p>
                   <div className="flex items-center justify-between">
-                    <span className="font-inter text-sm text-slate-400">Click to explore</span>
-                    <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-all duration-500">
-                      <ArrowRight className="w-4 h-4" />
+                    <span className="font-inter text-xs sm:text-sm text-slate-400">Click to explore</span>
+                    <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-slate-100 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-all duration-500">
+                      <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
                     </div>
                   </div>
                 </div>
@@ -562,7 +563,7 @@ const Home: React.FC = () => {
           </div>
         </div>
 
-        {/* --- VIDEO MODAL - Contextual Preview --- */}
+        {/* --- VIDEO MODAL - Mobile Optimized --- */}
         {selectedCategory && (
           <div className="fixed inset-0 z-[9999]">
             {/* Background overlay */}
@@ -571,11 +572,11 @@ const Home: React.FC = () => {
               onClick={closeModal}
             />
             
-            {/* Modal container - absolute position, animates from click point to viewport center */}
+            {/* Modal container - Mobile responsive */}
             <div 
-              className={`bg-white rounded-xl w-full ${
-                selectedCategory === "Short-Form Content" ? 'max-w-6xl' : 'max-w-4xl'
-              } max-h-[80vh] overflow-auto shadow-2xl ${
+              className={`bg-white rounded-lg sm:rounded-xl w-full ${
+                selectedCategory === "Short-Form Content" ? 'max-w-7xl' : 'max-w-5xl'
+              } max-h-[90vh] sm:max-h-[85vh] overflow-auto shadow-2xl ${
                 isClosing ? 'animate-contextual-close' : 'animate-contextual-preview'
               }`}
               style={{
@@ -583,35 +584,36 @@ const Home: React.FC = () => {
                 '--origin-y': `${cardOrigin.y}px`,
                 '--scroll-x': `${window.pageXOffset || document.documentElement.scrollLeft}px`,
                 '--scroll-y': `${window.pageYOffset || document.documentElement.scrollTop}px`,
-                margin: '0 1rem'
+                margin: '0.5rem sm:1rem'
               } as React.CSSProperties}
             >
-              {/* Header with Apple 3 dots and close button */}
-              <div className="flex justify-between items-center p-6 border-b bg-gray-50 rounded-t-xl">
-                {/* Apple 3 dots */}
-                <div className="flex items-center gap-2">
+              {/* Header - Mobile optimized */}
+              <div className="flex justify-between items-center p-3 sm:p-4 md:p-6 border-b bg-gray-50 rounded-t-lg sm:rounded-t-xl">
+                {/* Apple 3 dots - Hidden on mobile */}
+                <div className="hidden sm:flex items-center gap-2">
                   <div className="w-3 h-3 bg-red-500 rounded-full"></div>
                   <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
                   <div className="w-3 h-3 bg-green-500 rounded-full"></div>
                 </div>
                 
-                <h2 className="text-xl font-semibold text-slate-900 absolute left-1/2 transform -translate-x-1/2">{selectedCategory}</h2>
+                {/* Mobile: Show category name on left */}
+                <h2 className="text-base sm:text-lg md:text-xl font-semibold text-slate-900 sm:absolute sm:left-1/2 sm:transform sm:-translate-x-1/2 truncate max-w-[200px] sm:max-w-none">{selectedCategory}</h2>
                 
                 <button 
                   onClick={closeModal}
-                  className="text-slate-500 hover:text-slate-700 text-2xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-200 transition-all duration-200"
+                  className="text-slate-500 hover:text-slate-700 text-xl sm:text-2xl w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full hover:bg-slate-200 transition-all duration-200 flex-shrink-0"
                 >
                   ×
                 </button>
               </div>
               
-              {/* Video Grid */}
-              <div className="p-6">
+              {/* Video Grid - Mobile responsive */}
+              <div className="p-3 sm:p-4 md:p-6">
                 {selectedCategory === "Short-Form Content" ? (
-                  /* Vertical layout for Short-Form Content */
-                  <div className="grid grid-cols-4 gap-4">
+                  /* Vertical layout for Short-Form Content - Mobile responsive */
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
                     {editingCategories.find(cat => cat.name === selectedCategory)?.videos.map((videoSrc, i) => (
-                      <div key={i} className="relative aspect-[9/16] bg-black rounded-lg overflow-hidden group animate-card-bounce" style={{ animationDelay: `${i * 100}ms` }}>
+                      <div key={i} className="relative aspect-[9/16] bg-black rounded-md sm:rounded-lg overflow-hidden group animate-card-bounce" style={{ animationDelay: `${i * 100}ms` }}>
                         <video 
                           className="w-full h-full object-cover" 
                           autoPlay 
@@ -634,26 +636,26 @@ const Home: React.FC = () => {
                           Your browser does not support the video tag.
                         </video>
                         
-                        {/* Mute/Unmute Button with Bounce Animation */}
+                        {/* Mute/Unmute Button - Mobile optimized */}
                         <button
                           onClick={() => toggleVideoMute(i)}
-                          className="absolute top-3 right-3 w-8 h-8 bg-black/70 hover:bg-black/90 rounded-full flex items-center justify-center text-white transition-all duration-200 opacity-80 hover:opacity-100 hover:scale-110 animate-bounce"
-                          style={{ pointerEvents: 'auto', animationDuration: '2s' }}
+                          className="absolute top-1 right-1 sm:top-2 sm:right-2 w-6 h-6 sm:w-7 sm:h-7 bg-black/70 hover:bg-black/90 rounded-full flex items-center justify-center text-white transition-all duration-200 opacity-80 hover:opacity-100 hover:scale-110"
+                          style={{ pointerEvents: 'auto' }}
                         >
                           {videoMuted[i] === false ? (
-                            <Volume2 className="w-4 h-4" />
+                            <Volume2 className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                           ) : (
-                            <VolumeX className="w-4 h-4" />
+                            <VolumeX className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                           )}
                         </button>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  /* Horizontal layout for other categories */
-                  <div className="grid grid-cols-2 gap-6">
+                  /* Horizontal layout for other categories - Mobile responsive */
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 md:gap-6">
                     {editingCategories.find(cat => cat.name === selectedCategory)?.videos.map((videoSrc, i) => (
-                      <div key={i} className="relative aspect-video bg-black rounded-lg overflow-hidden group animate-card-bounce" style={{ animationDelay: `${i * 100}ms` }}>
+                      <div key={i} className="relative aspect-video bg-black rounded-md sm:rounded-lg overflow-hidden group animate-card-bounce" style={{ animationDelay: `${i * 100}ms` }}>
                         <video 
                           className="w-full h-full object-cover" 
                           autoPlay 
@@ -676,16 +678,16 @@ const Home: React.FC = () => {
                           Your browser does not support the video tag.
                         </video>
                         
-                        {/* Mute/Unmute Button with Bounce Animation */}
+                        {/* Mute/Unmute Button - Mobile optimized */}
                         <button
                           onClick={() => toggleVideoMute(i)}
-                          className="absolute top-3 right-3 w-10 h-10 bg-black/70 hover:bg-black/90 rounded-full flex items-center justify-center text-white transition-all duration-200 opacity-80 hover:opacity-100 hover:scale-110 animate-bounce"
-                          style={{ pointerEvents: 'auto', animationDuration: '2s' }}
+                          className="absolute top-2 right-2 sm:top-3 sm:right-3 w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 bg-black/70 hover:bg-black/90 rounded-full flex items-center justify-center text-white transition-all duration-200 opacity-80 hover:opacity-100 hover:scale-110"
+                          style={{ pointerEvents: 'auto' }}
                         >
                           {videoMuted[i] === false ? (
-                            <Volume2 className="w-5 h-5" />
+                            <Volume2 className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5" />
                           ) : (
-                            <VolumeX className="w-5 h-5" />
+                            <VolumeX className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5" />
                           )}
                         </button>
                       </div>
