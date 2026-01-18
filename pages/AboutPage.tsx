@@ -22,46 +22,46 @@ const AboutPage: React.FC = () => {
     }}>
       {/* Fade overlay for grid */}
       <div className="absolute inset-0 bg-gradient-to-b from-white/20 via-transparent to-white/20 pointer-events-none" />
-      <section className="pt-40 pb-32 px-6 md:px-12 relative z-10 animate-page-slide-in">
+      <section className="pt-24 sm:pt-32 md:pt-40 pb-16 sm:pb-24 md:pb-32 px-4 sm:px-6 md:px-12 relative z-10 animate-page-slide-in">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-24">
-            <h1 className="text-5xl md:text-7xl font-black tracking-tight text-[#001B3D] mb-12">
+          <div className="text-center mb-12 sm:mb-16 md:mb-24">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black tracking-tight text-[#001B3D] mb-6 sm:mb-8 md:mb-12">
               About Idyll Productions
             </h1>
-            <p className="text-xl text-[#001B3D]/50 max-w-4xl mx-auto font-normal leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-[#001B3D]/50 max-w-4xl mx-auto font-normal leading-relaxed px-4 sm:px-0">
               We are a genuine creative studio focused on editing, storytelling, and long term growth with creators and brands. 
               No fancy words, no complicated processes. Just honest work that delivers results.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mb-32">
-            <div className="space-y-8">
-              <h2 className="text-3xl font-black text-[#001B3D] mb-8">Who We Are</h2>
-              <p className="text-lg text-[#001B3D]/60 leading-relaxed font-normal">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 md:gap-16 mb-16 sm:mb-24 md:mb-32">
+            <div className="space-y-6 sm:space-y-8">
+              <h2 className="text-2xl sm:text-3xl font-black text-[#001B3D] mb-4 sm:mb-6 md:mb-8">Who We Are</h2>
+              <p className="text-base sm:text-lg text-[#001B3D]/60 leading-relaxed font-normal">
                 Idyll Productions is a creative studio that specializes in video editing and storytelling. We work with content creators, 
                 brands, and businesses to create videos that actually perform and connect with audiences.
               </p>
-              <p className="text-lg text-[#001B3D]/60 leading-relaxed font-normal">
+              <p className="text-base sm:text-lg text-[#001B3D]/60 leading-relaxed font-normal">
                 We believe in transparency and building real relationships with our clients. Our approach is simple: understand what you need, 
                 deliver quality work on time, and help you grow your audience through better content.
               </p>
-              <p className="text-lg text-[#001B3D]/60 leading-relaxed font-normal">
+              <p className="text-base sm:text-lg text-[#001B3D]/60 leading-relaxed font-normal">
                 With a production net worth around 5 million to 10 million rupees, we have the resources and experience to handle projects of any scale. 
                 We are real, transparent, and serious about our work.
               </p>
             </div>
 
-            <div className="space-y-8">
-              <h2 className="text-3xl font-black text-[#001B3D] mb-8">What We Do</h2>
-              <p className="text-lg text-[#001B3D]/60 leading-relaxed font-normal">
+            <div className="space-y-6 sm:space-y-8">
+              <h2 className="text-2xl sm:text-3xl font-black text-[#001B3D] mb-4 sm:mb-6 md:mb-8">What We Do</h2>
+              <p className="text-base sm:text-lg text-[#001B3D]/60 leading-relaxed font-normal">
                 We edit videos for YouTube creators, short form content for social media, product demos for SaaS companies, 
                 and gaming content that keeps viewers engaged. We also produce original films and cinematic advertisements when projects call for it.
               </p>
-              <p className="text-lg text-[#001B3D]/60 leading-relaxed font-normal">
+              <p className="text-base sm:text-lg text-[#001B3D]/60 leading-relaxed font-normal">
                 Our team uses professional tools and proven workflows to ensure every project meets high standards. 
                 We focus on clean storytelling, strategic pacing, and platform specific optimization.
               </p>
-              <p className="text-lg text-[#001B3D]/60 leading-relaxed font-normal">
+              <p className="text-base sm:text-lg text-[#001B3D]/60 leading-relaxed font-normal">
                 We manage everything through Notion for clear communication and transparent progress tracking. 
                 No confusion, no delays, just smooth collaboration from start to finish.
               </p>
