@@ -565,7 +565,7 @@ const Home: React.FC = () => {
 
         {/* --- VIDEO MODAL - Mobile Optimized --- */}
         {selectedCategory && (
-          <div className="fixed inset-0 z-[9999]">
+          <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
             {/* Background overlay */}
             <div 
               className="absolute inset-0 bg-black/60 backdrop-blur-sm animate-fade-in"
@@ -574,18 +574,12 @@ const Home: React.FC = () => {
             
             {/* Modal container - Mobile responsive */}
             <div 
-              className={`bg-white rounded-lg sm:rounded-xl w-full ${
+              className={`relative bg-white rounded-lg sm:rounded-xl w-full ${
                 selectedCategory === "Short-Form Content" ? 'max-w-7xl' : 'max-w-5xl'
               } max-h-[90vh] sm:max-h-[85vh] overflow-auto shadow-2xl ${
                 isClosing ? 'animate-contextual-close' : 'animate-contextual-preview'
               }`}
-              style={{
-                '--origin-x': `${cardOrigin.x}px`,
-                '--origin-y': `${cardOrigin.y}px`,
-                '--scroll-x': `${window.pageXOffset || document.documentElement.scrollLeft}px`,
-                '--scroll-y': `${window.pageYOffset || document.documentElement.scrollTop}px`,
-                margin: '0.5rem sm:1rem'
-              } as React.CSSProperties}
+              onClick={(e) => e.stopPropagation()}
             >
               {/* Header - Mobile optimized */}
               <div className="flex justify-between items-center p-3 sm:p-4 md:p-6 border-b bg-gray-50 rounded-t-lg sm:rounded-t-xl">

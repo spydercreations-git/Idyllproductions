@@ -1,31 +1,31 @@
-// Direct video URLs from public folder - Optimized for fast loading
+// Cloudinary video URLs - Optimized for fast loading and mobile
 export const FIREBASE_VIDEO_URLS = {
   "short-form": [
-    "/videos/short-form/Ad 1.mp4",
-    "/videos/short-form/Ad 2.mp4",
-    "/videos/short-form/Ad 3.mp4",
-    "/videos/short-form/Ad 4.mp4"
+    "https://res.cloudinary.com/ddm4gglkp/video/upload/v1768750310/Ad_1_ahbw0h.mp4",
+    "https://res.cloudinary.com/ddm4gglkp/video/upload/v1768750322/Ad_2_zo3me4.mp4",
+    "https://res.cloudinary.com/ddm4gglkp/video/upload/v1768750320/Ad_3_tkfp5f.mp4",
+    "https://res.cloudinary.com/ddm4gglkp/video/upload/v1768750326/Ad_4_el6fgj.mp4"
   ],
   "saas-tech": [
-    "/videos/saas-tech/Doks Ai Fiinal.mp4",
-    "/videos/saas-tech/Final Thoka Thoki.mp4",
-    "/videos/saas-tech/Shapes.mp4",
-    "/videos/saas-tech/Waves Final.mp4"
+    "https://res.cloudinary.com/ddm4gglkp/video/upload/v1768750334/Doks_Ai_Fiinal_iwuzvv.mp4",
+    "https://res.cloudinary.com/ddm4gglkp/video/upload/v1768750333/Final_Thoka_Thoki_kefupk.mp4",
+    "https://res.cloudinary.com/ddm4gglkp/video/upload/v1768750335/Shapes_flet7d.mp4",
+    "https://res.cloudinary.com/ddm4gglkp/video/upload/v1768750333/Waves_Final_kdxxpz.mp4"
   ],
   "gaming": [
-    "/videos/gaming/1 G.mp4",
-    "/videos/gaming/2.mp4",
-    "/videos/gaming/3 G.mp4",
-    "/videos/gaming/4.mp4"
+    "https://res.cloudinary.com/ddm4gglkp/video/upload/v1768750337/1_G_pvafu1.mp4",
+    "https://res.cloudinary.com/ddm4gglkp/video/upload/v1768750337/2_o5btbp.mp4",
+    "https://res.cloudinary.com/ddm4gglkp/video/upload/v1768750339/3_G_fvet0k.mp4",
+    "https://res.cloudinary.com/ddm4gglkp/video/upload/v1768750341/4_kwlmnp.mp4"
   ],
   "hero": [
-    "/videos/hero/main white.mp4"
+    "https://res.cloudinary.com/ddm4gglkp/video/upload/v1768750338/main_white_rqzryb.mp4"
   ],
   "youtube-long-form": [
-    "/videos/other/empty.mp4",
-    "/videos/other/empty.mp4",
-    "/videos/other/empty.mp4",
-    "/videos/other/empty.mp4"
+    "https://res.cloudinary.com/ddm4gglkp/video/upload/v1768750353/empty_ypvbbi.mp4",
+    "https://res.cloudinary.com/ddm4gglkp/video/upload/v1768750353/empty_ypvbbi.mp4",
+    "https://res.cloudinary.com/ddm4gglkp/video/upload/v1768750353/empty_ypvbbi.mp4",
+    "https://res.cloudinary.com/ddm4gglkp/video/upload/v1768750353/empty_ypvbbi.mp4"
   ]
 };
 
