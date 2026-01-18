@@ -383,14 +383,10 @@ const Home: React.FC = () => {
                     playsInline 
                     preload="auto"
                     loading="eager"
-                    onContextMenu={(e) => e.preventDefault()}
-                    onDragStart={(e) => e.preventDefault()}
+                    onLoadedData={() => console.log('Hero video loaded')}
                     controlsList="nodownload nofullscreen noremoteplayback noplaybackrate"
                     disablePictureInPicture 
                     disableRemotePlayback
-                    onLoadStart={() => console.log('Hero video loading started')}
-                    onCanPlay={() => console.log('Hero video can play')}
-                    onLoadedData={() => console.log('Hero video loaded')}
                     style={{ 
                       willChange: 'transform',
                       backfaceVisibility: 'hidden',

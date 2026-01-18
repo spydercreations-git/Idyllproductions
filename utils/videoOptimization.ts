@@ -32,10 +32,6 @@ export const optimizeVideoElement = (video: HTMLVideoElement): void => {
   video.style.WebkitTransform = 'translateZ(0)';
   video.style.WebkitBackfaceVisibility = 'hidden';
   
-  // Disable context menu and drag
-  video.oncontextmenu = (e) => e.preventDefault();
-  video.ondragstart = (e) => e.preventDefault();
-  
   // Set optimal attributes
   video.setAttribute('controlsList', 'nodownload nofullscreen noremoteplayback noplaybackrate');
   video.setAttribute('disablePictureInPicture', 'true');
