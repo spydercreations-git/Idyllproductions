@@ -7,7 +7,6 @@ import {
   Zap, Monitor, Headphones, Target, Volume2, VolumeX
 } from 'lucide-react';
 import Button from '../components/Button';
-import { FIREBASE_VIDEO_URLS, HERO_VIDEO_URL } from '../constants/firebaseVideoUrls';
 import { TiltCard } from '../components/ui/tilt-card';
 import { useScrollProgress } from '../hooks/useScrollProgress';
 import ProgressBar from '../components/ProgressBar';
@@ -60,13 +59,10 @@ const CounterStat: React.FC<{
 };
 
 const Home: React.FC = () => {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string>("Short-Form Content");
   const [currentWord, setCurrentWord] = useState(0);
   const [scrollY, setScrollY] = useState(0);
-  const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 });
   const [videoMuted, setVideoMuted] = useState<{ [key: number]: boolean }>({});
-  const [cardOrigin, setCardOrigin] = useState({ x: 0, y: 0, width: 0, height: 0 });
-  const [isClosing, setIsClosing] = useState(false);
   
   const rotatingWords = ['creators', 'brands', 'audiences', 'stories'];
 
@@ -157,124 +153,93 @@ const Home: React.FC = () => {
       name: "Short-Form Content",
       description: "Reels, Shorts, TikTok",
       text: "Built for retention and scroll-stopping hooks.",
-      icon: (
-        <div className="relative">
-          {/* Mobile phone icon */}
-          <div className="w-4 h-6 bg-gradient-to-b from-purple-500 to-pink-500 rounded-lg border-2 border-purple-600"></div>
-          <div className="absolute top-0.5 left-0.5 w-3 h-4 bg-white/20 rounded-sm"></div>
-          <div className="absolute bottom-0.5 left-1.5 w-1 h-1 bg-white rounded-full"></div>
-          {/* Sparkle effect */}
-          <div className="absolute -top-1 -right-1 w-2 h-2 bg-yellow-400 rounded-full animate-bounce"></div>
-          <div className="absolute -bottom-1 -left-1 w-1 h-1 bg-pink-400 rounded-full animate-pulse"></div>
-        </div>
-      ),
-      videos: FIREBASE_VIDEO_URLS["short-form"]
+      videos: [
+        "https://res.cloudinary.com/ddm4gglkp/video/upload/v1768750326/Ad_4_el6fgj.mp4",
+        "https://res.cloudinary.com/ddm4gglkp/video/upload/v1768750322/Ad_2_zo3me4.mp4",
+        "https://res.cloudinary.com/ddm4gglkp/video/upload/v1768750320/Ad_3_tkfp5f.mp4",
+        "https://res.cloudinary.com/ddm4gglkp/video/upload/v1768750310/Ad_1_ahbw0h.mp4",
+        "https://res.cloudinary.com/ddm4gglkp/video/upload/v1768768798/Ad_7_o6vuhr.mp4",
+        "https://res.cloudinary.com/ddm4gglkp/video/upload/v1768768798/Ad_6_paniy8.mp4"
+      ]
+    },
+    {
+      name: "Long-Form",
+      description: "Creators & storytelling",
+      text: "Edited for watch time and flow.",
+      videos: [
+        "https://res.cloudinary.com/ddm4gglkp/video/upload/v1768768563/1_nqrexm.mp4",
+        "https://res.cloudinary.com/ddm4gglkp/video/upload/v1768768566/2_p5mns9.mp4",
+        "https://res.cloudinary.com/ddm4gglkp/video/upload/v1768768567/3_r5xgfn.mp4",
+        "https://res.cloudinary.com/ddm4gglkp/video/upload/v1768768565/4_lha4nt.mp4"
+      ]
     },
     {
       name: "SaaS & Tech Videos", 
       description: "Explainers, product demos, ads",
       text: "We simplify complex products into clear stories.",
-      icon: (
-        <div className="relative">
-          {/* Monitor/screen icon */}
-          <div className="w-6 h-4 bg-blue-500 rounded-md border border-blue-600"></div>
-          <div className="absolute top-0.5 left-0.5 w-5 h-2.5 bg-blue-100 rounded-sm"></div>
-          {/* Code lines */}
-          <div className="absolute top-1 left-1 w-2 h-0.5 bg-blue-600 rounded-full"></div>
-          <div className="absolute top-1.5 left-1 w-3 h-0.5 bg-blue-600 rounded-full"></div>
-          <div className="absolute top-2 left-1 w-1.5 h-0.5 bg-blue-600 rounded-full"></div>
-          {/* Tech indicator */}
-          <div className="absolute -top-1 -right-1 w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-        </div>
-      ),
-      videos: FIREBASE_VIDEO_URLS["saas-tech"]
+      videos: [
+        "https://res.cloudinary.com/ddm4gglkp/video/upload/v1768750335/Shapes_flet7d.mp4",
+        "https://res.cloudinary.com/ddm4gglkp/video/upload/v1768750334/Doks_Ai_Fiinal_iwuzvv.mp4",
+        "https://res.cloudinary.com/ddm4gglkp/video/upload/v1768750333/Waves_Final_kdxxpz.mp4",
+        "https://res.cloudinary.com/ddm4gglkp/video/upload/v1768762722/5_apnity.mp4",
+        "https://res.cloudinary.com/ddm4gglkp/video/upload/v1768762734/3_nulnsz.mp4"
+      ]
     },
     {
       name: "Gaming Content",
       description: "YouTube & short-form gaming", 
       text: "Fast, energetic edits without chaos.",
-      icon: (
-        <div className="relative">
-          {/* Game controller icon */}
-          <div className="w-6 h-4 bg-gradient-to-br from-green-400 to-blue-500 rounded-full"></div>
-          <div className="absolute top-1 left-1 w-1 h-1 bg-white rounded-full"></div>
-          <div className="absolute top-1 right-1 w-1 h-1 bg-white rounded-full"></div>
-          <div className="absolute bottom-1 left-2 w-2 h-1 bg-white/80 rounded-full"></div>
-          {/* Action indicators */}
-          <div className="absolute -top-1 -left-1 w-1.5 h-1.5 bg-red-500 rounded-full animate-ping"></div>
-          <div className="absolute -bottom-1 -right-1 w-1.5 h-1.5 bg-yellow-400 rounded-full animate-bounce"></div>
-        </div>
-      ),
-      videos: FIREBASE_VIDEO_URLS["gaming"]
+      videos: [
+        "https://res.cloudinary.com/ddm4gglkp/video/upload/v1768762658/5_bsd5zy.mp4",
+        "https://res.cloudinary.com/ddm4gglkp/video/upload/v1768750341/4_kwlmnp.mp4",
+        "https://res.cloudinary.com/ddm4gglkp/video/upload/v1768750339/3_G_fvet0k.mp4",
+        "https://res.cloudinary.com/ddm4gglkp/video/upload/v1768750337/1_G_pvafu1.mp4",
+        "https://res.cloudinary.com/ddm4gglkp/video/upload/v1768750337/2_o5btbp.mp4"
+      ]
     },
     {
-      name: "YouTube Long-Form",
-      description: "Creators & storytelling",
-      text: "Edited for watch time and flow.",
-      icon: (
-        <div className="relative">
-          {/* YouTube play button icon */}
-          <div className="w-6 h-4 bg-red-500 rounded-lg border border-red-600"></div>
-          <div className="absolute top-0.5 left-0.5 w-5 h-3 bg-red-100 rounded-sm"></div>
-          {/* Play triangle */}
-          <div className="absolute top-1.5 left-2 w-0 h-0 border-l-2 border-l-red-600 border-t-1 border-t-transparent border-b-1 border-b-transparent"></div>
-          {/* Duration indicator */}
-          <div className="absolute bottom-0.5 right-0.5 w-1.5 h-0.5 bg-red-600 rounded-full"></div>
-          {/* View indicator */}
-          <div className="absolute -top-1 -right-1 w-2 h-2 bg-white border border-red-400 rounded-full animate-pulse">
-            <div className="w-1 h-1 bg-red-500 rounded-full m-0.5"></div>
-          </div>
-        </div>
-      ),
-      videos: FIREBASE_VIDEO_URLS["youtube-long-form"]
+      name: "Rhythmic Montage",
+      description: "Film-style storytelling", 
+      text: "Cinematic quality with professional color grading and motion.",
+      videos: [
+        "https://res.cloudinary.com/ddm4gglkp/video/upload/v1768762199/3_aqwokq.mp4",
+        "https://res.cloudinary.com/ddm4gglkp/video/upload/v1768762192/Cinematic_Video_1_iyyyji.mp4",
+        "https://res.cloudinary.com/ddm4gglkp/video/upload/v1768762190/Cinematic_Video_4_qgo2oq.mp4",
+        "https://res.cloudinary.com/ddm4gglkp/video/upload/v1768762184/Cinematic_Video_2_kxtfvk.mp4"
+      ]
     }
   ];
 
-  const handleCardClick = (categoryName: string, event: React.MouseEvent) => {
-    // Prevent event bubbling
-    event.stopPropagation();
-    
-    // Get the exact clicked element's bounding box
-    const clickedElement = event.currentTarget as HTMLElement;
-    const rect = clickedElement.getBoundingClientRect();
-    
-    // Calculate true page position (viewport position + scroll offset)
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-    
-    const originX = rect.left + scrollLeft + rect.width / 2;
-    const originY = rect.top + scrollTop + rect.height / 2;
-    
-    setCardOrigin({
-      x: originX,
-      y: originY,
-      width: rect.width,
-      height: rect.height
-    });
-    
-    setSelectedCategory(categoryName);
-    setVideoMuted({});
-    
-    // Lock body scroll
-    document.body.style.overflow = 'hidden';
-  };
+  // Debug: Log the video URLs to console
+  console.log('Short-form videos:', editingCategories[0].videos);
+  console.log('Cinematic videos:', editingCategories[3].videos);
+  console.log('Selected category:', selectedCategory);
+  console.log('Current category videos:', editingCategories.find(cat => cat.name === selectedCategory)?.videos);
 
-  const closeModal = () => {
-    setIsClosing(true);
-    // Wait for close animation to complete before hiding modal
+  const handleCategorySelect = (categoryName: string) => {
+    console.log('Category selected:', categoryName);
+    console.log('Previous category:', selectedCategory);
+    setSelectedCategory(categoryName);
+    setVideoMuted({}); // Reset muted state when switching categories
+    
+    // Force a small delay to ensure state updates
     setTimeout(() => {
-      setSelectedCategory(null);
-      setIsClosing(false);
-      // Unlock body scroll
-      document.body.style.overflow = 'unset';
-    }, 250); // Match close animation duration
+      console.log('New selected category:', categoryName);
+      const categoryVideos = editingCategories.find(cat => cat.name === categoryName)?.videos;
+      console.log('Videos for', categoryName, ':', categoryVideos);
+    }, 100);
   };
 
   const toggleVideoMute = (videoIndex: number) => {
-    setVideoMuted(prev => ({
-      ...prev,
-      [videoIndex]: !prev[videoIndex]
-    }));
+    const videoElement = document.querySelector(`[data-video-index="${videoIndex}"]`) as HTMLVideoElement;
+    if (videoElement) {
+      videoElement.muted = !videoElement.muted;
+      setVideoMuted(prev => ({
+        ...prev,
+        [videoIndex]: videoElement.muted
+      }));
+      console.log(`Video ${videoIndex} muted:`, videoElement.muted);
+    }
   };
 
   useEffect(() => {
@@ -335,15 +300,15 @@ const Home: React.FC = () => {
       </div>
 
       {/* --- HERO SECTION --- */}
-      <section className="relative pt-20 sm:pt-32 md:pt-64 pb-24 sm:pb-32 md:pb-48 px-4 sm:px-6 md:px-8 overflow-hidden z-10">
+      <section className="relative pt-32 sm:pt-32 md:pt-64 pb-24 sm:pb-32 md:pb-48 px-4 sm:px-6 md:px-8 overflow-hidden z-10">
         
         <div className="max-w-7xl mx-auto text-center relative z-10">
           <div className="reveal active">
-            <h1 className="font-sf-pro text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight text-slate-900 leading-[0.9] mb-6 sm:mb-8 md:mb-12 animate-slide-up">
+            <h1 className="font-sf-pro text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight text-slate-900 leading-[0.9] mb-8 sm:mb-8 md:mb-12 animate-slide-up">
               Idyll Productions
             </h1>
             
-            <h2 className="font-inter text-lg sm:text-xl md:text-3xl lg:text-4xl xl:text-5xl font-medium tracking-tight text-slate-700 leading-[1.3] mb-6 sm:mb-8 md:mb-10 animate-slide-up" style={{ animationDelay: '0.3s' }}>
+            <h2 className="font-inter text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-medium tracking-tight text-slate-700 leading-[1.2] mb-8 sm:mb-8 md:mb-10 animate-slide-up" style={{ animationDelay: '0.3s' }}>
               High-Performance Video Editing<br className="hidden sm:block" />
               for Modern{' '}
               <div className="inline-block">
@@ -359,7 +324,7 @@ const Home: React.FC = () => {
               </div>
             </h2>
             
-            <p className="font-inter text-base sm:text-lg md:text-xl lg:text-2xl text-slate-500 max-w-3xl mx-auto mb-12 sm:mb-16 md:mb-24 leading-relaxed animate-slide-up px-4 sm:px-0" style={{ animationDelay: '0.6s' }}>
+            <p className="font-inter text-lg sm:text-xl md:text-xl lg:text-2xl text-slate-500 max-w-3xl mx-auto mb-16 sm:mb-16 md:mb-24 leading-relaxed animate-slide-up px-4 sm:px-0" style={{ animationDelay: '0.6s' }}>
               Short-form, SaaS, Gaming & YouTube<br className="hidden sm:block" />
               edited with intent, not noise.
             </p>
@@ -374,35 +339,28 @@ const Home: React.FC = () => {
                   transformStyle: 'preserve-3d'
                 }}
               >
-                {HERO_VIDEO_URL && !HERO_VIDEO_URL.includes('placeholder') ? (
-                  <video
-                    className="w-full h-full object-cover"
-                    autoPlay 
-                    loop 
-                    muted 
-                    playsInline 
-                    preload="auto"
-                    loading="eager"
-                    onLoadedData={() => console.log('Hero video loaded')}
-                    controlsList="nodownload nofullscreen noremoteplayback noplaybackrate"
-                    disablePictureInPicture 
-                    disableRemotePlayback
-                    style={{ 
-                      willChange: 'transform',
-                      backfaceVisibility: 'hidden',
-                      transform: 'translateZ(0)',
-                      WebkitTransform: 'translateZ(0)',
-                      WebkitBackfaceVisibility: 'hidden'
-                    }}
-                  >
-                    <source src={HERO_VIDEO_URL} type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
-                ) : (
-                  <div className="w-full h-full bg-slate-200 flex items-center justify-center">
-                    <span className="text-slate-500">Loading video...</span>
-                  </div>
-                )}
+                <video
+                  className="w-full h-full object-cover"
+                  autoPlay 
+                  loop 
+                  muted 
+                  playsInline 
+                  preload="auto"
+                  loading="eager"
+                  controlsList="nodownload nofullscreen noremoteplayback noplaybackrate"
+                  disablePictureInPicture 
+                  disableRemotePlayback
+                  style={{ 
+                    willChange: 'transform',
+                    backfaceVisibility: 'hidden',
+                    transform: 'translateZ(0)',
+                    WebkitTransform: 'translateZ(0)',
+                    WebkitBackfaceVisibility: 'hidden'
+                  }}
+                >
+                  <source src="https://res.cloudinary.com/ddm4gglkp/video/upload/v1768750338/main_white_rqzryb.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
                 
                 {/* Progressive Blur Overlay - Reduced for mobile */}
                 <div 
@@ -466,10 +424,6 @@ const Home: React.FC = () => {
                   <span className="sm:hidden">Scroll</span>
                   <div className="w-0.5 h-4 sm:w-1 sm:h-6 bg-white/60 rounded-full" />
                 </div>
-                
-                {/* Security overlays */}
-                <div className="absolute inset-0 pointer-events-none select-none" />
-                <div className="absolute inset-0 pointer-events-none select-none bg-transparent" />
               </div>
             </div>
             
@@ -492,7 +446,7 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* --- WORK SHOWCASE --- */}
+      {/* --- WORK SHOWCASE WITH NAVIGATION --- */}
       <section id="our-work" className="py-16 sm:py-24 md:py-32 px-4 sm:px-6 md:px-8 relative overflow-hidden z-10">
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="text-center mb-12 sm:mb-16 md:mb-20">
@@ -504,306 +458,136 @@ const Home: React.FC = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 md:gap-12 relative">
+          {/* Category Navigation */}
+          <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mb-12 sm:mb-16">
             {editingCategories.map((category, i) => (
-              <div 
+              <button
                 key={i}
-                onClick={(e) => handleCardClick(category.name, e)}
-                className="group cursor-pointer bg-white/80 backdrop-blur-sm rounded-lg overflow-hidden shadow-sm border border-slate-200/50 hover:shadow-xl hover:border-slate-300/60 transition-all duration-500 hover:bg-white hover:scale-105 transform"
+                onClick={() => handleCategorySelect(category.name)}
+                className={`px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-medium text-sm sm:text-base transition-all duration-300 ${
+                  selectedCategory === category.name
+                    ? 'bg-blue-600 text-white shadow-lg'
+                    : 'bg-white text-slate-700 border border-slate-200 hover:border-blue-300 hover:bg-blue-50'
+                }`}
               >
-                <div className="aspect-video relative overflow-hidden bg-slate-100">
-                  <video 
-                    className="w-full h-full object-cover" 
-                    autoPlay 
-                    loop 
-                    muted 
-                    playsInline 
-                    preload="metadata"
-                    loading="lazy"
-                    style={{ 
-                      filter: 'blur(6px) brightness(0.8)',
-                      willChange: 'transform',
-                      backfaceVisibility: 'hidden',
-                      transform: 'translateZ(0)',
-                      WebkitTransform: 'translateZ(0)',
-                      WebkitBackfaceVisibility: 'hidden'
-                    }}
-                  >
-                    <source src={category.videos[0]} type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
-                  <div className="absolute inset-0 bg-slate-900/10 group-hover:bg-slate-900/5 transition-all duration-500" />
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-sm">
-                      <Play className="w-4 h-4 sm:w-5 sm:h-5 text-slate-700 ml-0.5" />
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="p-4 sm:p-6 md:p-8">
-                  <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-slate-100 flex items-center justify-center text-slate-600 group-hover:bg-slate-200 transition-all duration-500">
-                      {category.icon}
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-sf-pro text-lg sm:text-xl font-semibold text-slate-900 group-hover:text-blue-600 transition-colors duration-500 mb-1 sm:mb-2">{category.name}</h3>
-                      <p className="font-inter text-xs sm:text-sm font-medium text-slate-500 uppercase tracking-wider">{category.description}</p>
-                    </div>
-                  </div>
-                  <p className="font-inter text-base sm:text-lg text-slate-600 leading-relaxed mb-4 sm:mb-6">{category.text}</p>
-                  <div className="flex items-center justify-between">
-                    <span className="font-inter text-xs sm:text-sm text-slate-400">Click to explore</span>
-                    <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-slate-100 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-all duration-500">
-                      <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
-                    </div>
-                  </div>
-                </div>
-              </div>
+                {category.name}
+              </button>
             ))}
-
-            {/* --- VIDEO MODAL - Positioned over video cards --- */}
-            {selectedCategory && (
-              <div 
-                className="absolute inset-0 z-[9999] flex items-center justify-center p-4"
-                style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)' }}
-                onClick={closeModal}
-              >
-                {/* Modal container */}
-                <div 
-                  className={`relative bg-white rounded-lg sm:rounded-xl w-full ${
-                    selectedCategory === "Short-Form Content" ? 'max-w-7xl' : 'max-w-5xl'
-                  } max-h-[90vh] sm:max-h-[85vh] overflow-auto shadow-2xl ${
-                    isClosing ? 'animate-contextual-close' : 'animate-contextual-preview'
-                  }`}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  {/* Header */}
-                  <div className="flex justify-between items-center p-3 sm:p-4 md:p-6 border-b bg-gray-50 rounded-t-lg sm:rounded-t-xl">
-                    {/* Apple 3 dots */}
-                    <div className="hidden sm:flex items-center gap-2">
-                      <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                      <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                      <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                    </div>
-                    
-                    {/* Category name */}
-                    <h2 className="text-base sm:text-lg md:text-xl font-semibold text-slate-900 sm:absolute sm:left-1/2 sm:transform sm:-translate-x-1/2 truncate max-w-[200px] sm:max-w-none">{selectedCategory}</h2>
-                    
-                    <button 
-                      onClick={closeModal}
-                      className="text-slate-500 hover:text-slate-700 text-xl sm:text-2xl w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full hover:bg-slate-200 transition-all duration-200 flex-shrink-0"
-                    >
-                      ×
-                    </button>
-                  </div>
-                  
-                  {/* Video Grid */}
-                  <div className="p-3 sm:p-4 md:p-6">
-                    {selectedCategory === "Short-Form Content" ? (
-                      /* Vertical layout for Short-Form Content */
-                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
-                        {editingCategories.find(cat => cat.name === selectedCategory)?.videos.map((videoSrc, i) => (
-                          <div key={i} className="relative aspect-[9/16] bg-black rounded-md sm:rounded-lg overflow-hidden group animate-card-bounce" style={{ animationDelay: `${i * 100}ms` }}>
-                            <video 
-                              className="w-full h-full object-cover" 
-                              autoPlay 
-                              loop 
-                              muted={videoMuted[i] !== false}
-                              playsInline
-                              preload="metadata"
-                              loading="lazy"
-                            >
-                              <source src={videoSrc} type="video/mp4" />
-                            </video>
-                            
-                            {/* Mute/Unmute Button */}
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                toggleVideoMute(i);
-                              }}
-                              className="absolute top-1 right-1 sm:top-2 sm:right-2 w-6 h-6 sm:w-7 sm:h-7 bg-black/70 hover:bg-black/90 rounded-full flex items-center justify-center text-white transition-all duration-200 opacity-80 hover:opacity-100 hover:scale-110"
-                            >
-                              {videoMuted[i] === false ? (
-                                <Volume2 className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-                              ) : (
-                                <VolumeX className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-                              )}
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-                    ) : (
-                      /* Horizontal layout for other categories */
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 md:gap-6">
-                        {editingCategories.find(cat => cat.name === selectedCategory)?.videos.map((videoSrc, i) => (
-                          <div key={i} className="relative aspect-video bg-black rounded-md sm:rounded-lg overflow-hidden group animate-card-bounce" style={{ animationDelay: `${i * 100}ms` }}>
-                            <video 
-                              className="w-full h-full object-cover" 
-                              autoPlay 
-                              loop 
-                              muted={videoMuted[i] !== false}
-                              playsInline
-                              preload="metadata"
-                              loading="lazy"
-                            >
-                              <source src={videoSrc} type="video/mp4" />
-                            </video>
-                            
-                            {/* Mute/Unmute Button */}
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                toggleVideoMute(i);
-                              }}
-                              className="absolute top-2 right-2 sm:top-3 sm:right-3 w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 bg-black/70 hover:bg-black/90 rounded-full flex items-center justify-center text-white transition-all duration-200 opacity-80 hover:opacity-100 hover:scale-110"
-                            >
-                              {videoMuted[i] === false ? (
-                                <Volume2 className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5" />
-                              ) : (
-                                <VolumeX className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5" />
-                              )}
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
-        </div>
 
-        {/* --- VIDEO MODAL - Mobile Optimized --- */}
-        {selectedCategory && (
-          <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
-            {/* Background overlay */}
-            <div 
-              className="absolute inset-0 bg-black/60 backdrop-blur-sm animate-fade-in"
-              onClick={closeModal}
-            />
-            
-            {/* Modal container - Mobile responsive */}
-            <div 
-              className={`relative bg-white rounded-lg sm:rounded-xl w-full ${
-                selectedCategory === "Short-Form Content" ? 'max-w-7xl' : 'max-w-5xl'
-              } max-h-[90vh] sm:max-h-[85vh] overflow-auto shadow-2xl ${
-                isClosing ? 'animate-contextual-close' : 'animate-contextual-preview'
-              }`}
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* Header - Mobile optimized */}
-              <div className="flex justify-between items-center p-3 sm:p-4 md:p-6 border-b bg-gray-50 rounded-t-lg sm:rounded-t-xl">
-                {/* Apple 3 dots - Hidden on mobile */}
-                <div className="hidden sm:flex items-center gap-2">
-                  <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                  <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                </div>
-                
-                {/* Mobile: Show category name on left */}
-                <h2 className="text-base sm:text-lg md:text-xl font-semibold text-slate-900 sm:absolute sm:left-1/2 sm:transform sm:-translate-x-1/2 truncate max-w-[200px] sm:max-w-none">{selectedCategory}</h2>
-                
-                <button 
-                  onClick={closeModal}
-                  className="text-slate-500 hover:text-slate-700 text-xl sm:text-2xl w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full hover:bg-slate-200 transition-all duration-200 flex-shrink-0"
-                >
-                  ×
-                </button>
-              </div>
-              
-              {/* Video Grid - Mobile responsive */}
-              <div className="p-3 sm:p-4 md:p-6">
+          {/* Selected Category Info */}
+          {selectedCategory && (
+            <div className="text-center mb-8 sm:mb-12">
+              <h3 className="font-sf-pro text-xl sm:text-2xl md:text-3xl font-semibold text-slate-900 mb-2 sm:mb-4">
+                {selectedCategory}
+              </h3>
+              <p className="font-inter text-base sm:text-lg text-slate-600 max-w-xl mx-auto">
+                {editingCategories.find(cat => cat.name === selectedCategory)?.text}
+              </p>
+            </div>
+          )}
+
+          {/* Video Grid */}
+          {selectedCategory && (
+            <div className="relative" key={selectedCategory}>
+              <div className="animate-fade-in">
                 {selectedCategory === "Short-Form Content" ? (
-                  /* Vertical layout for Short-Form Content - Mobile responsive */
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
-                    {editingCategories.find(cat => cat.name === selectedCategory)?.videos.map((videoSrc, i) => (
-                      <div key={i} className="relative aspect-[9/16] bg-black rounded-md sm:rounded-lg overflow-hidden group animate-card-bounce" style={{ animationDelay: `${i * 100}ms` }}>
-                        <video 
-                          className="w-full h-full object-cover" 
-                          autoPlay 
-                          loop 
-                          muted={videoMuted[i] !== false}
-                          playsInline
-                          preload="metadata"
-                          loading="lazy"
-                          onLoadedData={() => console.log(`Short-form video ${i} loaded`)}
-                          style={{ 
-                            pointerEvents: 'auto',
-                            willChange: 'transform',
-                            backfaceVisibility: 'hidden',
-                            transform: 'translateZ(0)',
-                            WebkitTransform: 'translateZ(0)',
-                            WebkitBackfaceVisibility: 'hidden'
-                          }}
+                  /* Vertical layout for Short-Form Content - 2 videos per row on mobile, 3 on desktop */
+                  <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 lg:gap-8 lg:gap-10">
+                    {editingCategories.find(cat => cat.name === selectedCategory)?.videos.map((videoSrc, i) => {
+                      console.log(`Rendering ${selectedCategory} video ${i}:`, videoSrc);
+                      return (
+                        <div 
+                          key={`${selectedCategory}-${i}`} 
+                          className="relative aspect-[9/16] bg-black rounded-xl overflow-hidden group shadow-xl hover:shadow-2xl transition-all duration-500 sm:hover:scale-105 w-full max-w-[180px] sm:max-w-sm mx-auto mobile-stable"
                         >
-                          <source src={videoSrc} type="video/mp4" />
-                          Your browser does not support the video tag.
-                        </video>
-                        
-                        {/* Mute/Unmute Button - Mobile optimized */}
-                        <button
-                          onClick={() => toggleVideoMute(i)}
-                          className="absolute top-1 right-1 sm:top-2 sm:right-2 w-6 h-6 sm:w-7 sm:h-7 bg-black/70 hover:bg-black/90 rounded-full flex items-center justify-center text-white transition-all duration-200 opacity-80 hover:opacity-100 hover:scale-110"
-                          style={{ pointerEvents: 'auto' }}
-                        >
-                          {videoMuted[i] === false ? (
-                            <Volume2 className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-                          ) : (
-                            <VolumeX className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-                          )}
-                        </button>
-                      </div>
-                    ))}
+                          <video 
+                            key={`video-${selectedCategory}-${i}`}
+                            data-video-index={i}
+                            className="w-full h-full object-cover transition-transform duration-300" 
+                            autoPlay 
+                            loop 
+                            muted={videoMuted[i] !== false}
+                            playsInline
+                            preload="metadata"
+                            loading="lazy"
+                          >
+                            <source src={videoSrc} type="video/mp4" />
+                            Your browser does not support the video tag.
+                          </video>
+                          
+                          {/* Overlay on hover */}
+                          <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                          
+                          {/* Mute/Unmute Button */}
+                          <button
+                            onClick={() => toggleVideoMute(i)}
+                            className="absolute top-3 right-3 w-10 h-10 bg-black/70 hover:bg-black/90 rounded-full flex items-center justify-center text-white transition-all duration-200 opacity-40 hover:opacity-100 hover:scale-110"
+                          >
+                            {videoMuted[i] === false ? (
+                              <Volume2 className="w-5 h-5" />
+                            ) : (
+                              <VolumeX className="w-5 h-5" />
+                            )}
+                          </button>
+                        </div>
+                      );
+                    })}
                   </div>
                 ) : (
-                  /* Horizontal layout for other categories - Mobile responsive */
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 md:gap-6">
-                    {editingCategories.find(cat => cat.name === selectedCategory)?.videos.map((videoSrc, i) => (
-                      <div key={i} className="relative aspect-video bg-black rounded-md sm:rounded-lg overflow-hidden group animate-card-bounce" style={{ animationDelay: `${i * 100}ms` }}>
-                        <video 
-                          className="w-full h-full object-cover" 
-                          autoPlay 
-                          loop 
-                          muted={videoMuted[i] !== false}
-                          playsInline
-                          preload="metadata"
-                          loading="lazy"
-                          onLoadedData={() => console.log(`Horizontal video ${i} loaded`)}
-                          style={{ 
-                            pointerEvents: 'auto',
-                            willChange: 'transform',
-                            backfaceVisibility: 'hidden',
-                            transform: 'translateZ(0)',
-                            WebkitTransform: 'translateZ(0)',
-                            WebkitBackfaceVisibility: 'hidden'
-                          }}
+                  /* Horizontal layout for other categories */
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+                    {editingCategories.find(cat => cat.name === selectedCategory)?.videos.map((videoSrc, i) => {
+                      console.log(`Rendering ${selectedCategory} video ${i}:`, videoSrc);
+                      const categoryVideos = editingCategories.find(cat => cat.name === selectedCategory)?.videos || [];
+                      const isLastVideoOfFive = categoryVideos.length === 5 && i === 4;
+                      
+                      return (
+                        <div 
+                          key={`${selectedCategory}-${i}`} 
+                          className={`relative aspect-video bg-black rounded-xl overflow-hidden group shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 animate-slide-up ${
+                            isLastVideoOfFive ? 'lg:col-span-2 max-w-2xl mx-auto' : 'max-w-2xl mx-auto lg:mx-0'
+                          }`}
+                          style={{ animationDelay: `${i * 150}ms` }}
                         >
-                          <source src={videoSrc} type="video/mp4" />
-                          Your browser does not support the video tag.
-                        </video>
-                        
-                        {/* Mute/Unmute Button - Mobile optimized */}
-                        <button
-                          onClick={() => toggleVideoMute(i)}
-                          className="absolute top-2 right-2 sm:top-3 sm:right-3 w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 bg-black/70 hover:bg-black/90 rounded-full flex items-center justify-center text-white transition-all duration-200 opacity-80 hover:opacity-100 hover:scale-110"
-                          style={{ pointerEvents: 'auto' }}
-                        >
-                          {videoMuted[i] === false ? (
-                            <Volume2 className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5" />
-                          ) : (
-                            <VolumeX className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5" />
-                          )}
-                        </button>
-                      </div>
-                    ))}
+                          <video 
+                            key={`video-${selectedCategory}-${i}`}
+                            data-video-index={i}
+                            className="w-full h-full object-cover transition-transform duration-300" 
+                            autoPlay 
+                            loop 
+                            muted={videoMuted[i] !== false}
+                            playsInline
+                            preload="metadata"
+                            loading="lazy"
+                          >
+                            <source src={videoSrc} type="video/mp4" />
+                            Your browser does not support the video tag.
+                          </video>
+                          
+                          {/* Overlay on hover */}
+                          <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                          
+                          {/* Mute/Unmute Button */}
+                          <button
+                            onClick={() => toggleVideoMute(i)}
+                            className="absolute top-4 right-4 w-12 h-12 bg-black/70 hover:bg-black/90 rounded-full flex items-center justify-center text-white transition-all duration-200 opacity-40 hover:opacity-100 hover:scale-110"
+                          >
+                            {videoMuted[i] === false ? (
+                              <Volume2 className="w-6 h-6" />
+                            ) : (
+                              <VolumeX className="w-6 h-6" />
+                            )}
+                          </button>
+                        </div>
+                      );
+                    })}
                   </div>
                 )}
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </section>
 
       {/* --- OUR SERVICES with Animated Icons --- */}
@@ -1110,7 +894,7 @@ const Home: React.FC = () => {
             <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
             
             <div className="overflow-hidden">
-              <div className="flex gap-8 hover:pause-animation" style={{
+              <div className="flex gap-8 hover:pause-animation mobile-testimonial-scroll" style={{
                 width: 'calc(400px * 16)',
                 animation: 'scroll-left 40s linear infinite'
               }}>
