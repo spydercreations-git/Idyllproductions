@@ -511,7 +511,7 @@
           height: 100%;
           padding-left: 6px;
           color: rgb(37, 99, 235);
-          animation: spin_words 4s infinite;
+          animation: spin_words 6s infinite; /* Slowed down from 4s to 6s */
           line-height: 1.2;
           white-space: nowrap;
         }
@@ -540,6 +540,13 @@
           }
           100% {
             transform: translateY(-400%);
+          }
+        }
+
+        /* Desktop and laptop optimization - slower animation */
+        @media (min-width: 641px) {
+          .word {
+            animation-duration: 8s !important; /* Even slower for desktop/laptop - 8 seconds */
           }
         }
 
@@ -803,6 +810,28 @@
         .floating-3d-cylinder:hover .cylinder {
           animation-play-state: paused;
           transform: rotateX(45deg) rotateY(45deg) scale(1.2);
+        }
+
+        /* Tick drawing animation */
+        @keyframes draw-check {
+          0% {
+            stroke-dasharray: 0 24;
+            stroke-dashoffset: 0;
+          }
+          50% {
+            stroke-dasharray: 12 24;
+            stroke-dashoffset: -12;
+          }
+          100% {
+            stroke-dasharray: 24 24;
+            stroke-dashoffset: -24;
+          }
+        }
+
+        .animate-draw-check {
+          stroke-dasharray: 24;
+          stroke-dashoffset: 24;
+          animation: draw-check 0.6s ease-in-out forwards;
         }
     </style>
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>

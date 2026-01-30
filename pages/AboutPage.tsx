@@ -101,42 +101,138 @@ const AboutPage: React.FC = () => {
           </div>
 
           {/* Team Section */}
-          <div className="mb-32">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-black text-[#001B3D] mb-6">Meet Our Team</h2>
-              <p className="text-lg text-[#001B3D]/50 max-w-2xl mx-auto">
+          <div className="mb-16 sm:mb-24 md:mb-32">
+            <div className="text-center mb-12 sm:mb-16">
+              <h2 className="text-3xl sm:text-4xl font-black text-[#001B3D] mb-4 sm:mb-6">Meet Our Team</h2>
+              <p className="text-base sm:text-lg text-[#001B3D]/50 max-w-2xl mx-auto">
                 The creative minds behind Idyll Productions, dedicated to bringing your vision to life.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-4xl mx-auto">
-              {/* Harsh Pawar - Founder & CEO */}
-              <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100/50 text-center hover:shadow-[0_20px_60px_rgb(0,0,0,0.08)] hover:-translate-y-2 transition-all duration-500">
-                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-500/10 to-blue-600/10 flex items-center justify-center mx-auto mb-6">
-                  <div className="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-xl">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 max-w-7xl mx-auto">
+              {/* Harsh Pawar - CEO */}
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100/50 text-center hover:shadow-[0_20px_60px_rgb(0,0,0,0.08)] hover:-translate-y-2 transition-all duration-500">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-blue-500/10 to-blue-600/10 flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-lg sm:text-xl">
                     HP
                   </div>
                 </div>
-                <h3 className="text-2xl font-black text-[#001B3D] mb-2">Harsh Pawar</h3>
-                <p className="text-sm font-semibold text-[#0070F3] uppercase tracking-widest mb-4">Founder & CEO</p>
-                <p className="text-base text-[#001B3D]/50 leading-relaxed font-normal">
-                  Visionary leader driving the creative direction and strategic growth of Idyll Productions. 
-                  Passionate about storytelling and building lasting relationships with creators and brands.
+                <h3 className="text-xl sm:text-2xl font-black text-[#001B3D] mb-1 sm:mb-2">Harsh Pawar</h3>
+                <p className="text-xs sm:text-sm font-semibold text-[#0070F3] uppercase tracking-widest mb-2 sm:mb-4">CEO - Chief Executive Officer</p>
+                <p className="text-sm sm:text-base text-[#001B3D]/50 leading-relaxed font-normal">
+                  Founder & Owner. Visionary leader driving the creative direction and strategic growth of Idyll Productions.
                 </p>
               </div>
 
-              {/* Rohit Gaikwad - Manager */}
-              <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100/50 text-center hover:shadow-[0_20px_60px_rgb(0,0,0,0.08)] hover:-translate-y-2 transition-all duration-500">
-                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-green-500/10 to-green-600/10 flex items-center justify-center mx-auto mb-6">
-                  <div className="w-12 h-12 rounded-full bg-green-600 flex items-center justify-center text-white font-bold text-xl">
+              {/* Rohit - COO */}
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100/50 text-center hover:shadow-[0_20px_60px_rgb(0,0,0,0.08)] hover:-translate-y-2 transition-all duration-500">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-green-500/10 to-green-600/10 flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-green-600 flex items-center justify-center text-white font-bold text-lg sm:text-xl">
                     RG
                   </div>
                 </div>
-                <h3 className="text-2xl font-black text-[#001B3D] mb-2">Rohit Gaikwad</h3>
-                <p className="text-sm font-semibold text-[#0070F3] uppercase tracking-widest mb-4">Manager</p>
-                <p className="text-base text-[#001B3D]/50 leading-relaxed font-normal">
-                  Operations expert ensuring smooth project delivery and client satisfaction. 
-                  Manages workflows, timelines, and coordinates between creative teams and clients.
+                <h3 className="text-xl sm:text-2xl font-black text-[#001B3D] mb-1 sm:mb-2">Rohit Gaikwad</h3>
+                <p className="text-xs sm:text-sm font-semibold text-[#0070F3] uppercase tracking-widest mb-2 sm:mb-4">COO - Chief Operating Officer</p>
+                <p className="text-sm sm:text-base text-[#001B3D]/50 leading-relaxed font-normal">
+                  Operations expert who operates all teams and ensures smooth project delivery and coordination.
+                </p>
+              </div>
+
+              {/* Smita - CSM */}
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100/50 text-center hover:shadow-[0_20px_60px_rgb(0,0,0,0.08)] hover:-translate-y-2 transition-all duration-500">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-pink-500/10 to-pink-600/10 flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-pink-600 flex items-center justify-center text-white font-bold text-lg sm:text-xl">
+                    SM
+                  </div>
+                </div>
+                <h3 className="text-xl sm:text-2xl font-black text-[#001B3D] mb-1 sm:mb-2">Smita</h3>
+                <p className="text-xs sm:text-sm font-semibold text-[#0070F3] uppercase tracking-widest mb-2 sm:mb-4">CSM - Chief Sales Manager</p>
+                <p className="text-sm sm:text-base text-[#001B3D]/50 leading-relaxed font-normal">
+                  Our sales manager who handles our great clients and builds lasting business relationships.
+                </p>
+              </div>
+
+              {/* Snow - CEM */}
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100/50 text-center hover:shadow-[0_20px_60px_rgb(0,0,0,0.08)] hover:-translate-y-2 transition-all duration-500">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-cyan-500/10 to-cyan-600/10 flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-cyan-600 flex items-center justify-center text-white font-bold text-lg sm:text-xl">
+                    SN
+                  </div>
+                </div>
+                <h3 className="text-xl sm:text-2xl font-black text-[#001B3D] mb-1 sm:mb-2">Snow</h3>
+                <p className="text-xs sm:text-sm font-semibold text-[#0070F3] uppercase tracking-widest mb-2 sm:mb-4">CEM - Chief Editing Manager</p>
+                <p className="text-sm sm:text-base text-[#001B3D]/50 leading-relaxed font-normal">
+                  Editing manager who handles our talented editors and ensures top-quality video production.
+                </p>
+              </div>
+
+              {/* Void - CCO */}
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100/50 text-center hover:shadow-[0_20px_60px_rgb(0,0,0,0.08)] hover:-translate-y-2 transition-all duration-500">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-purple-500/10 to-purple-600/10 flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-purple-600 flex items-center justify-center text-white font-bold text-lg sm:text-xl">
+                    VD
+                  </div>
+                </div>
+                <h3 className="text-xl sm:text-2xl font-black text-[#001B3D] mb-1 sm:mb-2">Void</h3>
+                <p className="text-xs sm:text-sm font-semibold text-[#0070F3] uppercase tracking-widest mb-2 sm:mb-4">CCO - Chief Commercial Officer</p>
+                <p className="text-sm sm:text-base text-[#001B3D]/50 leading-relaxed font-normal">
+                  Commercial manager handling client management and business development strategies.
+                </p>
+              </div>
+
+              {/* Vishal - CIO */}
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100/50 text-center hover:shadow-[0_20px_60px_rgb(0,0,0,0.08)] hover:-translate-y-2 transition-all duration-500">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-orange-500/10 to-orange-600/10 flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-orange-600 flex items-center justify-center text-white font-bold text-lg sm:text-xl">
+                    VS
+                  </div>
+                </div>
+                <h3 className="text-xl sm:text-2xl font-black text-[#001B3D] mb-1 sm:mb-2">Vishal</h3>
+                <p className="text-xs sm:text-sm font-semibold text-[#0070F3] uppercase tracking-widest mb-2 sm:mb-4">CIO - Chief Information Officer</p>
+                <p className="text-sm sm:text-base text-[#001B3D]/50 leading-relaxed font-normal">
+                  Information manager and database saver, handling all technical data and systems.
+                </p>
+              </div>
+
+              {/* Mansi - CFO */}
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100/50 text-center hover:shadow-[0_20px_60px_rgb(0,0,0,0.08)] hover:-translate-y-2 transition-all duration-500">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-red-500/10 to-red-600/10 flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-red-600 flex items-center justify-center text-white font-bold text-lg sm:text-xl">
+                    MN
+                  </div>
+                </div>
+                <h3 className="text-xl sm:text-2xl font-black text-[#001B3D] mb-1 sm:mb-2">Mansi</h3>
+                <p className="text-xs sm:text-sm font-semibold text-[#0070F3] uppercase tracking-widest mb-2 sm:mb-4">CFO - Chief Financial Officer</p>
+                <p className="text-sm sm:text-base text-[#001B3D]/50 leading-relaxed font-normal">
+                  Financial manager who handles all payments and financial operations of the company.
+                </p>
+              </div>
+
+              {/* Vedant - Lead Project Manager */}
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100/50 text-center hover:shadow-[0_20px_60px_rgb(0,0,0,0.08)] hover:-translate-y-2 transition-all duration-500">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-indigo-500/10 to-indigo-600/10 flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold text-lg sm:text-xl">
+                    VT
+                  </div>
+                </div>
+                <h3 className="text-xl sm:text-2xl font-black text-[#001B3D] mb-1 sm:mb-2">Vedant</h3>
+                <p className="text-xs sm:text-sm font-semibold text-[#0070F3] uppercase tracking-widest mb-2 sm:mb-4">Editor Animations Head</p>
+                <p className="text-sm sm:text-base text-[#001B3D]/50 leading-relaxed font-normal">
+                  Vedant does animations very good and brings creative vision to life through motion graphics.
+                </p>
+              </div>
+
+              {/* Raj - Lead Project Manager */}
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100/50 text-center hover:shadow-[0_20px_60px_rgb(0,0,0,0.08)] hover:-translate-y-2 transition-all duration-500">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-teal-500/10 to-teal-600/10 flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-teal-600 flex items-center justify-center text-white font-bold text-lg sm:text-xl">
+                    RJ
+                  </div>
+                </div>
+                <h3 className="text-xl sm:text-2xl font-black text-[#001B3D] mb-1 sm:mb-2">Raj</h3>
+                <p className="text-xs sm:text-sm font-semibold text-[#0070F3] uppercase tracking-widest mb-2 sm:mb-4">Editor Color Grading Head</p>
+                <p className="text-sm sm:text-base text-[#001B3D]/50 leading-relaxed font-normal">
+                  Raj handles color grading parts specialized and ensures perfect visual aesthetics in every project.
                 </p>
               </div>
             </div>
@@ -150,12 +246,28 @@ const AboutPage: React.FC = () => {
               <p className="text-lg text-[#001B3D]/50 mb-8 max-w-2xl mx-auto">
                 Let's discuss your project and see how we can help you create content that connects with your audience and drives real results.
               </p>
-              <button
-                onClick={handleStartConvo}
-                className="inline-flex items-center gap-3 bg-[#0070F3] text-white px-8 py-4 rounded-full font-semibold hover:bg-[#001B3D] transition-all duration-300 shadow-lg shadow-blue-500/10"
-              >
-                Start Convo
-              </button>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a
+                  href="https://calendly.com/smitaidyllproductions/talk-with-idyll-productions-csm"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-3 bg-[#0070F3] text-white px-8 py-4 rounded-full font-semibold hover:bg-[#001B3D] transition-all duration-300 shadow-lg shadow-blue-500/10 hover:scale-105 transform"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  Book a Call
+                </a>
+                <button
+                  onClick={handleStartConvo}
+                  className="inline-flex items-center gap-3 bg-transparent text-[#0070F3] px-8 py-4 rounded-full font-semibold border-2 border-[#0070F3] hover:bg-[#0070F3] hover:text-white transition-all duration-300 hover:scale-105 transform"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-3.582 8-8 8a8.955 8.955 0 01-4.126-.98L3 20l1.98-5.874A8.955 8.955 0 013 12c0-4.418 3.582-8 8-8s8 3.582 8 8z" />
+                  </svg>
+                  Start Convo
+                </button>
+              </div>
             </div>
           </div>
         </div>

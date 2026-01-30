@@ -81,7 +81,7 @@ const Footer: React.FC = () => {
                 WhatsApp
               </a>
               <a 
-                href="https://mail.google.com/mail/?view=cm&fs=1&to=idyllproductionsofficial@gmail.com" 
+                href="https://mail.google.com/mail/?view=cm&fs=1&to=contact@idyllproductions.com" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="hover:text-[#007AFF] transition-colors"

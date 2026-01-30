@@ -28,17 +28,24 @@ const CounterStat: React.FC<{
         if (entry.isIntersecting && !isVisible) {
           setIsVisible(true);
           setTimeout(() => {
-            const duration = 2000;
-            const increment = number / (duration / 16);
             let current = 0;
+            const startTime = Date.now();
+            
             const animate = () => {
-              current += increment;
-              if (current < number) {
-                setCount(Math.floor(current));
-                requestAnimationFrame(animate);
+              const elapsed = Date.now() - startTime;
+              
+              // Initial fast animation to reach the base number (first 3 seconds)
+              if (elapsed < 3000) {
+                const progress = elapsed / 3000;
+                current = number * progress;
               } else {
-                setCount(number);
+                // Continuous slow increment after reaching base number
+                const slowIncrement = (elapsed - 3000) / 1000; // 1 unit per second
+                current = number + slowIncrement;
               }
+              
+              setCount(Math.floor(current));
+              requestAnimationFrame(animate);
             };
             animate();
           }, delay);
@@ -71,7 +78,6 @@ const Home: React.FC = () => {
     { name: "Mohammed Shah", company: "Regal Dubai Travel Agency", rating: 5, text: "The attention to detail in every frame is remarkable. Our travel content now converts 3x better." },
     { name: "Vivek Kumar", company: "Physics Wallah", rating: 5, text: "Perfect understanding of educational content flow. Student engagement increased significantly." },
     { name: "Pintu Biswas", company: "Vedantu", rating: 5, text: "Professional, reliable, and consistently delivers beyond expectations. Highly recommended." },
-    { name: "Editing Manager", company: "Meesho", rating: 5, text: "Seamless collaboration and outstanding results. Our e-commerce videos perform exceptionally well." },
     { name: "Sarah Chen", company: "TechFlow Solutions", rating: 5, text: "Transformed our SaaS demos into compelling stories. Conversion rates doubled within a month." },
     { name: "Marcus Rodriguez", company: "GameStream Studios", rating: 5, text: "Perfect balance of energy and clarity in gaming content. Subscriber growth has been phenomenal." },
     { name: "Emily Watson", company: "Creative Collective", rating: 5, text: "Consistently delivers premium quality on tight deadlines. Our go-to partner for all video projects." }
@@ -230,6 +236,18 @@ const Home: React.FC = () => {
     }, 100);
   };
 
+  const handlePreviousCategory = () => {
+    const currentIndex = editingCategories.findIndex(cat => cat.name === selectedCategory);
+    const previousIndex = currentIndex > 0 ? currentIndex - 1 : editingCategories.length - 1;
+    handleCategorySelect(editingCategories[previousIndex].name);
+  };
+
+  const handleNextCategory = () => {
+    const currentIndex = editingCategories.findIndex(cat => cat.name === selectedCategory);
+    const nextIndex = currentIndex < editingCategories.length - 1 ? currentIndex + 1 : 0;
+    handleCategorySelect(editingCategories[nextIndex].name);
+  };
+
   const toggleVideoMute = (videoIndex: number) => {
     const videoElement = document.querySelector(`[data-video-index="${videoIndex}"]`) as HTMLVideoElement;
     if (videoElement) {
@@ -325,8 +343,8 @@ const Home: React.FC = () => {
             </h2>
             
             <p className="font-inter text-lg sm:text-xl md:text-xl lg:text-2xl text-slate-500 max-w-3xl mx-auto mb-16 sm:mb-16 md:mb-24 leading-relaxed animate-slide-up px-4 sm:px-0" style={{ animationDelay: '0.6s' }}>
-              Short-form, SaaS, Gaming & YouTube<br className="hidden sm:block" />
-              edited with intent, not noise.
+              Paid ads, short-form content, and YouTube videos that convert.<br className="hidden sm:block" />
+              Edited with intent, not noise.
             </p>
             
             {/* Hero Video - Mobile Optimized */}
@@ -435,6 +453,17 @@ const Home: React.FC = () => {
                 View Our Work
                 <ArrowRight className="inline-block w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 ml-2" />
               </button>
+              <a
+                href="https://calendly.com/smitaidyllproductions/talk-with-idyll-productions-csm"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto relative h-11 sm:h-12 md:h-14 px-6 sm:px-8 md:px-10 rounded-lg text-sm sm:text-base md:text-lg font-medium bg-white text-blue-600 border border-blue-600 hover:bg-blue-50 hover:border-blue-700 transition-all duration-300 hover:shadow-lg hover:scale-105 transform flex items-center justify-center gap-2"
+              >
+                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                Book a Call
+              </a>
               <button
                 onClick={() => document.getElementById('contact-us')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
                 className="w-full sm:w-auto relative h-11 sm:h-12 md:h-14 px-6 sm:px-8 md:px-10 rounded-lg text-sm sm:text-base md:text-lg font-medium bg-transparent text-slate-700 border border-slate-300 hover:border-blue-500 transition-all duration-300 hover:scale-105 transform"
@@ -458,21 +487,44 @@ const Home: React.FC = () => {
             </p>
           </div>
 
-          {/* Category Navigation */}
-          <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mb-12 sm:mb-16">
-            {editingCategories.map((category, i) => (
-              <button
-                key={i}
-                onClick={() => handleCategorySelect(category.name)}
-                className={`px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-medium text-sm sm:text-base transition-all duration-300 ${
-                  selectedCategory === category.name
-                    ? 'bg-blue-600 text-white shadow-lg'
-                    : 'bg-white text-slate-700 border border-slate-200 hover:border-blue-300 hover:bg-blue-50'
-                }`}
-              >
-                {category.name}
-              </button>
-            ))}
+          {/* Category Navigation with Arrows */}
+          <div className="flex items-center justify-center gap-8 sm:gap-12 mb-12 sm:mb-16">
+            {/* Left Arrow */}
+            <button
+              onClick={handlePreviousCategory}
+              className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-white border border-slate-200 hover:border-blue-300 hover:bg-blue-50 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-md hover:shadow-lg"
+            >
+              <svg className="w-5 h-5 sm:w-6 sm:h-6 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+
+            {/* Category Buttons */}
+            <div className="flex flex-nowrap justify-center gap-2 sm:gap-3 overflow-x-auto scrollbar-hide">
+              {editingCategories.map((category, i) => (
+                <button
+                  key={i}
+                  onClick={() => handleCategorySelect(category.name)}
+                  className={`flex-shrink-0 px-3 sm:px-4 py-2 sm:py-3 rounded-lg font-medium text-xs sm:text-sm transition-all duration-300 whitespace-nowrap ${
+                    selectedCategory === category.name
+                      ? 'bg-blue-600 text-white shadow-lg'
+                      : 'bg-white text-slate-700 border border-slate-200 hover:border-blue-300 hover:bg-blue-50'
+                  }`}
+                >
+                  {category.name}
+                </button>
+              ))}
+            </div>
+
+            {/* Right Arrow */}
+            <button
+              onClick={handleNextCategory}
+              className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-white border border-slate-200 hover:border-blue-300 hover:bg-blue-50 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-md hover:shadow-lg"
+            >
+              <svg className="w-5 h-5 sm:w-6 sm:h-6 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
           </div>
 
           {/* Selected Category Info */}
@@ -601,80 +653,81 @@ const Home: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
             {[
               { 
-                title: "Video Editing", 
-                desc: "Professional editing with attention to pacing, storytelling, and platform optimization.", 
+                title: "Talking Head Short Form / Motion Graphics", 
+                desc: "Engaging short-form content with dynamic motion graphics for social media platforms.", 
                 icon: (
                   <div className="relative">
-                    <div className="w-6 h-6 bg-blue-500 rounded-sm transform rotate-12"></div>
-                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-blue-300 rounded-full"></div>
-                    <div className="absolute -bottom-1 -left-1 w-3 h-3 bg-blue-600 rounded-sm transform rotate-45"></div>
+                    <div className="w-6 h-6 bg-blue-500 rounded-full"></div>
+                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-blue-300 rounded-sm transform rotate-12 animate-pulse"></div>
+                    <div className="absolute -bottom-1 -left-1 w-3 h-3 bg-blue-600 rounded-full animate-bounce"></div>
                   </div>
                 ),
                 color: "blue",
                 shape: "rounded-lg"
               },
               { 
-                title: "Motion Graphics", 
-                desc: "Eye-catching animations and graphics that enhance your message without distraction.", 
+                title: "Creator Paid Ads", 
+                desc: "High-converting advertisement videos designed specifically for content creators and influencers.", 
                 icon: (
                   <div className="relative">
-                    <div className="w-5 h-5 border-2 border-green-500 rounded-full animate-spin"></div>
-                    <div className="absolute top-1 left-1 w-3 h-3 bg-green-400 rounded-full"></div>
-                    <div className="absolute -top-1 -right-1 w-2 h-2 bg-green-600 rounded-full animate-pulse"></div>
+                    <div className="w-6 h-4 bg-green-500 rounded-sm"></div>
+                    <div className="absolute top-0 right-0 w-2 h-2 bg-green-300 rounded-full animate-ping"></div>
+                    <div className="absolute -bottom-1 left-1 w-4 h-2 bg-green-600 rounded-sm"></div>
+                    <div className="absolute top-1 left-2 text-green-200 text-xs">$</div>
                   </div>
                 ),
                 color: "green",
-                shape: "rounded-full"
+                shape: "rounded-lg"
               },
               { 
-                title: "Color Grading", 
-                desc: "Professional color correction and grading to achieve the perfect mood and aesthetic.", 
+                title: "Gaming Edits", 
+                desc: "Fast-paced, energetic gaming content with seamless transitions and highlight reels.", 
                 icon: (
-                  <div className="relative flex space-x-1">
-                    <div className="w-2 h-6 bg-gradient-to-t from-purple-600 to-purple-300 rounded-full"></div>
-                    <div className="w-2 h-6 bg-gradient-to-t from-pink-600 to-pink-300 rounded-full"></div>
-                    <div className="w-2 h-6 bg-gradient-to-t from-blue-600 to-blue-300 rounded-full"></div>
+                  <div className="relative">
+                    <div className="w-5 h-5 bg-purple-500 rounded-sm transform rotate-12"></div>
+                    <div className="absolute top-1 left-1 w-3 h-3 bg-purple-300 rounded-sm"></div>
+                    <div className="absolute -top-1 -right-1 w-2 h-2 bg-purple-600 rounded-full animate-pulse"></div>
                   </div>
                 ),
                 color: "purple",
-                shape: "rounded-xl"
+                shape: "rounded-lg"
               },
               { 
-                title: "Audio Enhancement", 
-                desc: "Crystal-clear audio mixing, noise reduction, and sound design for immersive experiences.", 
+                title: "Cinematic Vlog/Travel Video Edit", 
+                desc: "Stunning cinematic vlogs and travel videos with professional color grading and storytelling.", 
                 icon: (
-                  <div className="relative flex items-center space-x-0.5">
-                    <div className="w-1 h-3 bg-orange-500 rounded-full animate-pulse"></div>
-                    <div className="w-1 h-5 bg-orange-400 rounded-full animate-pulse" style={{ animationDelay: '0.1s' }}></div>
-                    <div className="w-1 h-4 bg-orange-600 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
-                    <div className="w-1 h-6 bg-orange-500 rounded-full animate-pulse" style={{ animationDelay: '0.3s' }}></div>
-                    <div className="w-1 h-2 bg-orange-400 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+                  <div className="relative">
+                    <div className="w-6 h-4 bg-orange-500 rounded-sm"></div>
+                    <div className="absolute top-1 left-1 w-4 h-2 bg-orange-300 rounded-sm"></div>
+                    <div className="absolute -top-1 left-2 w-2 h-2 bg-orange-600 rounded-full"></div>
+                    <div className="absolute bottom-0 right-0 w-1 h-1 bg-orange-400 rounded-full animate-ping"></div>
                   </div>
                 ),
                 color: "orange",
                 shape: "rounded-lg"
               },
               { 
-                title: "Film Making", 
-                desc: "We make ad films and short films for you with professional production quality.", 
+                title: "SaaS Animation / Product Explainer Videos", 
+                desc: "Clear, engaging explainer videos and animations for SaaS products and services.", 
                 icon: (
                   <div className="relative">
-                    <div className="w-6 h-4 bg-red-500 rounded-sm"></div>
-                    <div className="absolute top-1 left-1 w-4 h-2 bg-red-300 rounded-sm"></div>
-                    <div className="absolute -top-1 left-2 w-2 h-2 bg-red-600 rounded-full"></div>
+                    <div className="w-5 h-5 border-2 border-red-500 rounded-full animate-spin"></div>
+                    <div className="absolute top-1 left-1 w-3 h-3 bg-red-400 rounded-full"></div>
+                    <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-600 rounded-full animate-pulse"></div>
                   </div>
                 ),
                 color: "red",
                 shape: "rounded-full"
               },
               { 
-                title: "Strategy Consultation", 
-                desc: "Expert guidance on content strategy, platform optimization, and audience engagement.", 
+                title: "YouTube Long Form Videos", 
+                desc: "Professional long-form YouTube content with strategic pacing and audience retention focus.", 
                 icon: (
                   <div className="relative">
-                    <div className="w-5 h-5 border-2 border-cyan-500 rounded-full"></div>
-                    <div className="absolute top-1 left-1 w-3 h-3 border border-cyan-400 rounded-full"></div>
-                    <div className="absolute top-2 left-2 w-1 h-1 bg-cyan-600 rounded-full animate-ping"></div>
+                    <div className="w-6 h-4 bg-cyan-500 rounded-sm"></div>
+                    <div className="absolute top-1 left-2 w-2 h-2 bg-cyan-300 rounded-full"></div>
+                    <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-cyan-600 rounded-sm transform rotate-45"></div>
+                    <div className="absolute top-0 left-0 w-1 h-1 bg-cyan-400 rounded-full animate-ping"></div>
                   </div>
                 ),
                 color: "cyan",
@@ -943,7 +996,7 @@ const Home: React.FC = () => {
 
             {/* Discord */}
             <a
-              href="https://discord.com/users/1011509586919960596"
+              href="https://discord.com/users/1466675809568817246"
               target="_blank"
               rel="noopener noreferrer"
               className="group bg-white/80 backdrop-blur-sm rounded-lg p-6 shadow-sm border border-slate-200/50 hover:shadow-xl hover:border-indigo-300/60 transition-all duration-500 hover:scale-105 transform"
@@ -987,21 +1040,51 @@ const Home: React.FC = () => {
             </a>
           </div>
 
-          {/* Email Address */}
+          {/* Email Address Buttons */}
           <div className="mb-8">
-            <p className="font-inter text-lg text-slate-600 mb-2">Email us directly:</p>
-            <a 
-              href="https://mail.google.com/mail/?view=cm&fs=1&to=idyllproductionsofficial@gmail.com"
+            <p className="font-inter text-lg text-slate-600 mb-4">Email us directly:</p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <a 
+                href="https://mail.google.com/mail/?view=cm&fs=1&to=contact@idyllproductions.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto relative h-14 px-6 rounded-lg text-base font-medium bg-white border border-slate-300 hover:border-blue-500 hover:bg-blue-50 transition-all duration-300 hover:scale-105 transform shadow-md hover:shadow-lg flex flex-col items-center justify-center"
+              >
+                <span className="font-semibold text-blue-600 hover:text-blue-700">contact@idyllproductions.com</span>
+                <span className="text-xs text-slate-500">General inquiries</span>
+              </a>
+              <a 
+                href="https://mail.google.com/mail/?view=cm&fs=1&to=smita@idyllproductions.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto relative h-14 px-6 rounded-lg text-base font-medium bg-white border border-slate-300 hover:border-blue-500 hover:bg-blue-50 transition-all duration-300 hover:scale-105 transform shadow-md hover:shadow-lg flex flex-col items-center justify-center"
+              >
+                <span className="font-semibold text-blue-600 hover:text-blue-700">smita@idyllproductions.com</span>
+                <span className="text-xs text-slate-500">CSM - Sales & Client Management</span>
+              </a>
+            </div>
+          </div>
+
+          {/* Call to Action Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
+            <a
+              href="https://calendly.com/smitaidyllproductions/talk-with-idyll-productions-csm"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-sf-pro text-xl font-semibold text-blue-600 hover:text-blue-700 transition-colors"
+              className="w-full sm:w-auto relative h-14 px-8 rounded-lg text-lg font-medium bg-blue-600 text-white hover:bg-blue-700 transition-all duration-300 hover:scale-105 transform shadow-lg hover:shadow-xl flex items-center justify-center gap-3"
             >
-              idyllproductionsofficial@gmail.com
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              Talk with our Manager
             </a>
-          </div>
-          
-          <div className="flex justify-center">
-            <button onClick={() => document.getElementById('our-work')?.scrollIntoView({ behavior: 'smooth', block: 'start' })} className="relative h-14 px-10 rounded-lg text-lg font-medium bg-transparent text-slate-700 border border-slate-300 hover:border-blue-500 transition-all duration-300 hover:scale-105 transform">
+            <button 
+              onClick={() => document.getElementById('our-work')?.scrollIntoView({ behavior: 'smooth', block: 'start' })} 
+              className="w-full sm:w-auto relative h-14 px-8 rounded-lg text-lg font-medium bg-transparent text-slate-700 border border-slate-300 hover:border-blue-500 transition-all duration-300 hover:scale-105 transform flex items-center justify-center gap-3"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0l-4 4m4-4l-4-4" />
+              </svg>
               View Our Portfolio
             </button>
           </div>
