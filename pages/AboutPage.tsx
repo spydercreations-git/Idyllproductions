@@ -1,10 +1,15 @@
 
-import React from 'react';
-import { CheckCircle2, Users, Target, Award } from 'lucide-react';
+import React, { useState } from 'react';
+import { CheckCircle2, Users, Target, Award, X } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
 const AboutPage: React.FC = () => {
   const navigate = useNavigate();
+  const [clickCount, setClickCount] = useState(0);
+  const [showEasterEgg, setShowEasterEgg] = useState(false);
+  const [showSpecialButton, setShowSpecialButton] = useState(false);
+  const [currentText, setCurrentText] = useState('');
+  const [showHeartsRain, setShowHeartsRain] = useState(false);
 
   const handleStartConvo = () => {
     navigate('/');
@@ -14,6 +19,40 @@ const AboutPage: React.FC = () => {
         block: 'start' 
       });
     }, 100);
+  };
+
+  const handleReadyToWorkClick = () => {
+    const newCount = clickCount + 1;
+    setClickCount(newCount);
+    
+    if (newCount === 5) {
+      setShowSpecialButton(true);
+    }
+  };
+
+  const handleSpecialButtonClick = () => {
+    setShowEasterEgg(true);
+    setShowSpecialButton(false);
+    
+    // Start text animations
+    setTimeout(() => {
+      setCurrentText('Hello Annika');
+      setTimeout(() => {
+        setCurrentText('');
+        setTimeout(() => {
+          setCurrentText('I love you');
+          setShowHeartsRain(true);
+        }, 1000);
+      }, 2000);
+    }, 500);
+  };
+
+  const closeEasterEgg = () => {
+    setShowEasterEgg(false);
+    setShowHeartsRain(false);
+    setCurrentText('');
+    setClickCount(0);
+    setShowSpecialButton(false);
   };
   return (
     <div className="bg-white min-h-screen relative" style={{
@@ -138,24 +177,10 @@ const AboutPage: React.FC = () => {
                 </p>
               </div>
 
-              {/* Smita - CSM */}
+              {/* Snow - CEM (moved up, now yellow) */}
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100/50 text-center hover:shadow-[0_20px_60px_rgb(0,0,0,0.08)] hover:-translate-y-2 transition-all duration-500">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-pink-500/10 to-pink-600/10 flex items-center justify-center mx-auto mb-4 sm:mb-6">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-pink-600 flex items-center justify-center text-white font-bold text-lg sm:text-xl">
-                    SM
-                  </div>
-                </div>
-                <h3 className="text-xl sm:text-2xl font-black text-[#001B3D] mb-1 sm:mb-2">Smita</h3>
-                <p className="text-xs sm:text-sm font-semibold text-[#0070F3] uppercase tracking-widest mb-2 sm:mb-4">CSM - Chief Sales Manager</p>
-                <p className="text-sm sm:text-base text-[#001B3D]/50 leading-relaxed font-normal">
-                  Our sales manager who handles our great clients and builds lasting business relationships.
-                </p>
-              </div>
-
-              {/* Snow - CEM */}
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100/50 text-center hover:shadow-[0_20px_60px_rgb(0,0,0,0.08)] hover:-translate-y-2 transition-all duration-500">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-cyan-500/10 to-cyan-600/10 flex items-center justify-center mx-auto mb-4 sm:mb-6">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-cyan-600 flex items-center justify-center text-white font-bold text-lg sm:text-xl">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-yellow-500/10 to-yellow-600/10 flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-yellow-600 flex items-center justify-center text-white font-bold text-lg sm:text-xl">
                     SN
                   </div>
                 </div>
@@ -163,6 +188,20 @@ const AboutPage: React.FC = () => {
                 <p className="text-xs sm:text-sm font-semibold text-[#0070F3] uppercase tracking-widest mb-2 sm:mb-4">CEM - Chief Editing Manager</p>
                 <p className="text-sm sm:text-base text-[#001B3D]/50 leading-relaxed font-normal">
                   Editing manager who handles our talented editors and ensures top-quality video production.
+                </p>
+              </div>
+
+              {/* Smita - CSO (moved down, changed from CSM to CSO) */}
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100/50 text-center hover:shadow-[0_20px_60px_rgb(0,0,0,0.08)] hover:-translate-y-2 transition-all duration-500">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-pink-500/10 to-pink-600/10 flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-pink-600 flex items-center justify-center text-white font-bold text-lg sm:text-xl">
+                    SM
+                  </div>
+                </div>
+                <h3 className="text-xl sm:text-2xl font-black text-[#001B3D] mb-1 sm:mb-2">Smita</h3>
+                <p className="text-xs sm:text-sm font-semibold text-[#0070F3] uppercase tracking-widest mb-2 sm:mb-4">CSO - Chief Sales Officer</p>
+                <p className="text-sm sm:text-base text-[#001B3D]/50 leading-relaxed font-normal">
+                  Our sales officer who handles our great clients and builds lasting business relationships.
                 </p>
               </div>
 
@@ -240,9 +279,26 @@ const AboutPage: React.FC = () => {
 
           <div className="text-center">
             <div className="bg-gradient-to-b from-slate-50/40 to-white rounded-3xl p-12 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
-              <h2 className="text-3xl font-black text-[#001B3D] mb-6">
-                Ready to Work Together?
-              </h2>
+              <div className="flex items-center justify-center gap-3 mb-6">
+                <h2 
+                  className="text-3xl font-black text-[#001B3D] cursor-pointer select-none"
+                  onClick={handleReadyToWorkClick}
+                >
+                  Ready to Work Together?
+                </h2>
+                
+                {/* Small Easter Egg Button next to heading */}
+                {showSpecialButton && (
+                  <button
+                    onClick={handleSpecialButtonClick}
+                    className="w-8 h-8 bg-gradient-to-r from-pink-500 to-red-500 text-white rounded-full flex items-center justify-center hover:from-pink-600 hover:to-red-600 transition-all duration-300 shadow-lg shadow-pink-500/20 hover:scale-110 transform animate-bounce"
+                  >
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
+                  </button>
+                )}
+              </div>
               <p className="text-lg text-[#001B3D]/50 mb-8 max-w-2xl mx-auto">
                 Let's discuss your project and see how we can help you create content that connects with your audience and drives real results.
               </p>
@@ -272,6 +328,50 @@ const AboutPage: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* Easter Egg Modal */}
+      {showEasterEgg && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm">
+          {/* Close Button */}
+          <button
+            onClick={closeEasterEgg}
+            className="absolute top-8 right-8 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-all duration-300 hover:scale-110 z-10"
+          >
+            <X className="w-6 h-6" />
+          </button>
+
+          {/* Text Animation Container */}
+          <div className="text-center z-10">
+            {currentText && (
+              <h1 
+                className="text-4xl sm:text-6xl md:text-8xl font-bold text-white animate-fade-slide-up"
+                key={currentText}
+              >
+                {currentText}
+              </h1>
+            )}
+          </div>
+
+          {/* Hearts Rain */}
+          {showHeartsRain && (
+            <div className="absolute inset-0 pointer-events-none overflow-hidden">
+              {[...Array(50)].map((_, i) => (
+                <div
+                  key={i}
+                  className="absolute text-red-500 text-2xl animate-heart-fall"
+                  style={{
+                    left: `${Math.random() * 100}%`,
+                    animationDelay: `${Math.random() * 3}s`,
+                    animationDuration: `${3 + Math.random() * 2}s`
+                  }}
+                >
+                  ❤️
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };

@@ -466,7 +466,7 @@ const Home: React.FC = () => {
               </a>
               <button
                 onClick={() => document.getElementById('contact-us')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
-                className="w-full sm:w-auto relative h-11 sm:h-12 md:h-14 px-6 sm:px-8 md:px-10 rounded-lg text-sm sm:text-base md:text-lg font-medium bg-transparent text-slate-700 border border-slate-300 hover:border-blue-500 transition-all duration-300 hover:scale-105 transform"
+                className="w-full sm:w-auto relative h-11 sm:h-12 md:h-14 px-6 sm:px-8 md:px-10 rounded-lg text-sm sm:text-base md:text-lg font-medium bg-blue-600 text-white hover:bg-blue-700 transition-all duration-300 hover:scale-105 transform shadow-lg hover:shadow-xl"
               >
                 Contact Us
               </button>
@@ -1079,14 +1079,25 @@ const Home: React.FC = () => {
               Talk with our Manager
             </a>
             <button 
-              onClick={() => document.getElementById('our-work')?.scrollIntoView({ behavior: 'smooth', block: 'start' })} 
-              className="w-full sm:w-auto relative h-14 px-8 rounded-lg text-lg font-medium bg-transparent text-slate-700 border border-slate-300 hover:border-blue-500 transition-all duration-300 hover:scale-105 transform flex items-center justify-center gap-3"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} 
+              className="w-full sm:w-auto relative h-14 px-8 rounded-lg text-lg font-medium bg-transparent text-blue-600 border border-blue-600 hover:bg-blue-50 hover:border-blue-700 transition-all duration-300 hover:scale-105 transform flex items-center justify-center gap-3"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0l-4 4m4-4l-4-4" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
               </svg>
-              View Our Portfolio
+              Back to Home
             </button>
+            <a
+              href="https://docs.google.com/forms/d/e/1FAIpQLSdVcAB8z3LFYADnkUzit6upstPAKvkpFe-uW4cQExYdQv1C1w/viewform?usp=publish-editor"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full sm:w-auto relative h-14 px-8 rounded-lg text-lg font-medium bg-blue-600 text-white hover:bg-blue-700 transition-all duration-300 hover:scale-105 transform shadow-lg hover:shadow-xl flex items-center justify-center gap-3"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              Apply to be the Editor
+            </a>
           </div>
         </div>
       </section>
