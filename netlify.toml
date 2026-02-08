@@ -5,7 +5,20 @@
 [build.environment]
   NODE_VERSION = "18"
 
-# Redirect all routes to index.html for SPA routing
+# Serve sitemap.xml and robots.txt as static files (BEFORE SPA redirect)
+[[redirects]]
+  from = "/sitemap.xml"
+  to = "/sitemap.xml"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/robots.txt"
+  to = "/robots.txt"
+  status = 200
+  force = true
+
+# Redirect all other routes to index.html for SPA routing
 [[redirects]]
   from = "/*"
   to = "/index.html"
@@ -19,6 +32,17 @@
     X-XSS-Protection = "1; mode=block"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Proper content type for sitemap and robots
+[[headers]]
+  for = "/sitemap.xml"
+  [headers.values]
+    Content-Type = "application/xml"
+
+[[headers]]
+  for = "/robots.txt"
+  [headers.values]
+    Content-Type = "text/plain"
 
 # Cache static assets
 [[headers]]
