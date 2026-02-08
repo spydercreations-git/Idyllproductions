@@ -584,10 +584,7 @@ const Home: React.FC = () => {
             {/* Category Buttons - Smooth sliding carousel */}
             <div className="flex-1 overflow-hidden relative">
               <div 
-                className="flex gap-2 sm:gap-3 transition-transform duration-500 ease-out"
-                style={{
-                  transform: `translateX(calc(-${editingCategories.findIndex(cat => cat.name === selectedCategory) * 100}% / ${editingCategories.length} + ${window.innerWidth < 768 ? '33.33%' : '0%'}))`
-                }}
+                className="flex gap-2 sm:gap-3 transition-transform duration-500 ease-out justify-center md:justify-center"
               >
                 {editingCategories.map((category, i) => (
                   <button
@@ -598,9 +595,6 @@ const Home: React.FC = () => {
                         ? 'bg-blue-600 text-white shadow-lg scale-105'
                         : 'bg-white text-slate-700 border border-slate-200 hover:border-blue-300 hover:bg-blue-50'
                     }`}
-                    style={{
-                      minWidth: window.innerWidth < 768 ? 'calc(33.33% - 0.5rem)' : 'auto'
-                    }}
                   >
                     {category.name}
                   </button>
