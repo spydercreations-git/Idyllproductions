@@ -2,7 +2,11 @@
 <html lang="en" style="scroll-behavior: smooth;">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
     <title>Idyll Productions</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -47,10 +51,6 @@
         body {
             font-family: var(--font-inter);
             background-color: var(--background);
-            background-image: 
-                linear-gradient(rgba(0, 0, 0, 0.3) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 0, 0, 0.3) 1px, transparent 1px);
-            background-size: 120px 120px;
             color: var(--text-primary);
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
@@ -59,6 +59,26 @@
             -webkit-text-size-adjust: 100%;
             -webkit-tap-highlight-color: transparent;
             touch-action: manipulation;
+            /* Prevent horizontal scroll on all devices */
+            max-width: 100vw;
+            position: relative;
+            /* Custom blue cursor */
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="%232563eb" stroke="white" stroke-width="1"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/></svg>') 0 0, auto;
+        }
+        
+        /* Prevent horizontal overflow on all elements */
+        * {
+            box-sizing: border-box;
+        }
+        
+        html {
+            overflow-x: hidden;
+            max-width: 100vw;
+        }
+        
+        /* Custom cursor for clickable elements */
+        a, button, input[type="submit"], input[type="button"], [role="button"], .cursor-pointer {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="%232563eb" stroke="white" stroke-width="1.5"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/></svg>') 4 4, pointer;
         }
         
         /* iOS Safari specific fixes */
@@ -118,6 +138,66 @@
                 position: relative;
                 transform: none !important;
                 animation: none !important;
+            }
+        }
+        
+        /* Tablet optimization (portrait) */
+        @media (min-width: 641px) and (max-width: 768px) {
+            body {
+                font-size: 15px;
+            }
+        }
+        
+        /* Tablet optimization (landscape) and small laptops */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            body {
+                font-size: 16px;
+            }
+        }
+        
+        /* Desktop optimization */
+        @media (min-width: 1025px) and (max-width: 1440px) {
+            body {
+                font-size: 16px;
+            }
+        }
+        
+        /* Large desktop and TV optimization */
+        @media (min-width: 1441px) {
+            body {
+                font-size: 18px;
+            }
+            
+            /* Scale up for large screens */
+            .max-w-7xl {
+                max-width: 90rem;
+            }
+        }
+        
+        /* 4K and Ultra HD TV optimization */
+        @media (min-width: 2560px) {
+            body {
+                font-size: 20px;
+            }
+            
+            /* Increase spacing for large screens */
+            section {
+                padding-top: 8rem;
+                padding-bottom: 8rem;
+            }
+        }
+        
+        /* Touch device optimization */
+        @media (hover: none) and (pointer: coarse) {
+            /* Larger touch targets */
+            button, a, input, select, textarea {
+                min-height: 44px;
+                min-width: 44px;
+            }
+            
+            /* Remove hover effects on touch devices */
+            *:hover {
+                transition: none;
             }
         }
         
@@ -864,6 +944,279 @@
         .animate-heart-fall {
           animation: heart-fall linear infinite;
         }
+
+        /* Shimmer animation for connecting line */
+        @keyframes shimmer {
+          0% {
+            transform: translateX(-100%);
+          }
+          100% {
+            transform: translateX(100%);
+          }
+        }
+
+        /* Line grow animation with fade - infinite loop */
+        @keyframes lineGrow {
+          0% {
+            width: 0%;
+            opacity: 0;
+          }
+          2% {
+            opacity: 1;
+          }
+          90% {
+            width: 100%;
+            opacity: 1;
+          }
+          95% {
+            width: 100%;
+            opacity: 0;
+          }
+          100% {
+            width: 100%;
+            opacity: 0;
+          }
+        }
+
+        /* Icon animations - no transparency, just color changes */
+        @keyframes iconFadeIn1 {
+          0% {
+            background-color: rgb(226, 232, 240);
+            color: rgb(148, 163, 184);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+          }
+          2% {
+            background-color: rgb(37, 99, 235);
+            color: white;
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+          }
+          90% {
+            background-color: rgb(37, 99, 235);
+            color: white;
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+          }
+          95% {
+            background-color: rgb(226, 232, 240);
+            color: rgb(148, 163, 184);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+          }
+          100% {
+            background-color: rgb(226, 232, 240);
+            color: rgb(148, 163, 184);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+          }
+        }
+
+        @keyframes iconFadeIn2 {
+          0%, 28% {
+            background-color: rgb(226, 232, 240);
+            color: rgb(148, 163, 184);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+          }
+          30% {
+            background-color: rgb(37, 99, 235);
+            color: white;
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+          }
+          90% {
+            background-color: rgb(37, 99, 235);
+            color: white;
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+          }
+          95% {
+            background-color: rgb(226, 232, 240);
+            color: rgb(148, 163, 184);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+          }
+          100% {
+            background-color: rgb(226, 232, 240);
+            color: rgb(148, 163, 184);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+          }
+        }
+
+        @keyframes iconFadeIn3 {
+          0%, 58% {
+            background-color: rgb(226, 232, 240);
+            color: rgb(148, 163, 184);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+          }
+          60% {
+            background-color: rgb(37, 99, 235);
+            color: white;
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+          }
+          90% {
+            background-color: rgb(37, 99, 235);
+            color: white;
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+          }
+          95% {
+            background-color: rgb(226, 232, 240);
+            color: rgb(148, 163, 184);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+          }
+          100% {
+            background-color: rgb(226, 232, 240);
+            color: rgb(148, 163, 184);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+          }
+        }
+
+        @keyframes iconFadeIn4 {
+          0%, 88% {
+            background-color: rgb(226, 232, 240);
+            color: rgb(148, 163, 184);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+          }
+          90% {
+            background-color: rgb(37, 99, 235);
+            color: white;
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+          }
+          92% {
+            background-color: rgb(37, 99, 235);
+            color: white;
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+          }
+          95% {
+            background-color: rgb(226, 232, 240);
+            color: rgb(148, 163, 184);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+          }
+          100% {
+            background-color: rgb(226, 232, 240);
+            color: rgb(148, 163, 184);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+          }
+        }
+
+        /* Animated state - infinite loop */
+        .how-it-works-line {
+          width: 0%;
+          opacity: 0;
+          animation: lineGrow 5s ease-in-out infinite;
+        }
+
+        /* Icons turn blue when line reaches them */
+        .how-it-works-icon[data-delay="0"] {
+          animation: iconFadeIn1 5s ease-in-out infinite;
+        }
+
+        .how-it-works-icon[data-delay="0.8"] {
+          animation: iconFadeIn2 5s ease-in-out infinite;
+        }
+
+        .how-it-works-icon[data-delay="1.6"] {
+          animation: iconFadeIn3 5s ease-in-out infinite;
+        }
+
+        .how-it-works-icon[data-delay="2.4"] {
+          animation: iconFadeIn4 5s ease-in-out infinite;
+        }
+
+        /* Mobile: Static state - no animation */
+        @media (max-width: 768px) {
+          .how-it-works-line {
+            animation: none;
+            width: 0;
+            opacity: 0;
+          }
+
+          .how-it-works-icon {
+            animation: none !important;
+            background-color: rgb(37, 99, 235) !important;
+            color: white !important;
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3) !important;
+            width: 60px !important;
+            height: 60px !important;
+          }
+
+          .how-it-works-icon svg {
+            width: 30px !important;
+            height: 30px !important;
+          }
+        }
+
+        /* Brush stroke highlight effect */
+        .brush-highlight {
+          position: relative;
+          display: inline-block;
+          z-index: 1;
+        }
+
+        .brush-highlight::after {
+          content: '';
+          position: absolute;
+          left: -4px;
+          right: -4px;
+          bottom: 2px;
+          height: 12px;
+          background: rgba(37, 99, 235, 0.2);
+          z-index: -1;
+          border-radius: 2px;
+          transform: skewX(-2deg);
+        }
+
+        /* Bottom Glass Blur Effect */
+        .bottom-glass-blur {
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          height: 200px;
+          pointer-events: none;
+          z-index: 40;
+          backdrop-filter: blur(24px) saturate(180%);
+          -webkit-backdrop-filter: blur(24px) saturate(180%);
+          background: linear-gradient(
+            to top,
+            rgba(255, 255, 255, 0.7) 0%,
+            rgba(255, 255, 255, 0.5) 15%,
+            rgba(255, 255, 255, 0.35) 30%,
+            rgba(255, 255, 255, 0.2) 50%,
+            rgba(255, 255, 255, 0.1) 70%,
+            rgba(255, 255, 255, 0.05) 85%,
+            transparent 100%
+          );
+          mask-image: linear-gradient(
+            to top,
+            black 0%,
+            black 5%,
+            rgba(0, 0, 0, 0.95) 15%,
+            rgba(0, 0, 0, 0.85) 25%,
+            rgba(0, 0, 0, 0.7) 35%,
+            rgba(0, 0, 0, 0.55) 45%,
+            rgba(0, 0, 0, 0.4) 55%,
+            rgba(0, 0, 0, 0.25) 65%,
+            rgba(0, 0, 0, 0.15) 75%,
+            rgba(0, 0, 0, 0.08) 85%,
+            rgba(0, 0, 0, 0.03) 92%,
+            transparent 100%
+          );
+          -webkit-mask-image: linear-gradient(
+            to top,
+            black 0%,
+            black 5%,
+            rgba(0, 0, 0, 0.95) 15%,
+            rgba(0, 0, 0, 0.85) 25%,
+            rgba(0, 0, 0, 0.7) 35%,
+            rgba(0, 0, 0, 0.55) 45%,
+            rgba(0, 0, 0, 0.4) 55%,
+            rgba(0, 0, 0, 0.25) 65%,
+            rgba(0, 0, 0, 0.15) 75%,
+            rgba(0, 0, 0, 0.08) 85%,
+            rgba(0, 0, 0, 0.03) 92%,
+            transparent 100%
+          );
+        }
+
+        @media (max-width: 768px) {
+          .bottom-glass-blur {
+            display: none;
+          }
+        }
+
     </style>
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 <script type="importmap">
@@ -880,6 +1233,9 @@
 <link rel="stylesheet" href="/index.css">
 </head>
 <body>
+    <!-- Bottom Glass Blur Overlay -->
+    <div class="bottom-glass-blur"></div>
+    
     <div id="root"></div>
 <script type="module" src="/index.tsx"></script>
 </body>

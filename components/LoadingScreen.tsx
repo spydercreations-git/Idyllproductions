@@ -8,12 +8,13 @@ interface LoadingScreenProps {
 const LoadingScreen: React.FC<LoadingScreenProps> = ({ onSlideStart, slideUp }) => {
   const [isExiting, setIsExiting] = useState(false);
   const [currentGreeting, setCurrentGreeting] = useState(0);
+  const [isFading, setIsFading] = useState(false);
 
   // Multilingual greetings - 5 languages only
   const greetings = [
-    "Hello",
     "नमस्ते",
     "Bonjour", 
+    "Hello",
     "こんにちは",
     "Привет"
   ];
@@ -21,36 +22,43 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onSlideStart, slideUp }) 
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
     
-    // Custom timing for each greeting
-    const showGreeting = (index: number, duration: number) => {
+    // Custom timing for each greeting with fade transitions
+    const showGreeting = (index: number, displayDuration: number) => {
+      setIsFading(false);
       setCurrentGreeting(index);
+      
       return setTimeout(() => {
         if (index < greetings.length - 1) {
-          // Move to next greeting based on custom durations
-          if (index === 0) {
-            timeoutId = showGreeting(1, 600); // Hello -> नमस्ते (600ms)
-          } else if (index === 1) {
-            timeoutId = showGreeting(2, 300); // नमस्ते -> Bonjour (600ms)
-          } else if (index === 2) {
-            timeoutId = showGreeting(3, 300); // Bonjour -> こんにちは (300ms)
-          } else if (index === 3) {
-            timeoutId = showGreeting(4, 300); // こんにちは -> Привет (300ms)
-          }
+          // Fade out current greeting
+          setIsFading(true);
+          
+          // Wait for fade out, then show next greeting
+          setTimeout(() => {
+            if (index === 0) {
+              timeoutId = showGreeting(1, 500); // नमस्ते -> Bonjour (500ms)
+            } else if (index === 1) {
+              timeoutId = showGreeting(2, 500); // Bonjour -> Hello (500ms)
+            } else if (index === 2) {
+              timeoutId = showGreeting(3, 500); // Hello -> こんにちは (500ms)
+            } else if (index === 3) {
+              timeoutId = showGreeting(4, 500); // こんにちは -> Привет (500ms)
+            }
+          }, 300); // Fade out duration
         }
-      }, duration);
+      }, displayDuration);
     };
 
-    // Start with Hello for 600ms
-    timeoutId = showGreeting(0, 600);
+    // Start with नमस्ते for 500ms
+    timeoutId = showGreeting(0, 500);
 
-    // Start exit animation after 2 seconds
+    // Start exit animation after total time
     const timer = setTimeout(() => {
       setIsExiting(true);
       // Trigger home page transition
       setTimeout(() => {
         onSlideStart();
       }, 100);
-    }, 2000); // 2 seconds loading time
+    }, 3500); // Total loading time (5 greetings × 500ms + 5 fades × 300ms = 4000ms, reduced to 3500ms)
 
     return () => {
       clearTimeout(timer);
@@ -63,7 +71,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onSlideStart, slideUp }) 
       <div className={`content-wrapper ${isExiting ? 'exiting' : ''}`}>
         {/* Multilingual Greeting Animation */}
         <div className="greeting-container">
-          <h1 className="greeting-text" key={currentGreeting}>
+          <h1 className={`greeting-text ${isFading ? 'fading' : ''}`} key={currentGreeting}>
             {greetings[currentGreeting]}
           </h1>
         </div>
@@ -120,13 +128,21 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onSlideStart, slideUp }) 
           letter-spacing: -0.02em;
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
-          background: linear-gradient(45deg, #ffffff, #2563eb, #ffffff);
+          background: linear-gradient(45deg, #2563eb, #3b82f6, #60a5fa);
           background-size: 200% 200%;
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
-          animation: greetingSlideIn 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards,
-                     gradientShift 2s ease-in-out infinite;
+          opacity: 1;
+          transform: translateY(0) scale(1);
+          transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+          animation: greetingSlideIn 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards,
+                     gradientShift 3s ease-in-out infinite;
+        }
+
+        .greeting-text.fading {
+          opacity: 0;
+          transform: translateY(-20px) scale(0.95);
         }
 
         /* Slide up transition */

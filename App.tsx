@@ -20,12 +20,13 @@ const App: React.FC = () => {
 
   // Skip loading screen on subsequent visits
   useEffect(() => {
-    const hasVisited = sessionStorage.getItem('hasVisited');
-    if (hasVisited) {
-      setShowLoading(false);
-    } else {
-      sessionStorage.setItem('hasVisited', 'true');
-    }
+    // Removed sessionStorage check - loading screen will show every time
+    // const hasVisited = sessionStorage.getItem('hasVisited');
+    // if (hasVisited) {
+    //   setShowLoading(false);
+    // } else {
+    //   sessionStorage.setItem('hasVisited', 'true');
+    // }
   }, []);
 
   if (showLoading) {

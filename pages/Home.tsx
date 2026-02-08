@@ -17,45 +17,80 @@ const CounterStat: React.FC<{
   suffix: string;
   label: string;
   delay: number;
-}> = ({ number, suffix, label, delay }) => {
-  const [count, setCount] = useState(0);
-  const [isVisible, setIsVisible] = useState(false);
+  oscillate?: boolean;
+  oscillateMin?: number;
+  oscillateMax?: number;
+  oscillateSpeed?: number;
+}> = ({ number, suffix, label, delay, oscillate = false, oscillateMin, oscillateMax, oscillateSpeed = 4000 }) => {
+  const [count, setCount] = useState(oscillate ? (oscillateMin ?? 0) : 0);
   const elementRef = useRef<HTMLDivElement>(null);
+  const animationFrameRef = useRef<number | null>(null);
+  const hasStartedRef = useRef(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && !isVisible) {
-          setIsVisible(true);
+        if (entry.isIntersecting && !hasStartedRef.current) {
+          hasStartedRef.current = true;
+          
           setTimeout(() => {
-            let current = 0;
-            const startTime = Date.now();
-            
-            const animate = () => {
-              const elapsed = Date.now() - startTime;
+            if (oscillate) {
+              // Oscillate between min and max values
+              const startTime = Date.now();
+              const minValue = oscillateMin ?? 50;
+              const maxValue = oscillateMax ?? 100;
+              const cycleDuration = oscillateSpeed;
               
-              // Initial fast animation to reach the base number (first 3 seconds)
-              if (elapsed < 3000) {
-                const progress = elapsed / 3000;
-                current = number * progress;
-              } else {
-                // Continuous slow increment after reaching base number
-                const slowIncrement = (elapsed - 3000) / 1000; // 1 unit per second
-                current = number + slowIncrement;
-              }
+              const animate = () => {
+                const elapsed = Date.now() - startTime;
+                const cycleProgress = (elapsed % cycleDuration) / cycleDuration;
+                
+                // Use sine wave for smooth oscillation
+                const sineWave = Math.sin(cycleProgress * Math.PI);
+                const current = minValue + (sineWave * (maxValue - minValue));
+                
+                setCount(Math.floor(current));
+                animationFrameRef.current = requestAnimationFrame(animate);
+              };
+              animate();
+            } else {
+              // Original animation for other stats
+              let current = 0;
+              const startTime = Date.now();
               
-              setCount(Math.floor(current));
-              requestAnimationFrame(animate);
-            };
-            animate();
+              const animate = () => {
+                const elapsed = Date.now() - startTime;
+                
+                // Initial fast animation to reach the base number (first 3 seconds)
+                if (elapsed < 3000) {
+                  const progress = elapsed / 3000;
+                  current = number * progress;
+                } else {
+                  // Continuous slow increment after reaching base number
+                  const slowIncrement = (elapsed - 3000) / 1000;
+                  current = number + slowIncrement;
+                }
+                
+                setCount(Math.floor(current));
+                animationFrameRef.current = requestAnimationFrame(animate);
+              };
+              animate();
+            }
           }, delay);
         }
       },
       { threshold: 0.1 }
     );
+    
     if (elementRef.current) observer.observe(elementRef.current);
-    return () => observer.disconnect();
-  }, [number, delay, isVisible]);
+    
+    return () => {
+      observer.disconnect();
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
+  }, [number, delay, oscillate, oscillateMin, oscillateMax, oscillateSpeed]);
 
   return (
     <div ref={elementRef} className="inline-flex items-center">
@@ -64,6 +99,7 @@ const CounterStat: React.FC<{
     </div>
   );
 };
+
 
 const Home: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("Short-Form Content");
@@ -275,10 +311,42 @@ const Home: React.FC = () => {
   }, []);
 
   return (
-    <div className="bg-white min-h-screen relative" style={{
-      backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px)`,
-      backgroundSize: '120px 120px'
-    }}>
+    <div className="bg-white min-h-screen relative overflow-hidden">
+      {/* Organic dot pattern with varying opacity */}
+      <div className="absolute inset-0 pointer-events-none" style={{
+        backgroundImage: `radial-gradient(circle, rgba(0, 0, 0, 0.15) 1px, transparent 1px)`,
+        backgroundSize: '24px 24px',
+        maskImage: `
+          radial-gradient(ellipse 800px 600px at 20% 30%, black 0%, transparent 70%),
+          radial-gradient(ellipse 600px 800px at 80% 60%, black 0%, transparent 70%),
+          radial-gradient(ellipse 700px 500px at 50% 90%, black 0%, transparent 70%)
+        `,
+        WebkitMaskImage: `
+          radial-gradient(ellipse 800px 600px at 20% 30%, black 0%, transparent 70%),
+          radial-gradient(ellipse 600px 800px at 80% 60%, black 0%, transparent 70%),
+          radial-gradient(ellipse 700px 500px at 50% 90%, black 0%, transparent 70%)
+        `,
+        maskComposite: 'add',
+        WebkitMaskComposite: 'source-over'
+      }} />
+      
+      {/* Mobile: Lower opacity dots overlay */}
+      <div className="absolute inset-0 pointer-events-none md:hidden" style={{
+        backgroundImage: `radial-gradient(circle, rgba(255, 255, 255, 0.5) 1px, transparent 1px)`,
+        backgroundSize: '24px 24px',
+        maskImage: `
+          radial-gradient(ellipse 800px 600px at 20% 30%, black 0%, transparent 70%),
+          radial-gradient(ellipse 600px 800px at 80% 60%, black 0%, transparent 70%),
+          radial-gradient(ellipse 700px 500px at 50% 90%, black 0%, transparent 70%)
+        `,
+        WebkitMaskImage: `
+          radial-gradient(ellipse 800px 600px at 20% 30%, black 0%, transparent 70%),
+          radial-gradient(ellipse 600px 800px at 80% 60%, black 0%, transparent 70%),
+          radial-gradient(ellipse 700px 500px at 50% 90%, black 0%, transparent 70%)
+        `,
+        maskComposite: 'add',
+        WebkitMaskComposite: 'source-over'
+      }} />
       {/* Fade overlay for grid */}
       <div className="absolute inset-0 bg-gradient-to-b from-white/20 via-transparent to-white/20 pointer-events-none" />
 
@@ -320,15 +388,34 @@ const Home: React.FC = () => {
       {/* --- HERO SECTION --- */}
       <section className="relative pt-32 sm:pt-32 md:pt-64 pb-24 sm:pb-32 md:pb-48 px-4 sm:px-6 md:px-8 overflow-hidden z-10">
         
+        {/* Darker dots overlay for hero section only - organic clusters with fade */}
+        <div className="absolute inset-0 pointer-events-none" style={{
+          backgroundImage: `radial-gradient(circle, rgba(0, 0, 0, 0.05) 2px, transparent 2px)`,
+          backgroundSize: '24px 24px',
+          maskImage: `
+            radial-gradient(ellipse 900px 700px at 25% 35%, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.4) 60%, transparent 80%),
+            radial-gradient(ellipse 700px 900px at 75% 55%, black 0%, rgba(0, 0, 0, 0.7) 25%, rgba(0, 0, 0, 0.3) 55%, transparent 75%),
+            radial-gradient(ellipse 800px 600px at 50% 85%, black 0%, rgba(0, 0, 0, 0.6) 20%, rgba(0, 0, 0, 0.2) 50%, transparent 70%)
+          `,
+          WebkitMaskImage: `
+            radial-gradient(ellipse 900px 700px at 25% 35%, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.4) 60%, transparent 80%),
+            radial-gradient(ellipse 700px 900px at 75% 55%, black 0%, rgba(0, 0, 0, 0.7) 25%, rgba(0, 0, 0, 0.3) 55%, transparent 75%),
+            radial-gradient(ellipse 800px 600px at 50% 85%, black 0%, rgba(0, 0, 0, 0.6) 20%, rgba(0, 0, 0, 0.2) 50%, transparent 70%)
+          `,
+          maskComposite: 'add',
+          WebkitMaskComposite: 'source-over'
+        }} />
+        
         <div className="max-w-7xl mx-auto text-center relative z-10">
           <div className="reveal active">
             <h1 className="font-sf-pro text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight text-slate-900 leading-[0.9] mb-8 sm:mb-8 md:mb-12 animate-slide-up">
               Idyll Productions
             </h1>
             
-            <h2 className="font-inter text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-medium tracking-tight text-slate-700 leading-[1.2] mb-8 sm:mb-8 md:mb-10 animate-slide-up" style={{ animationDelay: '0.3s' }}>
-              High-Performance Video Editing<br className="hidden sm:block" />
-              for Modern{' '}
+            <h2 className="font-inter text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-medium tracking-tight text-slate-700 leading-[1.2] mb-8 sm:mb-8 md:mb-10 animate-slide-up px-4 sm:px-0" style={{ animationDelay: '0.3s' }}>
+              <span className="inline-block">High-Performance Video Editing</span>
+              <br className="hidden sm:block" />
+              <span className="inline-block">for Modern{' '}</span>
               <div className="inline-block">
                 <div className="loader">
                   <div className="words">
@@ -342,9 +429,10 @@ const Home: React.FC = () => {
               </div>
             </h2>
             
-            <p className="font-inter text-lg sm:text-xl md:text-xl lg:text-2xl text-slate-500 max-w-3xl mx-auto mb-16 sm:mb-16 md:mb-24 leading-relaxed animate-slide-up px-4 sm:px-0" style={{ animationDelay: '0.6s' }}>
-              Paid ads, short-form content, and YouTube videos that convert.<br className="hidden sm:block" />
-              Edited with intent, not noise.
+            <p className="font-inter text-base sm:text-lg md:text-xl lg:text-2xl text-slate-500 max-w-3xl mx-auto mb-16 sm:mb-16 md:mb-24 leading-relaxed animate-slide-up px-6 sm:px-4" style={{ animationDelay: '0.6s' }}>
+              Paid ads, short-form content, and YouTube videos that convert.
+              <br className="hidden sm:block" />
+              {' '}Edited with intent, not noise.
             </p>
             
             {/* Hero Video - Mobile Optimized */}
@@ -380,23 +468,17 @@ const Home: React.FC = () => {
                   Your browser does not support the video tag.
                 </video>
                 
-                {/* Progressive Blur Overlay - Reduced for mobile */}
+                {/* Subtle Vignette Effect Only */}
                 <div 
-                  className="absolute inset-0 pointer-events-none transition-all duration-1000 ease-out"
+                  className="absolute inset-0 pointer-events-none"
                   style={{
                     background: `
                       radial-gradient(circle at center, 
                         transparent 0%, 
-                        transparent 30%, 
-                        rgba(255,255,255,0.1) 50%, 
-                        rgba(255,255,255,0.2) 70%, 
-                        rgba(255,255,255,0.4) 90%, 
-                        rgba(255,255,255,0.6) 100%
+                        transparent 60%, 
+                        rgba(0,0,0,0.05) 100%
                       )
-                    `,
-                    backdropFilter: `blur(${Math.max(0, 4 - (scrollY * 0.01))}px)`,
-                    WebkitBackdropFilter: `blur(${Math.max(0, 4 - (scrollY * 0.01))}px)`,
-                    opacity: Math.max(0, 0.8 - (scrollY * 0.001))
+                    `
                   }}
                 />
                 
@@ -480,46 +562,56 @@ const Home: React.FC = () => {
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="text-center mb-12 sm:mb-16 md:mb-20">
             <h2 className="font-sf-pro text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-semibold tracking-tight text-slate-900 mb-4 sm:mb-6 md:mb-8">
-              Specialized editing for every platform
+              Specialized editing for <span className="brush-highlight">every platform</span>
             </h2>
             <p className="font-inter text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed px-4 sm:px-0">
               Crafted with precision and strategic intent for maximum performance.
             </p>
           </div>
 
-          {/* Category Navigation with Arrows */}
-          <div className="flex items-center justify-center gap-8 sm:gap-12 mb-12 sm:mb-16">
+          {/* Category Navigation with Arrows - Show 3 tabs on mobile with smooth sliding */}
+          <div className="flex items-center justify-center gap-2 sm:gap-4 md:gap-8 mb-12 sm:mb-16 px-2">
             {/* Left Arrow */}
             <button
               onClick={handlePreviousCategory}
-              className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-white border border-slate-200 hover:border-blue-300 hover:bg-blue-50 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-md hover:shadow-lg"
+              className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-white border border-slate-200 hover:border-blue-300 hover:bg-blue-50 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-md hover:shadow-lg z-10"
             >
               <svg className="w-5 h-5 sm:w-6 sm:h-6 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
             </button>
 
-            {/* Category Buttons */}
-            <div className="flex flex-nowrap justify-center gap-2 sm:gap-3 overflow-x-auto scrollbar-hide">
-              {editingCategories.map((category, i) => (
-                <button
-                  key={i}
-                  onClick={() => handleCategorySelect(category.name)}
-                  className={`flex-shrink-0 px-3 sm:px-4 py-2 sm:py-3 rounded-lg font-medium text-xs sm:text-sm transition-all duration-300 whitespace-nowrap ${
-                    selectedCategory === category.name
-                      ? 'bg-blue-600 text-white shadow-lg'
-                      : 'bg-white text-slate-700 border border-slate-200 hover:border-blue-300 hover:bg-blue-50'
-                  }`}
-                >
-                  {category.name}
-                </button>
-              ))}
+            {/* Category Buttons - Smooth sliding carousel */}
+            <div className="flex-1 overflow-hidden relative">
+              <div 
+                className="flex gap-2 sm:gap-3 transition-transform duration-500 ease-out"
+                style={{
+                  transform: `translateX(calc(-${editingCategories.findIndex(cat => cat.name === selectedCategory) * 100}% / ${editingCategories.length} + ${window.innerWidth < 768 ? '33.33%' : '0%'}))`
+                }}
+              >
+                {editingCategories.map((category, i) => (
+                  <button
+                    key={i}
+                    onClick={() => handleCategorySelect(category.name)}
+                    className={`flex-shrink-0 px-3 sm:px-5 py-2 sm:py-3 rounded-lg font-medium text-xs sm:text-base transition-all duration-300 whitespace-nowrap ${
+                      selectedCategory === category.name
+                        ? 'bg-blue-600 text-white shadow-lg scale-105'
+                        : 'bg-white text-slate-700 border border-slate-200 hover:border-blue-300 hover:bg-blue-50'
+                    }`}
+                    style={{
+                      minWidth: window.innerWidth < 768 ? 'calc(33.33% - 0.5rem)' : 'auto'
+                    }}
+                  >
+                    {category.name}
+                  </button>
+                ))}
+              </div>
             </div>
 
             {/* Right Arrow */}
             <button
               onClick={handleNextCategory}
-              className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-white border border-slate-200 hover:border-blue-300 hover:bg-blue-50 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-md hover:shadow-lg"
+              className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-white border border-slate-200 hover:border-blue-300 hover:bg-blue-50 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-md hover:shadow-lg z-10"
             >
               <svg className="w-5 h-5 sm:w-6 sm:h-6 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -646,110 +738,84 @@ const Home: React.FC = () => {
       <section id="our-services" className="py-32 px-8 relative overflow-hidden z-10">
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="text-center mb-20">
-            <h2 className="font-sf-pro text-5xl md:text-6xl font-semibold tracking-tight text-slate-900 mb-8 whitespace-nowrap">Our Services</h2>
+            <h2 className="font-sf-pro text-5xl md:text-6xl font-semibold tracking-tight text-slate-900 mb-8 whitespace-nowrap">Our <span className="brush-highlight">Services</span></h2>
             <p className="font-inter text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">Comprehensive video editing solutions tailored to your needs.</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               { 
                 title: "Talking Head Short Form / Motion Graphics", 
                 desc: "Engaging short-form content with dynamic motion graphics for social media platforms.", 
                 icon: (
-                  <div className="relative">
-                    <div className="w-6 h-6 bg-blue-500 rounded-full"></div>
-                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-blue-300 rounded-sm transform rotate-12 animate-pulse"></div>
-                    <div className="absolute -bottom-1 -left-1 w-3 h-3 bg-blue-600 rounded-full animate-bounce"></div>
-                  </div>
+                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                  </svg>
                 ),
-                color: "blue",
-                shape: "rounded-lg"
+                color: "blue"
               },
               { 
                 title: "Creator Paid Ads", 
                 desc: "High-converting advertisement videos designed specifically for content creators and influencers.", 
                 icon: (
-                  <div className="relative">
-                    <div className="w-6 h-4 bg-green-500 rounded-sm"></div>
-                    <div className="absolute top-0 right-0 w-2 h-2 bg-green-300 rounded-full animate-ping"></div>
-                    <div className="absolute -bottom-1 left-1 w-4 h-2 bg-green-600 rounded-sm"></div>
-                    <div className="absolute top-1 left-2 text-green-200 text-xs">$</div>
-                  </div>
+                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
                 ),
-                color: "green",
-                shape: "rounded-lg"
+                color: "blue"
               },
               { 
                 title: "Gaming Edits", 
                 desc: "Fast-paced, energetic gaming content with seamless transitions and highlight reels.", 
                 icon: (
-                  <div className="relative">
-                    <div className="w-5 h-5 bg-purple-500 rounded-sm transform rotate-12"></div>
-                    <div className="absolute top-1 left-1 w-3 h-3 bg-purple-300 rounded-sm"></div>
-                    <div className="absolute -top-1 -right-1 w-2 h-2 bg-purple-600 rounded-full animate-pulse"></div>
-                  </div>
+                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z" />
+                  </svg>
                 ),
-                color: "purple",
-                shape: "rounded-lg"
+                color: "blue"
               },
               { 
                 title: "Cinematic Vlog/Travel Video Edit", 
                 desc: "Stunning cinematic vlogs and travel videos with professional color grading and storytelling.", 
                 icon: (
-                  <div className="relative">
-                    <div className="w-6 h-4 bg-orange-500 rounded-sm"></div>
-                    <div className="absolute top-1 left-1 w-4 h-2 bg-orange-300 rounded-sm"></div>
-                    <div className="absolute -top-1 left-2 w-2 h-2 bg-orange-600 rounded-full"></div>
-                    <div className="absolute bottom-0 right-0 w-1 h-1 bg-orange-400 rounded-full animate-ping"></div>
-                  </div>
+                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
                 ),
-                color: "orange",
-                shape: "rounded-lg"
+                color: "blue"
               },
               { 
                 title: "SaaS Animation / Product Explainer Videos", 
                 desc: "Clear, engaging explainer videos and animations for SaaS products and services.", 
                 icon: (
-                  <div className="relative">
-                    <div className="w-5 h-5 border-2 border-red-500 rounded-full animate-spin"></div>
-                    <div className="absolute top-1 left-1 w-3 h-3 bg-red-400 rounded-full"></div>
-                    <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-600 rounded-full animate-pulse"></div>
-                  </div>
+                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                  </svg>
                 ),
-                color: "red",
-                shape: "rounded-full"
+                color: "blue"
               },
               { 
                 title: "YouTube Long Form Videos", 
                 desc: "Professional long-form YouTube content with strategic pacing and audience retention focus.", 
                 icon: (
-                  <div className="relative">
-                    <div className="w-6 h-4 bg-cyan-500 rounded-sm"></div>
-                    <div className="absolute top-1 left-2 w-2 h-2 bg-cyan-300 rounded-full"></div>
-                    <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-cyan-600 rounded-sm transform rotate-45"></div>
-                    <div className="absolute top-0 left-0 w-1 h-1 bg-cyan-400 rounded-full animate-ping"></div>
-                  </div>
+                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
                 ),
-                color: "cyan",
-                shape: "rounded-xl"
+                color: "blue"
               }
             ].map((service, i) => (
-              <TiltCard key={i} className="group relative">
-                <div className="absolute inset-0 rounded-lg opacity-5 group-hover:opacity-8 transition-opacity duration-1000" style={{
-                  background: `linear-gradient(45deg, var(--tw-gradient-from), var(--tw-gradient-to))`,
-                  backgroundSize: '400% 400%',
-                  animation: 'gradientShift 6s ease-in-out infinite'
-                }} />
-                <div className="relative bg-white/80 backdrop-blur-sm rounded-lg p-8 shadow-sm border border-slate-200/50 hover:shadow-xl hover:border-slate-300/60 transition-all duration-500 hover:scale-105 transform" style={{ animation: `floating 6s ease-in-out infinite`, animationDelay: `${i}s` }}>
-                  <div className={`w-16 h-16 ${service.shape} bg-gradient-to-br from-${service.color}-500/10 to-${service.color}-600/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-all duration-500 text-${service.color}-600`}>
-                    <div className="animate-pulse">
-                      {service.icon}
-                    </div>
+              <div key={i} className="group relative">
+                <div className="relative bg-white rounded-2xl p-8 shadow-sm border border-slate-100 hover:shadow-lg hover:border-blue-100 transition-all duration-500 hover:-translate-y-1 transform h-full">
+                  <div className="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center mb-6 group-hover:bg-blue-100 transition-all duration-500 text-blue-600">
+                    {service.icon}
                   </div>
-                  <h3 className={`font-sf-pro text-2xl font-semibold text-slate-900 mb-4 group-hover:text-${service.color}-600 transition-colors`}>{service.title}</h3>
-                  <p className="font-inter text-lg text-slate-600 leading-relaxed">{service.desc}</p>
+                  <h3 className="font-sf-pro text-xl font-semibold text-slate-900 mb-4 group-hover:text-blue-600 transition-colors">{service.title}</h3>
+                  <p className="font-inter text-base text-slate-600 leading-relaxed">{service.desc}</p>
                 </div>
-              </TiltCard>
+              </div>
             ))}
           </div>
         </div>
@@ -771,94 +837,128 @@ const Home: React.FC = () => {
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="text-center mb-20">
             <h2 className="font-sf-pro text-3xl sm:text-5xl md:text-6xl font-semibold tracking-tight text-slate-900 mb-8">Why Choose Idyll</h2>
-            <p className="font-inter text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">We don't just edit videos—we engineer content that performs.</p>
+            <p className="font-inter text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">We don't just edit videos, we engineer content that performs.</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12">
-            {/* Clean Storytelling - Animated Timeline */}
-            <TiltCard className="group bg-white/80 backdrop-blur-sm rounded-lg p-6 sm:p-8 shadow-sm border border-slate-200/50 hover:shadow-md hover:border-slate-300/60 transition-all duration-500 hover:scale-105 transform cursor-pointer text-center">
-              <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-blue-500/10 to-blue-600/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500 mx-auto">
-                <div className="relative w-8 h-8">
-                  <div className="absolute inset-0 flex flex-col gap-1">
-                    <div className="h-1 bg-blue-500 rounded-full animate-pulse" style={{ animationDelay: '0s' }} />
-                    <div className="h-1 bg-blue-400 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }} />
-                    <div className="h-1 bg-blue-300 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }} />
-                    <div className="h-1 bg-blue-200 rounded-full animate-pulse" style={{ animationDelay: '0.6s' }} />
-                  </div>
-                  <div className="absolute -right-1 top-1 w-2 h-2 bg-blue-500 rounded-full animate-bounce" />
-                </div>
+            {/* Clean Storytelling */}
+            <div className="group bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-100 hover:shadow-lg hover:border-blue-100 transition-all duration-500 hover:-translate-y-1 transform text-center">
+              <div className="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center mb-6 group-hover:bg-blue-100 transition-all duration-500 mx-auto text-blue-600">
+                <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h7" />
+                </svg>
               </div>
               <h3 className="font-sf-pro text-xl sm:text-2xl font-semibold text-slate-900 mb-4 group-hover:text-blue-600 transition-colors">Clean Storytelling</h3>
               <p className="font-inter text-base sm:text-lg text-slate-600 leading-relaxed">Every cut serves a purpose. We eliminate noise and focus on narrative flow that keeps viewers engaged.</p>
-            </TiltCard>
+            </div>
 
-            {/* Retention-Focused - Animated Graph */}
-            <TiltCard className="group bg-white/80 backdrop-blur-sm rounded-lg p-6 sm:p-8 shadow-sm border border-slate-200/50 hover:shadow-md hover:border-slate-300/60 transition-all duration-500 hover:scale-105 transform cursor-pointer text-center">
-              <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-green-500/10 to-green-600/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500 mx-auto">
-                <div className="relative w-8 h-8">
-                  <svg className="w-full h-full" viewBox="0 0 32 32">
-                    <path d="M2 28 L8 20 L14 16 L20 12 L26 8 L30 4" stroke="currentColor" strokeWidth="2" fill="none" className="text-green-500" />
-                    <circle cx="8" cy="20" r="2" className="text-green-400 animate-pulse" fill="currentColor" />
-                    <circle cx="20" cy="12" r="2" className="text-green-500 animate-pulse" fill="currentColor" style={{ animationDelay: '0.5s' }} />
-                    <circle cx="30" cy="4" r="2" className="text-green-600 animate-pulse" fill="currentColor" style={{ animationDelay: '1s' }} />
-                  </svg>
-                </div>
+            {/* Retention-Focused */}
+            <div className="group bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-100 hover:shadow-lg hover:border-blue-100 transition-all duration-500 hover:-translate-y-1 transform text-center">
+              <div className="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center mb-6 group-hover:bg-blue-100 transition-all duration-500 mx-auto text-blue-600">
+                <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                </svg>
               </div>
-              <h3 className="font-sf-pro text-xl sm:text-2xl font-semibold text-slate-900 mb-4 group-hover:text-green-600 transition-colors">Retention-Focused Pacing</h3>
+              <h3 className="font-sf-pro text-xl sm:text-2xl font-semibold text-slate-900 mb-4 group-hover:text-blue-600 transition-colors">Retention-Focused Pacing</h3>
               <p className="font-inter text-base sm:text-lg text-slate-600 leading-relaxed">Strategic pacing that maximizes watch time. We understand platform algorithms and edit accordingly.</p>
-            </TiltCard>
+            </div>
 
-            {/* Platform-Specific - Animated Icons */}
-            <TiltCard className="group bg-white/80 backdrop-blur-sm rounded-lg p-6 sm:p-8 shadow-sm border border-slate-200/50 hover:shadow-md hover:border-slate-300/60 transition-all duration-500 hover:scale-105 transform cursor-pointer text-center">
-              <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-purple-500/10 to-purple-600/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500 mx-auto">
-                <div className="relative w-8 h-8 grid grid-cols-2 gap-1">
-                  <div className="w-3 h-3 bg-purple-500 rounded animate-pulse" />
-                  <div className="w-3 h-3 bg-purple-400 rounded-sm animate-pulse" style={{ animationDelay: '0.3s' }} />
-                  <div className="w-3 h-3 bg-purple-300 rounded-full animate-pulse" style={{ animationDelay: '0.6s' }} />
-                  <div className="w-3 h-3 bg-purple-200 rounded animate-pulse" style={{ animationDelay: '0.9s' }} />
-                </div>
+            {/* Platform-Specific */}
+            <div className="group bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-100 hover:shadow-lg hover:border-blue-100 transition-all duration-500 hover:-translate-y-1 transform text-center">
+              <div className="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center mb-6 group-hover:bg-blue-100 transition-all duration-500 mx-auto text-blue-600">
+                <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" />
+                </svg>
               </div>
-              <h3 className="font-sf-pro text-xl sm:text-2xl font-semibold text-slate-900 mb-4 group-hover:text-purple-600 transition-colors">Platform-Specific Edits</h3>
+              <h3 className="font-sf-pro text-xl sm:text-2xl font-semibold text-slate-900 mb-4 group-hover:text-blue-600 transition-colors">Platform-Specific Edits</h3>
               <p className="font-inter text-base sm:text-lg text-slate-600 leading-relaxed">Optimized for each platform's unique requirements. From TikTok hooks to YouTube retention curves.</p>
-            </TiltCard>
+            </div>
 
-            {/* Sound Design - Animated Waveform */}
-            <TiltCard className="group bg-white/80 backdrop-blur-sm rounded-lg p-6 sm:p-8 shadow-sm border border-slate-200/50 hover:shadow-md hover:border-slate-300/60 transition-all duration-500 hover:scale-105 transform cursor-pointer text-center">
-              <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-orange-500/10 to-orange-600/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500 mx-auto">
-                <div className="relative w-8 h-8 flex items-center justify-center gap-0.5">
-                  <div className="w-0.5 bg-orange-500 rounded-full animate-pulse" style={{ height: '8px' }} />
-                  <div className="w-0.5 bg-orange-400 rounded-full animate-pulse" style={{ height: '16px', animationDelay: '0.1s' }} />
-                  <div className="w-0.5 bg-orange-500 rounded-full animate-pulse" style={{ height: '12px', animationDelay: '0.2s' }} />
-                  <div className="w-0.5 bg-orange-600 rounded-full animate-pulse" style={{ height: '20px', animationDelay: '0.3s' }} />
-                  <div className="w-0.5 bg-orange-400 rounded-full animate-pulse" style={{ height: '6px', animationDelay: '0.4s' }} />
-                  <div className="w-0.5 bg-orange-500 rounded-full animate-pulse" style={{ height: '14px', animationDelay: '0.5s' }} />
-                </div>
+            {/* Sound Design */}
+            <div className="group bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-100 hover:shadow-lg hover:border-blue-100 transition-all duration-500 hover:-translate-y-1 transform text-center">
+              <div className="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center mb-6 group-hover:bg-blue-100 transition-all duration-500 mx-auto text-blue-600">
+                <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+                </svg>
               </div>
-              <h3 className="font-sf-pro text-xl sm:text-2xl font-semibold text-slate-900 mb-4 group-hover:text-orange-600 transition-colors">Sound Design & Motion</h3>
+              <h3 className="font-sf-pro text-xl sm:text-2xl font-semibold text-slate-900 mb-4 group-hover:text-blue-600 transition-colors">Sound Design & Motion</h3>
               <p className="font-inter text-base sm:text-lg text-slate-600 leading-relaxed">Immersive audio and smooth motion graphics that enhance the story without overwhelming.</p>
-            </TiltCard>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* --- HOW IT WORKS - Progress Bar Design --- */}
-      <section 
-        className="py-32 px-8 relative overflow-hidden z-10 hidden md:block" 
-        style={{ 
-          pointerEvents: 'none',
-          userSelect: 'none',
-          WebkitUserSelect: 'none',
-          MozUserSelect: 'none',
-          msUserSelect: 'none'
-        }}
-      >
-        <div className="max-w-7xl mx-auto relative z-10">
+      {/* --- HOW IT WORKS - Simple Connected Steps --- */}
+      <section className="py-32 px-8 relative overflow-hidden z-10" id="how-it-works">
+        <div className="max-w-6xl mx-auto relative z-10">
           <div className="text-center mb-20">
-            <h2 className="font-sf-pro text-5xl md:text-6xl font-semibold tracking-tight text-slate-900 mb-8 whitespace-nowrap">How It Works</h2>
+            <h2 className="font-sf-pro text-5xl md:text-6xl font-semibold tracking-tight text-slate-900 mb-8">How It Works</h2>
             <p className="font-inter text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">A streamlined process designed for speed, quality, and results.</p>
           </div>
 
-          <HowItWorksProgress />
+          {/* Steps with Connected Line */}
+          <div className="relative how-it-works-container">
+            {/* Connecting Line with Animation */}
+            <div className="absolute top-10 left-0 right-0 h-0.5 bg-slate-200 hidden md:block">
+              <div className="how-it-works-line h-full bg-blue-600" />
+            </div>
+            
+            {/* Steps Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8">
+              {/* Step 1 */}
+              <div className="text-center group">
+                <div className="relative inline-block mb-6 transition-transform duration-300 hover:scale-110">
+                  <div className="how-it-works-icon w-20 h-20 rounded-full bg-slate-200 flex items-center justify-center text-slate-400 shadow-lg relative z-10 group-hover:shadow-blue-500/50 transition-all duration-300" data-delay="0">
+                    <svg className="w-10 h-10 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                    </svg>
+                  </div>
+                </div>
+                <h3 className="font-sf-pro text-xl font-semibold text-slate-900 mb-3 group-hover:text-blue-600 transition-colors duration-300">Share Your Vision</h3>
+                <p className="font-inter text-base text-slate-600 leading-relaxed">Send us your raw footage and creative brief. We'll understand your goals.</p>
+              </div>
+
+              {/* Step 2 */}
+              <div className="text-center group">
+                <div className="relative inline-block mb-6 transition-transform duration-300 hover:scale-110">
+                  <div className="how-it-works-icon w-20 h-20 rounded-full bg-slate-200 flex items-center justify-center text-slate-400 shadow-lg relative z-10 group-hover:shadow-blue-500/50 transition-all duration-300" data-delay="0.8">
+                    <svg className="w-10 h-10 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                    </svg>
+                  </div>
+                </div>
+                <h3 className="font-sf-pro text-xl font-semibold text-slate-900 mb-3 group-hover:text-blue-600 transition-colors duration-300">Strategic Planning</h3>
+                <p className="font-inter text-base text-slate-600 leading-relaxed">We analyze your content and create a detailed editing strategy.</p>
+              </div>
+
+              {/* Step 3 */}
+              <div className="text-center group">
+                <div className="relative inline-block mb-6 transition-transform duration-300 hover:scale-110">
+                  <div className="how-it-works-icon w-20 h-20 rounded-full bg-slate-200 flex items-center justify-center text-slate-400 shadow-lg relative z-10 group-hover:shadow-blue-500/50 transition-all duration-300" data-delay="1.6">
+                    <svg className="w-10 h-10 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                </div>
+                <h3 className="font-sf-pro text-xl font-semibold text-slate-900 mb-3 group-hover:text-blue-600 transition-colors duration-300">Expert Editing</h3>
+                <p className="font-inter text-base text-slate-600 leading-relaxed">Our team crafts your video with precision, focusing on engagement.</p>
+              </div>
+
+              {/* Step 4 */}
+              <div className="text-center group">
+                <div className="relative inline-block mb-6 transition-transform duration-300 hover:scale-110">
+                  <div className="how-it-works-icon w-20 h-20 rounded-full bg-slate-200 flex items-center justify-center text-slate-400 shadow-lg relative z-10 group-hover:shadow-blue-500/50 transition-all duration-300" data-delay="2.4">
+                    <svg className="w-10 h-10 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                </div>
+                <h3 className="font-sf-pro text-xl font-semibold text-slate-900 mb-3 group-hover:text-blue-600 transition-colors duration-300">Deliver & Optimize</h3>
+                <p className="font-inter text-base text-slate-600 leading-relaxed">Receive your polished video with platform-specific formats.</p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -867,7 +967,7 @@ const Home: React.FC = () => {
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="text-center mb-12">
             <h2 className="font-sf-pro text-4xl md:text-5xl font-semibold tracking-tight text-slate-900 mb-4">
-              See Your <span className="text-blue-600">Content Grow</span>
+              See Your <span className="brush-highlight">Content Grow</span>
             </h2>
           </div>
 
@@ -887,7 +987,7 @@ const Home: React.FC = () => {
                 <div className="relative z-10">
                   <div className="flex items-center justify-center mb-3">
                     <span className="text-blue-600 mr-2">↗</span>
-                    <CounterStat number={98} suffix="%" label="" delay={0} />
+                    <CounterStat number={0} suffix="+" label="" delay={0} oscillate={true} oscillateMin={3000} oscillateMax={4000} oscillateSpeed={6000} />
                   </div>
                   <p className="text-slate-600 text-sm">
                     Projects delivered<br />successfully
@@ -896,11 +996,11 @@ const Home: React.FC = () => {
               </div>
             </div>
 
-            {/* Stat 2 - Average Savings */}
+            {/* Stat 2 - Average Video Views */}
             <div className="relative">
               <div className="bg-white border border-slate-200 rounded-2xl p-8 text-center">
                 <div className="flex items-center justify-center mb-3">
-                  <CounterStat number={3000} suffix="+" label="" delay={200} />
+                  <CounterStat number={0} suffix="M+" label="" delay={200} oscillate={true} oscillateMin={200} oscillateMax={300} oscillateSpeed={6000} />
                 </div>
                 <p className="text-slate-600 text-sm">
                   Our clients' average<br />video views
@@ -914,7 +1014,7 @@ const Home: React.FC = () => {
                 <div className="relative z-10">
                   <div className="flex items-center justify-center mb-3">
                     <span className="mr-2">↗</span>
-                    <CounterStat number={50} suffix="%" label="" delay={400} />
+                    <CounterStat number={0} suffix="%" label="" delay={400} oscillate={true} oscillateMin={50} oscillateMax={100} oscillateSpeed={8000} />
                   </div>
                   <p className="text-blue-100 text-sm">
                     Effective in engagement<br />growth than before
@@ -937,7 +1037,7 @@ const Home: React.FC = () => {
       <section className="py-32 px-8 relative overflow-hidden z-10">
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="text-center mb-20">
-            <h2 className="font-sf-pro text-5xl md:text-6xl font-semibold tracking-tight text-slate-900 mb-8 whitespace-nowrap">What Our Clients Say</h2>
+            <h2 className="font-sf-pro text-5xl md:text-6xl font-semibold tracking-tight text-slate-900 mb-8 whitespace-nowrap">What Our <span className="brush-highlight">Clients Say</span></h2>
             <p className="font-inter text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">Real feedback from creators who trust us with their content.</p>
           </div>
 
@@ -973,25 +1073,29 @@ const Home: React.FC = () => {
 
       {/* --- CONTACT US SECTION --- */}
       <section id="contact-us" className="py-32 px-8 relative overflow-hidden z-10">
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <h2 className="font-sf-pro text-5xl md:text-6xl font-semibold tracking-tight text-slate-900 mb-8">Let's create something amazing together</h2>
-          <p className="font-inter text-xl text-slate-600 max-w-2xl mx-auto mb-12 leading-relaxed">Ready to elevate your content? Get in touch and let's discuss how we can bring your vision to life.</p>
+        <div className="max-w-5xl mx-auto text-center relative z-10">
+          <h2 className="font-sf-pro text-5xl md:text-6xl font-semibold tracking-tight text-slate-900 mb-6">
+            Let's create something <span className="brush-highlight">amazing</span> together
+          </h2>
+          <p className="font-inter text-xl text-slate-600 max-w-2xl mx-auto mb-16 leading-relaxed">
+            Ready to elevate your content? Get in touch and let's discuss how we can bring your vision to life.
+          </p>
           
-          {/* Contact Methods */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
+          {/* Social Media Grid - Clean Blue Theme */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
             {/* WhatsApp */}
             <a
               href="https://wa.me/919373032009?text=Hi%20Idyll%20Productions,%20I%20want%20to%20discuss%20a%20video%20project"
               target="_blank"
               rel="noopener noreferrer"
-              className="group bg-white/80 backdrop-blur-sm rounded-lg p-6 shadow-sm border border-slate-200/50 hover:shadow-xl hover:border-green-300/60 transition-all duration-500 hover:scale-105 transform"
+              className="group relative bg-white rounded-2xl p-6 border border-slate-200 hover:border-blue-400 transition-all duration-300 hover:scale-105 hover:shadow-xl"
             >
-              <div className="w-12 h-12 rounded-lg bg-green-100 flex items-center justify-center text-green-600 group-hover:bg-green-200 group-hover:scale-110 transition-all duration-500 mx-auto mb-3">
-                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+              <div className="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 mx-auto mb-4 shadow-sm">
+                <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.346"/>
                 </svg>
               </div>
-              <h3 className="font-sf-pro text-sm font-semibold text-slate-900 group-hover:text-green-600 transition-colors">WhatsApp</h3>
+              <h3 className="font-sf-pro text-base font-semibold text-slate-900 group-hover:text-blue-600 transition-colors">WhatsApp</h3>
             </a>
 
             {/* Discord */}
@@ -999,14 +1103,14 @@ const Home: React.FC = () => {
               href="https://discord.com/users/1466675809568817246"
               target="_blank"
               rel="noopener noreferrer"
-              className="group bg-white/80 backdrop-blur-sm rounded-lg p-6 shadow-sm border border-slate-200/50 hover:shadow-xl hover:border-indigo-300/60 transition-all duration-500 hover:scale-105 transform"
+              className="group relative bg-white rounded-2xl p-6 border border-slate-200 hover:border-blue-400 transition-all duration-300 hover:scale-105 hover:shadow-xl"
             >
-              <div className="w-12 h-12 rounded-lg bg-indigo-100 flex items-center justify-center text-indigo-600 group-hover:bg-indigo-200 group-hover:scale-110 transition-all duration-500 mx-auto mb-3">
-                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+              <div className="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 mx-auto mb-4 shadow-sm">
+                <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419-.0002 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1568 2.4189Z"/>
                 </svg>
               </div>
-              <h3 className="font-sf-pro text-sm font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors">Discord</h3>
+              <h3 className="font-sf-pro text-base font-semibold text-slate-900 group-hover:text-blue-600 transition-colors">Discord</h3>
             </a>
 
             {/* Instagram */}
@@ -1014,14 +1118,14 @@ const Home: React.FC = () => {
               href="https://www.instagram.com/idyllproductionsofficial/"
               target="_blank"
               rel="noopener noreferrer"
-              className="group bg-white/80 backdrop-blur-sm rounded-lg p-6 shadow-sm border border-slate-200/50 hover:shadow-xl hover:border-pink-300/60 transition-all duration-500 hover:scale-105 transform"
+              className="group relative bg-white rounded-2xl p-6 border border-slate-200 hover:border-blue-400 transition-all duration-300 hover:scale-105 hover:shadow-xl"
             >
-              <div className="w-12 h-12 rounded-lg bg-pink-100 flex items-center justify-center text-pink-600 group-hover:bg-pink-200 group-hover:scale-110 transition-all duration-500 mx-auto mb-3">
-                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+              <div className="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 mx-auto mb-4 shadow-sm">
+                <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
                 </svg>
               </div>
-              <h3 className="font-sf-pro text-sm font-semibold text-slate-900 group-hover:text-pink-600 transition-colors">Instagram</h3>
+              <h3 className="font-sf-pro text-base font-semibold text-slate-900 group-hover:text-blue-600 transition-colors">Instagram</h3>
             </a>
 
             {/* Twitter/X */}
@@ -1029,14 +1133,14 @@ const Home: React.FC = () => {
               href="https://x.com/madebyidyll"
               target="_blank"
               rel="noopener noreferrer"
-              className="group bg-white/80 backdrop-blur-sm rounded-lg p-6 shadow-sm border border-slate-200/50 hover:shadow-xl hover:border-slate-300/60 transition-all duration-500 hover:scale-105 transform"
+              className="group relative bg-white rounded-2xl p-6 border border-slate-200 hover:border-blue-400 transition-all duration-300 hover:scale-105 hover:shadow-xl"
             >
-              <div className="w-12 h-12 rounded-lg bg-slate-100 flex items-center justify-center text-slate-600 group-hover:bg-slate-200 group-hover:scale-110 transition-all duration-500 mx-auto mb-3">
-                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+              <div className="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 mx-auto mb-4 shadow-sm">
+                <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
                 </svg>
               </div>
-              <h3 className="font-sf-pro text-sm font-semibold text-slate-900 group-hover:text-slate-600 transition-colors">Twitter</h3>
+              <h3 className="font-sf-pro text-base font-semibold text-slate-900 group-hover:text-blue-600 transition-colors">Twitter</h3>
             </a>
           </div>
 
