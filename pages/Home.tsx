@@ -10,6 +10,8 @@ import Button from '../components/Button';
 import { TiltCard } from '../components/ui/tilt-card';
 import { useScrollProgress } from '../hooks/useScrollProgress';
 import ProgressBar from '../components/ProgressBar';
+import UGCGallery from '../components/UGCGallery';
+import TrustWarningPopup from '../components/TrustWarningPopup';
 
 // Counter Animation Component
 const CounterStat: React.FC<{
@@ -252,6 +254,45 @@ const Home: React.FC = () => {
     }
   ];
 
+  // UGC Content Items
+  const ugcItems = [
+    {
+      video: 'https://res.cloudinary.com/ddm4gglkp/video/upload/v1770657401/8_wbclt3.mp4',
+      views: '1.2M',
+      likes: '89K'
+    },
+    {
+      video: 'https://res.cloudinary.com/ddm4gglkp/video/upload/v1770657343/7_fwarn9.mp4',
+      views: '2.4M',
+      likes: '156K'
+    },
+    {
+      video: 'https://res.cloudinary.com/ddm4gglkp/video/upload/v1770657290/5_uk9wzp.mp4',
+      views: '987K',
+      likes: '72K'
+    },
+    {
+      video: 'https://res.cloudinary.com/ddm4gglkp/video/upload/v1770657282/4_o2cpcc.mp4',
+      views: '1.8M',
+      likes: '134K'
+    },
+    {
+      video: 'https://res.cloudinary.com/ddm4gglkp/video/upload/v1770657275/6_zehniz.mp4',
+      views: '1.5M',
+      likes: '98K'
+    },
+    {
+      video: 'https://res.cloudinary.com/ddm4gglkp/video/upload/v1770657252/3_o8jo9n.mp4',
+      views: '2.1M',
+      likes: '145K'
+    },
+    {
+      video: 'https://res.cloudinary.com/ddm4gglkp/video/upload/v1770657245/4_rokczv.mp4',
+      views: '3.2M',
+      likes: '201K'
+    }
+  ];
+
   // Debug: Log the video URLs to console
   console.log('Short-form videos:', editingCategories[0].videos);
   console.log('Cinematic videos:', editingCategories[3].videos);
@@ -264,8 +305,17 @@ const Home: React.FC = () => {
     setSelectedCategory(categoryName);
     setVideoMuted({}); // Reset muted state when switching categories
     
-    // Force a small delay to ensure state updates
+    // Auto-scroll selected button into view on mobile
     setTimeout(() => {
+      const selectedButton = document.querySelector(`button[data-category="${categoryName}"]`);
+      if (selectedButton) {
+        selectedButton.scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest',
+          inline: 'center'
+        });
+      }
+      
       console.log('New selected category:', categoryName);
       const categoryVideos = editingCategories.find(cat => cat.name === categoryName)?.videos;
       console.log('Videos for', categoryName, ':', categoryVideos);
@@ -312,6 +362,9 @@ const Home: React.FC = () => {
 
   return (
     <div className="bg-white min-h-screen relative overflow-hidden">
+      {/* Trust Warning Popup */}
+      <TrustWarningPopup />
+      
       {/* Organic dot pattern with varying opacity */}
       <div className="absolute inset-0 pointer-events-none" style={{
         backgroundImage: `radial-gradient(circle, rgba(0, 0, 0, 0.15) 1px, transparent 1px)`,
@@ -557,6 +610,32 @@ const Home: React.FC = () => {
         </div>
       </section>
 
+      {/* --- UGC CONTENT SHOWCASE --- */}
+      <section className="py-16 sm:py-24 md:py-32 px-4 sm:px-6 md:px-8 relative overflow-hidden z-10">
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="text-center mb-12 sm:mb-16 md:mb-20">
+            <h2 className="font-sf-pro text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-semibold tracking-tight text-slate-900 mb-4 sm:mb-6 md:mb-8">
+              Best Editors Team for <span className="text-blue-600 brush-highlight">UGC Content</span>
+            </h2>
+            <p className="font-inter text-base sm:text-lg md:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed px-4 sm:px-0 mb-6">
+              Our expert team can produce <span className="font-bold text-blue-600">100+ videos per day easily</span> with scroll-stopping content that drives real engagement and conversions.
+            </p>
+            <button
+              onClick={() => document.getElementById('our-work')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+              className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl"
+            >
+              See Other Work
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+          </div>
+
+          {/* UGC Gallery */}
+          <UGCGallery items={ugcItems} autoScrollSpeed={0.5} />
+        </div>
+      </section>
+
       {/* --- WORK SHOWCASE WITH NAVIGATION --- */}
       <section id="our-work" className="py-16 sm:py-24 md:py-32 px-4 sm:px-6 md:px-8 relative overflow-hidden z-10">
         <div className="max-w-6xl mx-auto relative z-10">
@@ -570,27 +649,28 @@ const Home: React.FC = () => {
           </div>
 
           {/* Category Navigation with Arrows - Show 3 tabs on mobile with smooth sliding */}
-          <div className="flex items-center justify-center gap-2 sm:gap-4 md:gap-8 mb-12 sm:mb-16 px-2">
+          <div className="flex items-center justify-center gap-2 sm:gap-3 md:gap-4 mb-12 sm:mb-16 px-2 sm:px-4">
             {/* Left Arrow */}
             <button
               onClick={handlePreviousCategory}
               className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-white border border-slate-200 hover:border-blue-300 hover:bg-blue-50 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-md hover:shadow-lg z-10"
             >
-              <svg className="w-5 h-5 sm:w-6 sm:h-6 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 sm:w-5 sm:h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
             </button>
 
             {/* Category Buttons - Smooth sliding carousel */}
-            <div className="flex-1 overflow-hidden relative">
+            <div className="flex-1 overflow-x-auto overflow-y-hidden scrollbar-hide relative max-w-full">
               <div 
-                className="flex gap-2 sm:gap-3 transition-transform duration-500 ease-out justify-center md:justify-center"
+                className="flex gap-2 sm:gap-3 transition-transform duration-500 ease-out justify-start md:justify-center min-w-max px-1"
               >
                 {editingCategories.map((category, i) => (
                   <button
                     key={i}
+                    data-category={category.name}
                     onClick={() => handleCategorySelect(category.name)}
-                    className={`flex-shrink-0 px-3 sm:px-5 py-2 sm:py-3 rounded-lg font-medium text-xs sm:text-base transition-all duration-300 whitespace-nowrap ${
+                    className={`flex-shrink-0 px-3 sm:px-4 md:px-5 py-2 sm:py-2.5 md:py-3 rounded-lg font-medium text-xs sm:text-sm md:text-base transition-all duration-300 whitespace-nowrap ${
                       selectedCategory === category.name
                         ? 'bg-blue-600 text-white shadow-lg scale-105'
                         : 'bg-white text-slate-700 border border-slate-200 hover:border-blue-300 hover:bg-blue-50'
@@ -607,7 +687,7 @@ const Home: React.FC = () => {
               onClick={handleNextCategory}
               className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-white border border-slate-200 hover:border-blue-300 hover:bg-blue-50 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-md hover:shadow-lg z-10"
             >
-              <svg className="w-5 h-5 sm:w-6 sm:h-6 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 sm:w-5 sm:h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </button>
@@ -815,68 +895,57 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* --- WHY CHOOSE IDYLL with Animated Shapes --- */}
-      <section className="py-32 px-8 relative overflow-hidden z-10">
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute w-64 h-64 bg-gradient-to-br from-blue-100/30 to-purple-100/30 rounded-full blur-3xl" style={{
-            left: `${10 + Math.sin(scrollY * 0.001) * 5}%`,
-            top: `${20 + Math.cos(scrollY * 0.0008) * 10}%`
-          }} />
-          <div className="absolute w-48 h-48 bg-gradient-to-br from-green-100/20 to-blue-100/20 rounded-full blur-2xl" style={{
-            right: `${15 + Math.cos(scrollY * 0.0012) * 8}%`,
-            bottom: `${30 + Math.sin(scrollY * 0.001) * 12}%`
-          }} />
-        </div>
-
+      {/* --- WHY CHOOSE IDYLL with ScrollStack --- */}
+      <section className="py-16 sm:py-20 md:py-24 px-4 sm:px-6 md:px-8 relative overflow-hidden z-10">
         <div className="max-w-6xl mx-auto relative z-10">
-          <div className="text-center mb-20">
-            <h2 className="font-sf-pro text-3xl sm:text-5xl md:text-6xl font-semibold tracking-tight text-slate-900 mb-8">Why Choose Idyll</h2>
-            <p className="font-inter text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">We don't just edit videos, we engineer content that performs.</p>
+          <div className="text-center mb-12 sm:mb-16 md:mb-20">
+            <h2 className="font-sf-pro text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight text-slate-900 mb-6 sm:mb-8">Why Choose Idyll</h2>
+            <p className="font-inter text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed px-4 sm:px-0">We don't just edit videos, we engineer content that performs.</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-12">
             {/* Clean Storytelling */}
-            <div className="group bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-100 hover:shadow-lg hover:border-blue-100 transition-all duration-500 hover:-translate-y-1 transform text-center">
-              <div className="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center mb-6 group-hover:bg-blue-100 transition-all duration-500 mx-auto text-blue-600">
-                <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="group bg-gradient-to-br from-white to-blue-50/30 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10 shadow-sm border border-slate-100 hover:shadow-xl hover:border-blue-200 transition-all duration-500 hover:-translate-y-2 transform text-center backdrop-blur-sm">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-blue-100 flex items-center justify-center mb-5 sm:mb-6 group-hover:bg-blue-200 group-hover:scale-110 transition-all duration-500 mx-auto text-blue-600">
+                <svg className="w-7 h-7 sm:w-8 sm:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h7" />
                 </svg>
               </div>
-              <h3 className="font-sf-pro text-xl sm:text-2xl font-semibold text-slate-900 mb-4 group-hover:text-blue-600 transition-colors">Clean Storytelling</h3>
-              <p className="font-inter text-base sm:text-lg text-slate-600 leading-relaxed">Every cut serves a purpose. We eliminate noise and focus on narrative flow that keeps viewers engaged.</p>
+              <h3 className="font-sf-pro text-xl sm:text-2xl font-bold text-slate-900 mb-3 sm:mb-4 group-hover:text-blue-600 transition-colors">Clean Storytelling</h3>
+              <p className="font-inter text-sm sm:text-base md:text-lg text-slate-600 leading-relaxed">Every cut serves a purpose. We eliminate noise and focus on narrative flow that keeps viewers engaged.</p>
             </div>
 
             {/* Retention-Focused */}
-            <div className="group bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-100 hover:shadow-lg hover:border-blue-100 transition-all duration-500 hover:-translate-y-1 transform text-center">
-              <div className="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center mb-6 group-hover:bg-blue-100 transition-all duration-500 mx-auto text-blue-600">
-                <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="group bg-gradient-to-br from-white to-blue-50/30 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10 shadow-sm border border-slate-100 hover:shadow-xl hover:border-blue-200 transition-all duration-500 hover:-translate-y-2 transform text-center backdrop-blur-sm">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-blue-100 flex items-center justify-center mb-5 sm:mb-6 group-hover:bg-blue-200 group-hover:scale-110 transition-all duration-500 mx-auto text-blue-600">
+                <svg className="w-7 h-7 sm:w-8 sm:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                 </svg>
               </div>
-              <h3 className="font-sf-pro text-xl sm:text-2xl font-semibold text-slate-900 mb-4 group-hover:text-blue-600 transition-colors">Retention-Focused Pacing</h3>
-              <p className="font-inter text-base sm:text-lg text-slate-600 leading-relaxed">Strategic pacing that maximizes watch time. We understand platform algorithms and edit accordingly.</p>
+              <h3 className="font-sf-pro text-xl sm:text-2xl font-bold text-slate-900 mb-3 sm:mb-4 group-hover:text-blue-600 transition-colors">Retention-Focused Pacing</h3>
+              <p className="font-inter text-sm sm:text-base md:text-lg text-slate-600 leading-relaxed">Strategic pacing that maximizes watch time. We understand platform algorithms and edit accordingly.</p>
             </div>
 
             {/* Platform-Specific */}
-            <div className="group bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-100 hover:shadow-lg hover:border-blue-100 transition-all duration-500 hover:-translate-y-1 transform text-center">
-              <div className="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center mb-6 group-hover:bg-blue-100 transition-all duration-500 mx-auto text-blue-600">
-                <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="group bg-gradient-to-br from-white to-blue-50/30 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10 shadow-sm border border-slate-100 hover:shadow-xl hover:border-blue-200 transition-all duration-500 hover:-translate-y-2 transform text-center backdrop-blur-sm">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-blue-100 flex items-center justify-center mb-5 sm:mb-6 group-hover:bg-blue-200 group-hover:scale-110 transition-all duration-500 mx-auto text-blue-600">
+                <svg className="w-7 h-7 sm:w-8 sm:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" />
                 </svg>
               </div>
-              <h3 className="font-sf-pro text-xl sm:text-2xl font-semibold text-slate-900 mb-4 group-hover:text-blue-600 transition-colors">Platform-Specific Edits</h3>
-              <p className="font-inter text-base sm:text-lg text-slate-600 leading-relaxed">Optimized for each platform's unique requirements. From TikTok hooks to YouTube retention curves.</p>
+              <h3 className="font-sf-pro text-xl sm:text-2xl font-bold text-slate-900 mb-3 sm:mb-4 group-hover:text-blue-600 transition-colors">Platform-Specific Edits</h3>
+              <p className="font-inter text-sm sm:text-base md:text-lg text-slate-600 leading-relaxed">Optimized for each platform's unique requirements. From TikTok hooks to YouTube retention curves.</p>
             </div>
 
             {/* Sound Design */}
-            <div className="group bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-100 hover:shadow-lg hover:border-blue-100 transition-all duration-500 hover:-translate-y-1 transform text-center">
-              <div className="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center mb-6 group-hover:bg-blue-100 transition-all duration-500 mx-auto text-blue-600">
-                <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="group bg-gradient-to-br from-white to-blue-50/30 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10 shadow-sm border border-slate-100 hover:shadow-xl hover:border-blue-200 transition-all duration-500 hover:-translate-y-2 transform text-center backdrop-blur-sm">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-blue-100 flex items-center justify-center mb-5 sm:mb-6 group-hover:bg-blue-200 group-hover:scale-110 transition-all duration-500 mx-auto text-blue-600">
+                <svg className="w-7 h-7 sm:w-8 sm:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
                 </svg>
               </div>
-              <h3 className="font-sf-pro text-xl sm:text-2xl font-semibold text-slate-900 mb-4 group-hover:text-blue-600 transition-colors">Sound Design & Motion</h3>
-              <p className="font-inter text-base sm:text-lg text-slate-600 leading-relaxed">Immersive audio and smooth motion graphics that enhance the story without overwhelming.</p>
+              <h3 className="font-sf-pro text-xl sm:text-2xl font-bold text-slate-900 mb-3 sm:mb-4 group-hover:text-blue-600 transition-colors">Sound Design & Motion</h3>
+              <p className="font-inter text-sm sm:text-base md:text-lg text-slate-600 leading-relaxed">Immersive audio and smooth motion graphics that enhance the story without overwhelming.</p>
             </div>
           </div>
         </div>
@@ -1066,7 +1135,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* --- CONTACT US SECTION --- */}
-      <section id="contact-us" className="py-32 px-8 relative overflow-hidden z-10">
+      <section id="contact-us" className="py-32 px-8 relative overflow-hidden z-10 bg-gradient-to-b from-white to-slate-50">
         <div className="max-w-5xl mx-auto text-center relative z-10">
           <h2 className="font-sf-pro text-5xl md:text-6xl font-semibold tracking-tight text-slate-900 mb-6">
             Let's create something <span className="brush-highlight">amazing</span> together

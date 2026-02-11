@@ -1,15 +1,10 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { CheckCircle2, Users, Target, Award, X } from 'lucide-react';
+import { CheckCircle2, Users, Target, Award } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
 const AboutPage: React.FC = () => {
   const navigate = useNavigate();
-  const [clickCount, setClickCount] = useState(0);
-  const [showEasterEgg, setShowEasterEgg] = useState(false);
-  const [showSpecialButton, setShowSpecialButton] = useState(false);
-  const [currentText, setCurrentText] = useState('');
-  const [showHeartsRain, setShowHeartsRain] = useState(false);
 
   // Scroll animation refs
   const contentRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -50,40 +45,6 @@ const AboutPage: React.FC = () => {
       });
     }, 100);
   };
-
-  const handleReadyToWorkClick = () => {
-    const newCount = clickCount + 1;
-    setClickCount(newCount);
-    
-    if (newCount === 5) {
-      setShowSpecialButton(true);
-    }
-  };
-
-  const handleSpecialButtonClick = () => {
-    setShowEasterEgg(true);
-    setShowSpecialButton(false);
-    
-    // Start text animations
-    setTimeout(() => {
-      setCurrentText('Hello Annika');
-      setTimeout(() => {
-        setCurrentText('');
-        setTimeout(() => {
-          setCurrentText('I love you');
-          setShowHeartsRain(true);
-        }, 1000);
-      }, 2000);
-    }, 500);
-  };
-
-  const closeEasterEgg = () => {
-    setShowEasterEgg(false);
-    setShowHeartsRain(false);
-    setCurrentText('');
-    setClickCount(0);
-    setShowSpecialButton(false);
-  };
   return (
     <div className="bg-white min-h-screen relative overflow-hidden">
       {/* Organic dot pattern with varying opacity */}
@@ -105,19 +66,19 @@ const AboutPage: React.FC = () => {
       }} />
       {/* Fade overlay for grid */}
       <div className="absolute inset-0 bg-gradient-to-b from-white/20 via-transparent to-white/20 pointer-events-none" />
-      <section className="pt-24 sm:pt-32 md:pt-40 pb-16 sm:pb-24 md:pb-32 px-4 sm:px-6 md:px-12 relative z-10 animate-page-slide-in">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12 sm:mb-16 md:mb-24">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black tracking-tight text-[#001B3D] mb-6 sm:mb-8 md:mb-12">
+      <section className="pt-20 sm:pt-24 md:pt-28 pb-12 sm:pb-16 md:pb-20 px-4 sm:px-6 md:px-12 relative z-10 animate-page-slide-in">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-10 sm:mb-12 md:mb-16">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-[#001B3D] mb-4 sm:mb-6 md:mb-8">
               About Idyll Productions
             </h1>
-            <p className="text-base sm:text-lg md:text-xl text-[#001B3D]/50 max-w-4xl mx-auto font-normal leading-relaxed px-4 sm:px-0">
+            <p className="text-base sm:text-lg md:text-xl text-[#001B3D]/50 max-w-5xl mx-auto font-normal leading-relaxed px-4 sm:px-0">
               We are a genuine creative studio focused on editing, storytelling, and long term growth with creators and brands. 
               No fancy words, no complicated processes. Just honest work that delivers results.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 md:gap-16 mb-16 sm:mb-24 md:mb-32">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10 md:gap-12 mb-12 sm:mb-16 md:mb-20">
             <div className="space-y-6 sm:space-y-8">
               <h2 className="text-2xl sm:text-3xl font-black text-[#001B3D] mb-4 sm:mb-6 md:mb-8">Who We Are</h2>
               <p className="text-base sm:text-lg text-[#001B3D]/60 leading-relaxed font-normal">
@@ -151,32 +112,32 @@ const AboutPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-32">
-            <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100/50 text-center">
-              <div className="w-16 h-16 rounded-2xl bg-slate-50/80 flex items-center justify-center mx-auto mb-8 text-[#0070F3]">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 md:gap-10 mb-12 sm:mb-16 md:mb-20">
+            <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 sm:p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100/50 text-center">
+              <div className="w-16 h-16 rounded-2xl bg-slate-50/80 flex items-center justify-center mx-auto mb-6 sm:mb-7 md:mb-8 text-[#0070F3]">
                 <Users className="w-8 h-8" />
               </div>
-              <h3 className="text-xl font-black text-[#001B3D] mb-4">Real Team</h3>
+              <h3 className="text-xl font-black text-[#001B3D] mb-3 sm:mb-4">Real Team</h3>
               <p className="text-base text-[#001B3D]/50 leading-relaxed font-normal">
                 Experienced professionals who understand content creation and audience engagement.
               </p>
             </div>
 
-            <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100/50 text-center">
-              <div className="w-16 h-16 rounded-2xl bg-slate-50/80 flex items-center justify-center mx-auto mb-8 text-[#0070F3]">
+            <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 sm:p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100/50 text-center">
+              <div className="w-16 h-16 rounded-2xl bg-slate-50/80 flex items-center justify-center mx-auto mb-6 sm:mb-7 md:mb-8 text-[#0070F3]">
                 <Target className="w-8 h-8" />
               </div>
-              <h3 className="text-xl font-black text-[#001B3D] mb-4">Clear Process</h3>
+              <h3 className="text-xl font-black text-[#001B3D] mb-3 sm:mb-4">Clear Process</h3>
               <p className="text-base text-[#001B3D]/50 leading-relaxed font-normal">
                 Transparent workflow with regular updates and structured feedback rounds.
               </p>
             </div>
 
-            <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100/50 text-center">
-              <div className="w-16 h-16 rounded-2xl bg-slate-50/80 flex items-center justify-center mx-auto mb-8 text-[#0070F3]">
+            <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 sm:p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100/50 text-center">
+              <div className="w-16 h-16 rounded-2xl bg-slate-50/80 flex items-center justify-center mx-auto mb-6 sm:mb-7 md:mb-8 text-[#0070F3]">
                 <Award className="w-8 h-8" />
               </div>
-              <h3 className="text-xl font-black text-[#001B3D] mb-4">Proven Results</h3>
+              <h3 className="text-xl font-black text-[#001B3D] mb-3 sm:mb-4">Proven Results</h3>
               <p className="text-base text-[#001B3D]/50 leading-relaxed font-normal">
                 Track record of helping creators and brands grow their audiences through better content.
               </p>
@@ -184,9 +145,9 @@ const AboutPage: React.FC = () => {
           </div>
 
           {/* Team Section */}
-          <div className="mb-16 sm:mb-24 md:mb-32">
-            <div className="text-center mb-12 sm:mb-16">
-              <h2 className="text-3xl sm:text-4xl font-black text-[#001B3D] mb-4 sm:mb-6">Meet Our Team</h2>
+          <div className="mb-12 sm:mb-16 md:mb-20">
+            <div className="text-center mb-8 sm:mb-10 md:mb-12">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#001B3D] mb-3 sm:mb-4 md:mb-6">Meet Our Team</h2>
               <p className="text-base sm:text-lg text-[#001B3D]/50 max-w-2xl mx-auto">
                 The creative minds behind Idyll Productions, dedicated to bringing your vision to life.
               </p>
@@ -328,28 +289,11 @@ const AboutPage: React.FC = () => {
           </div>
 
           <div className="text-center">
-            <div className="bg-gradient-to-b from-slate-50/40 to-white rounded-3xl p-12 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
-              <div className="flex items-center justify-center gap-3 mb-6">
-                <h2 
-                  className="text-3xl font-black text-[#001B3D] cursor-pointer select-none"
-                  onClick={handleReadyToWorkClick}
-                >
-                  Ready to Work Together?
-                </h2>
-                
-                {/* Small Easter Egg Button next to heading */}
-                {showSpecialButton && (
-                  <button
-                    onClick={handleSpecialButtonClick}
-                    className="w-8 h-8 bg-gradient-to-r from-pink-500 to-red-500 text-white rounded-full flex items-center justify-center hover:from-pink-600 hover:to-red-600 transition-all duration-300 shadow-lg shadow-pink-500/20 hover:scale-110 transform animate-bounce"
-                  >
-                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                    </svg>
-                  </button>
-                )}
-              </div>
-              <p className="text-lg text-[#001B3D]/50 mb-8 max-w-2xl mx-auto">
+            <div className="bg-gradient-to-b from-slate-50/40 to-white rounded-3xl p-8 sm:p-10 md:p-12 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+              <h2 className="text-2xl sm:text-3xl font-black text-[#001B3D] mb-4 sm:mb-5 md:mb-6">
+                Ready to Work Together?
+              </h2>
+              <p className="text-base sm:text-lg text-[#001B3D]/50 mb-6 sm:mb-7 md:mb-8 max-w-2xl mx-auto">
                 Let's discuss your project and see how we can help you create content that connects with your audience and drives real results.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -378,50 +322,6 @@ const AboutPage: React.FC = () => {
           </div>
         </div>
       </section>
-
-      {/* Easter Egg Modal */}
-      {showEasterEgg && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm">
-          {/* Close Button */}
-          <button
-            onClick={closeEasterEgg}
-            className="absolute top-8 right-8 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-all duration-300 hover:scale-110 z-10"
-          >
-            <X className="w-6 h-6" />
-          </button>
-
-          {/* Text Animation Container */}
-          <div className="text-center z-10">
-            {currentText && (
-              <h1 
-                className="text-4xl sm:text-6xl md:text-8xl font-bold text-white animate-fade-slide-up"
-                key={currentText}
-              >
-                {currentText}
-              </h1>
-            )}
-          </div>
-
-          {/* Hearts Rain */}
-          {showHeartsRain && (
-            <div className="absolute inset-0 pointer-events-none overflow-hidden">
-              {[...Array(50)].map((_, i) => (
-                <div
-                  key={i}
-                  className="absolute text-red-500 text-2xl animate-heart-fall"
-                  style={{
-                    left: `${Math.random() * 100}%`,
-                    animationDelay: `${Math.random() * 3}s`,
-                    animationDuration: `${3 + Math.random() * 2}s`
-                  }}
-                >
-                  ❤️
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
     </div>
   );
 };

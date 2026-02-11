@@ -1,8 +1,22 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Footer: React.FC = () => {
+  const navigate = useNavigate();
+
+  const scrollToSection = (sectionId: string) => {
+    // If not on home page, navigate to home first
+    if (window.location.pathname !== '/') {
+      navigate('/');
+      setTimeout(() => {
+        document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    } else {
+      document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   return (
     <footer className="relative py-16 px-6 md:px-12 bg-black overflow-hidden">
       {/* Background Image - Idyll text on grassy hill */}
@@ -28,20 +42,16 @@ const Footer: React.FC = () => {
             <h3 className="text-[9px] font-black uppercase tracking-[0.3em] text-white">Quick Links</h3>
             <div className="flex flex-col gap-3 text-xs font-bold text-gray-300">
               <Link to="/" className="hover:text-[#007AFF] transition-colors">Home</Link>
+              <Link to="/work" className="hover:text-[#007AFF] transition-colors">Work</Link>
               <button 
-                onClick={() => document.getElementById('our-work')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
-                className="hover:text-[#007AFF] transition-colors text-left"
-              >
-                Work
-              </button>
-              <button 
-                onClick={() => document.getElementById('our-services')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+                onClick={() => scrollToSection('our-services')}
                 className="hover:text-[#007AFF] transition-colors text-left"
               >
                 Services
               </button>
               <Link to="/films" className="hover:text-[#007AFF] transition-colors">Films</Link>
               <Link to="/about" className="hover:text-[#007AFF] transition-colors">About</Link>
+              <Link to="/contact" className="hover:text-[#007AFF] transition-colors">Contact</Link>
             </div>
           </div>
           
@@ -81,9 +91,7 @@ const Footer: React.FC = () => {
                 WhatsApp
               </a>
               <a 
-                href="https://mail.google.com/mail/?view=cm&fs=1&to=contact@idyllproductions.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
+                href="mailto:contact@idyllproductions.com" 
                 className="hover:text-[#007AFF] transition-colors"
               >
                 Email
@@ -94,7 +102,7 @@ const Footer: React.FC = () => {
         
         <div className="pt-6 flex justify-center">
           <p className="text-[8px] font-black uppercase tracking-[0.4em] text-gray-400 text-center">
-            © 2023 Idyll Productions. All Rights Reserved. Developed by Harsh Pawar
+            © 2025 Idyll Productions. All Rights Reserved. Developed by Harsh Pawar
           </p>
         </div>
       </div>
@@ -103,4 +111,3 @@ const Footer: React.FC = () => {
 };
 
 export default Footer;
-2222
