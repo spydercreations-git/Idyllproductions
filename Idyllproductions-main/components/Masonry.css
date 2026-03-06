@@ -1,0 +1,78 @@
+.list {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.item-wrapper {
+  position: absolute;
+  will-change: transform, width, height, opacity;
+  overflow: hidden;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.item-wrapper:hover {
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3);
+}
+
+.item-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.video-stats {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  display: flex;
+  gap: 16px;
+  z-index: 10;
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: white;
+}
+
+.stat svg {
+  flex-shrink: 0;
+}
+
+.color-overlay {
+  transition: opacity 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .item-wrapper {
+    border-radius: 8px;
+  }
+  
+  .video-stats {
+    bottom: 8px;
+    left: 8px;
+    gap: 12px;
+  }
+  
+  .stat {
+    padding: 4px 10px;
+    font-size: 12px;
+  }
+  
+  .stat svg {
+    width: 14px;
+    height: 14px;
+  }
+}
