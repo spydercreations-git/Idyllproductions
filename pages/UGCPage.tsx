@@ -28,16 +28,8 @@ const UGCPage: React.FC = () => {
   const step4 = tick % 6;
   const isDone = step4 >= 3;
 
-  // Grab short-form content videos to fill out the grid to 10 videos
-  const shortFormVideos = getVideosForCategory('Short-Form Content');
-  
-  // Merge UGC_VIDEOS with additional short-form videos to make exactly 10 videos
-  const ugcVideos = [
-    ...UGC_VIDEOS,
-    { video: shortFormVideos[0] || '', views: '1.4M', likes: '110K' },
-    { video: shortFormVideos[1] || '', views: '2.0M', likes: '142K' },
-    { video: shortFormVideos[2] || '', views: '850K', likes: '64K' },
-  ].filter(v => v.video).slice(0, 10);
+  // Display all UGC_VIDEOS dynamically
+  const ugcVideos = UGC_VIDEOS;
 
   // Comparison metrics dataset for responsive table
   // Form States

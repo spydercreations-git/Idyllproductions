@@ -9,12 +9,19 @@ export const HERO_VIDEO = hls('71b0d8a0-c6ea-46ee-944b-f3b5382f1ec7');
 
 // UGC ads gallery (home page + UGC page)
 export const UGC_VIDEOS = [
+  { video: hls('98b9241e-f614-4517-97fc-4c57d3f84cf4'), views: '1.6M', likes: '124K' },
   { video: hls('5aaede28-9e55-4440-9310-5ad64dcf9513'), views: '1.2M', likes: '89K' },
+  { video: hls('f01c6017-979b-49ed-ac4d-387380405f02'), views: '2.8M', likes: '198K' },
   { video: hls('0a24b72a-48c5-4ce6-8dd9-9cc36bc5d63f'), views: '2.4M', likes: '156K' },
+  { video: hls('f175b0ae-94bb-4fec-a374-5b63b554ff83'), views: '912K', likes: '68K' },
   { video: hls('7f0756f8-94b3-4f82-8985-b777838be797'), views: '987K',  likes: '72K' },
+  { video: hls('bc1eba8f-c706-4fbf-9a08-18c0cd3488dc'), views: '1.4M', likes: '102K' },
   { video: hls('8da697b2-c9d3-4d44-815c-32f5635bbada'), views: '1.8M', likes: '134K' },
+  { video: hls('ab26e4d6-11e3-4400-9d39-057f51127fd2'), views: '2.2M', likes: '165K' },
   { video: hls('4ea1225e-169b-423c-b818-b3788746955f'), views: '1.5M', likes: '98K' },
+  { video: hls('06c6a4c5-a17a-4052-abea-1789d9b89192'), views: '1.1M', likes: '84K' },
   { video: hls('29919170-b150-4185-b0e0-cf5d48ef232c'), views: '2.1M', likes: '145K' },
+  { video: hls('32304af3-0711-4adc-ae6b-0788c1495403'), views: '3.5M', likes: '245K' },
   { video: hls('96e54a2a-b6fb-4a32-aac7-0a65db5b3fc0'), views: '3.2M', likes: '201K' },
 ];
 
@@ -37,12 +44,12 @@ const BUNNY_VIDEOS = {
     hls('ba385e0a-023d-4bd5-803b-5eef2bcf0ce6'),
   ],
   'SaaS & Tech Videos': [
+    hls('a9d7c72a-cc2b-4f83-87cb-c0e738f9bc7e'),
     hls('c1a9fd3c-b80c-4c25-9b1f-c99c74040be8'),
     hls('ac2f0a0a-2aee-4b2d-8805-587ab3fc9692'),
     hls('b240ed13-666d-4e39-934e-32e3f98c570e'),
     hls('e782d3d8-cb75-4261-9dea-5c4524e1cb86'),
     hls('12f83a43-eafe-4e43-b3e3-d72bc8cdafbb'),
-    hls('88aefcf2-8e11-4c1e-ad55-94e332c8ff0f'),
   ],
   'Gaming Content': [
     hls('f0e1c69b-8758-495f-9ca0-c0324eb9f43f'),
