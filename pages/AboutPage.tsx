@@ -108,7 +108,7 @@ const AboutPage: React.FC = () => {
     {
       name: "Harsh Pawar",
       role: "CEO - CHIEF EXECUTIVE OFFICER",
-      description: "CEO and Founder of Idyll Productions. Harsh is a professional motion designer and entrepreneur from Maharashtra, India (originally from the Kokan region), who operates the company from Mumbai."
+      description: "CEO & Founder of Idyll Productions, and a professional motion designer."
     },
     {
       name: "Rohit Gaikwad",

@@ -126,7 +126,7 @@ SERVICES (mention only if asked):
 • User-generated style ads
 
 KEY TEAM MEMBERS (mention only if asked):
-• Harsh Pawar - CEO & Founder. Harsh is a professional motion designer and entrepreneur originally from the Kokan side of Maharashtra, India. He operates Idyll Productions from Mumbai.
+• Harsh Pawar - CEO & Founder, and a professional motion designer.
 • Rohit Gaikwad - COO
 • Snow - Chief Editing Manager
 • Smita - Chief Sales Officer

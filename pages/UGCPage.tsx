@@ -411,9 +411,32 @@ Custom Specifications:
           </h1>
 
           {/* Subtitle */}
-          <p className="font-inter text-base sm:text-lg md:text-xl lg:text-2xl text-slate-500 max-w-3xl mx-auto mb-12 leading-relaxed px-4">
+          <p className="font-inter text-base sm:text-lg md:text-xl lg:text-2xl text-slate-500 max-w-3xl mx-auto mb-8 leading-relaxed px-4">
             We transform raw user-generated footage into scroll-stopping video ads. Done-for-you scripting, performance editing, and hook-testing to maximize your ad spend.
           </p>
+
+          {/* Highlighted Stats */}
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-10 sm:gap-20 mb-16 px-4 mt-8">
+            <div className="flex flex-col items-center">
+              <span className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-slate-900 tracking-tight mb-2">
+                3,000+
+              </span>
+              <span className="font-inter text-xs sm:text-sm font-medium text-slate-500 uppercase tracking-[0.15em]">
+                Videos Delivered
+              </span>
+            </div>
+            
+            <div className="hidden sm:block w-px h-16 bg-slate-200"></div>
+
+            <div className="flex flex-col items-center">
+              <span className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-[#FF6B35] tracking-tight mb-2">
+                1 Billion+
+              </span>
+              <span className="font-inter text-xs sm:text-sm font-medium text-slate-500 uppercase tracking-[0.15em]">
+                Views Till Now
+              </span>
+            </div>
+          </div>
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center px-4">
@@ -433,6 +456,81 @@ Custom Specifications:
           </div>
         </div>
       </section>
+
+      {/* --- CLIENT LOGO STRIP --- */}
+      <div className="relative py-12 overflow-hidden z-10 bg-white/40 backdrop-blur-sm border-y border-slate-100/50">
+        <div className="text-center mb-8">
+          <p className="font-inter text-sm font-semibold text-slate-500 uppercase tracking-wider">Trusted by 200+ Leading Brands</p>
+        </div>
+
+        {/* Left fade */}
+        <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-24 md:w-32 pointer-events-none z-20"
+          style={{ background: 'linear-gradient(to right, rgba(255,255,255,1), transparent)' }} />
+        {/* Right fade */}
+        <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-24 md:w-32 pointer-events-none z-20"
+          style={{ background: 'linear-gradient(to left, rgba(255,255,255,1), transparent)' }} />
+
+        <div className="flex logo-scroll-container" style={{ width: 'max-content' }}>
+          {[
+            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/10_bxfwdr.png',
+            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/6_ajbvpc.png',
+            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/7_qin1jy.png',
+            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/11_tfpwmc.png',
+            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/8_ckndqw.png',
+            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/5_cq6oxb.png',
+            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/1_iwfdhc.png',
+            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/4_viqguw.png',
+            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/3_yfsgon.png',
+            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/2_vws6tz.png',
+            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/9_sogiaz.png',
+            // duplicate for seamless loop
+            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/10_bxfwdr.png',
+            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/6_ajbvpc.png',
+            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/7_qin1jy.png',
+            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/11_tfpwmc.png',
+            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/8_ckndqw.png',
+            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/5_cq6oxb.png',
+            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/1_iwfdhc.png',
+            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/4_viqguw.png',
+            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/3_yfsgon.png',
+            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/2_vws6tz.png',
+            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/9_sogiaz.png',
+          ].map((src, i) => (
+            <div key={i} className="flex-shrink-0 flex items-center justify-center mx-6 sm:mx-10 md:mx-12 lg:mx-14">
+              <img
+                src={src}
+                alt={`client-logo-${i}`}
+                className="h-12 sm:h-16 md:h-20 lg:h-24 w-auto object-contain opacity-75 hover:opacity-100 grayscale hover:grayscale-0 transition-all duration-300"
+              />
+            </div>
+          ))}
+        </div>
+
+        <style>{`
+          .logo-scroll-container {
+            animation: logoScroll 120s linear infinite;
+          }
+          @media (min-width: 640px) {
+            .logo-scroll-container {
+              animation: logoScroll 90s linear infinite;
+            }
+          }
+          @media (min-width: 1024px) {
+            .logo-scroll-container {
+              animation: logoScroll 75s linear infinite;
+            }
+          }
+          @media (min-width: 1440px) {
+            .logo-scroll-container {
+              animation: logoScroll 50s linear infinite;
+            }
+          }
+          @keyframes logoScroll {
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+          }
+        `}</style>
+      </div>
 
       {/* --- PORTFOLIO GALLERY GRID --- */}
       <section id="ugc-portfolio" className="py-16 px-4 sm:px-6 md:px-8 relative z-10">
