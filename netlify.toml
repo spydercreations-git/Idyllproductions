@@ -18,6 +18,13 @@
   status = 200
   force = true
 
+# Proxy Resend API requests to avoid CORS
+[[redirects]]
+  from = "/api/resend/*"
+  to = "https://api.resend.com/:splat"
+  status = 200
+  force = true
+
 # Redirect all other routes to index.html for SPA routing
 [[redirects]]
   from = "/*"

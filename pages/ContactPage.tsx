@@ -138,12 +138,11 @@ const ContactPage: React.FC = () => {
       </div>
     `;
 
-    const resendApiKey = 're_bm4pb9tA_DtRAqjSjs4UDfoqcnY7afuPG';
-    const corsProxy = 'https://corsproxy.io/?';
+    const resendApiKey = 're_9a2M5VBk_KLPxPp5T2K5wvzE9dBKnwiDT';
 
     // 1. Notify Admin
     try {
-      const response = await fetch(`${corsProxy}https://api.resend.com/emails`, {
+      const response = await fetch('/api/resend/emails', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${resendApiKey}`,
@@ -167,7 +166,7 @@ const ContactPage: React.FC = () => {
 
     // 2. Notify Client
     try {
-      const response = await fetch(`${corsProxy}https://api.resend.com/emails`, {
+      const response = await fetch('/api/resend/emails', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${resendApiKey}`,

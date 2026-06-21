@@ -103,11 +103,10 @@ const ApplyEditorPage: React.FC = () => {
       </div>
     `;
 
-    const resendApiKey = 're_bm4pb9tA_DtRAqjSjs4UDfoqcnY7afuPG';
-    const corsProxy = 'https://corsproxy.io/?';
+    const resendApiKey = 're_9a2M5VBk_KLPxPp5T2K5wvzE9dBKnwiDT';
 
     try {
-      const r1 = await fetch(`${corsProxy}https://api.resend.com/emails`, {
+      const r1 = await fetch('/api/resend/emails', {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${resendApiKey}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ from: 'Idyll Productions <info@idyllproductions.work>', to: ['harshidyllproductions@gmail.com'], subject: `New Work Application: ${formData.name}`, html: adminHtml })
@@ -116,7 +115,7 @@ const ApplyEditorPage: React.FC = () => {
     } catch (e) { console.error('Failed to send admin email:', e); }
 
     try {
-      const r2 = await fetch(`${corsProxy}https://api.resend.com/emails`, {
+      const r2 = await fetch('/api/resend/emails', {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${resendApiKey}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ from: 'Idyll Productions <info@idyllproductions.work>', to: [formData.email], subject: 'Thank you for your application — Idyll Productions', html: applicantHtml })

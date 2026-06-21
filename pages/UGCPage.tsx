@@ -227,11 +227,10 @@ Custom Specifications:
     `;
 
     // 1. Send all details to admin email
-    const resendApiKey = 're_bm4pb9tA_DtRAqjSjs4UDfoqcnY7afuPG';
-    const corsProxy = 'https://corsproxy.io/?';
+    const resendApiKey = 're_9a2M5VBk_KLPxPp5T2K5wvzE9dBKnwiDT';
 
     try {
-      const response = await fetch(`${corsProxy}https://api.resend.com/emails`, {
+      const response = await fetch('/api/resend/emails', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${resendApiKey}`,
@@ -259,7 +258,7 @@ Custom Specifications:
 
     // 2. Send message to client email
     try {
-      const response = await fetch(`${corsProxy}https://api.resend.com/emails`, {
+      const response = await fetch('/api/resend/emails', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${resendApiKey}`,
