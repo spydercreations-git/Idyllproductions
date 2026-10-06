@@ -3,9 +3,22 @@
   command = "npm run build"
 
 [build.environment]
-  NODE_VERSION = "18"
+  NODE_VERSION = "20"
 
-# Serve sitemap.xml and robots.txt as static files (BEFORE SPA redirect)
+# 301 Redirect old domain idyllproductions.in to idyllproductions.com
+[[redirects]]
+  from = "https://idyllproductions.in/*"
+  to = "https://idyllproductions.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://idyllproductions.in/*"
+  to = "https://idyllproductions.com/:splat"
+  status = 301
+  force = true
+
+# Serve sitemap.xml and robots.txt as static files
 [[redirects]]
   from = "/sitemap.xml"
   to = "/sitemap.xml"
@@ -25,11 +38,11 @@
   status = 200
   force = true
 
-# Redirect all other routes to index.html for SPA routing
+# Custom 404 fallback for URLs that do not exist (returns 404 HTTP status)
 [[redirects]]
   from = "/*"
-  to = "/index.html"
-  status = 200
+  to = "/404.html"
+  status = 404
 
 # Security headers
 [[headers]]

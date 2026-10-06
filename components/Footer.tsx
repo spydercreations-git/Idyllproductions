@@ -17,7 +17,7 @@ const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="relative pt-20 pb-36 sm:pb-20 px-6 md:px-12 overflow-visible mt-24" style={{ backgroundColor: '#000000' }}>
+    <footer className="relative pt-20 pb-12 sm:pb-16 px-6 md:px-12 overflow-visible mt-24 mb-0" style={{ backgroundColor: '#000000', marginBottom: 0 }}>
       {/* SVG Curve at the top to arch upward in the middle */}
       <div className="absolute top-0 left-0 right-0 w-full overflow-hidden leading-[0]" style={{ transform: 'translateY(-99%)', pointerEvents: 'none' }}>
         <svg viewBox="0 0 1440 120" preserveAspectRatio="none" className="relative block w-full h-[40px] sm:h-[60px] md:h-[80px]">
@@ -33,18 +33,15 @@ const Footer: React.FC = () => {
             <h3 className="text-[11px] font-black uppercase tracking-[0.3em] text-slate-400">Quick Links</h3>
             <div className="flex flex-col gap-3 text-xs font-bold text-slate-300">
               <Link to="/" className="hover:text-white transition-colors">Home</Link>
-              <Link to="/work" className="hover:text-white transition-colors">Work</Link>
-              <button 
-                onClick={() => scrollToSection('our-services')}
-                className="hover:text-white transition-colors text-left font-bold"
-              >
-                Services
-              </button>
+              <a href="/#our-work" className="hover:text-white transition-colors">Work</a>
+              <Link to="/services" className="hover:text-white transition-colors">Services</Link>
+              <Link to="/pricing" className="hover:text-white transition-colors">Pricing</Link>
+              <Link to="/ugc-video-editing" className="hover:text-white transition-colors">UGC Editing</Link>
               <Link to="/blog" className="hover:text-white transition-colors">Blog</Link>
               <Link to="/about" className="hover:text-white transition-colors">About</Link>
               <Link to="/contact" className="hover:text-white transition-colors">Contact</Link>
               <Link to="/brand-book" className="hover:text-white transition-colors flex items-center gap-1.5">
-                <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#FF6B35]" />
+                <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#FF8156]" />
                 Brand Book
               </Link>
             </div>
@@ -54,8 +51,9 @@ const Footer: React.FC = () => {
           <div className="flex flex-col items-center justify-center flex-1 self-center py-6 md:py-0">
             <img 
               src="/logo-white.png" 
-              alt="Idyll Productions" 
+              alt="Idyll Productions logo" 
               className="h-100 w-auto mb-4"
+              loading="lazy"
             />
             <p className="text-xs text-slate-400 text-center max-w-xs leading-relaxed font-medium">
               High-performance video editing for modern creators, brands, and businesses.
@@ -112,7 +110,7 @@ const Footer: React.FC = () => {
         
         <div className="pt-6 flex justify-center px-4">
           <p className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.12em] sm:tracking-[0.3em] text-center leading-relaxed text-slate-500">
-            © 2026 Idyll Productions. All rights reserved. | Designed & Developed by Harsh Pawar
+            © 2026 Idyll Productions. All rights reserved.
           </p>
         </div>
       </div>

@@ -1,0 +1,579 @@
+/* Scoped styles for Why Choose Idyll cards */
+.why-idyll {
+  --bg: #FFFFFF;
+  --card: #FFFFFF;
+  --line: #F5E2D4;
+  --line-2: #EEF0F4;
+  --fg: #0F172A;
+  --fg-2: #4B5565;
+  --muted: #94A3B8;
+  --accent: #FF8156;
+  --accent-2: #FF9A57;
+  --accent-soft: #FFF4ED;
+  --lane: #F7F8FA;
+  --clip-bad: #E6E9EF;
+  --hatch: #D3D8E0;
+  --scene-a: #FBE3D1;
+  --scene-b: #F6CDB0;
+  --scene-win: #FFF7F0;
+  --scene-body: #1F2937;
+  --scene-skin: #E9B996;
+  --f-display: "Inter Tight", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --f-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --f-mono: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: var(--f-body);
+}
+
+.why-idyll * {
+  box-sizing: border-box;
+}
+
+.why-idyll .why-card-wrap {
+  width: 100%;
+}
+
+.why-idyll .why-card-inner {
+  background: var(--card);
+  border-radius: 22px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.why-idyll .why-viz {
+  height: 176px;
+  position: relative;
+  min-width: 0;
+  margin-bottom: 1.5rem;
+}
+
+.why-idyll .mono {
+  font-family: var(--f-mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.why-idyll .chip {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 1. Timeline Animation */
+.why-idyll .tl {
+  display: grid;
+  gap: 10px;
+  height: 100%;
+  align-content: center;
+}
+
+.why-idyll .tl-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.why-idyll .tl-top .l {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.why-idyll .tl-track {
+  position: relative;
+  padding: 8px 0;
+}
+
+.why-idyll .tl-ruler {
+  height: 12px;
+  background: repeating-linear-gradient(90deg, var(--line-2) 0 1px, transparent 1px 10%);
+  background-size: 100% 6px;
+  background-repeat: repeat-x;
+  background-position: bottom;
+  margin-bottom: 6px;
+}
+
+.why-idyll .tl-row {
+  display: flex;
+  align-items: stretch;
+  height: 74px;
+}
+
+.why-idyll .clip {
+  display: grid;
+  grid-template-rows: 36px 1fr;
+  gap: 4px;
+  min-width: 0;
+  overflow: hidden;
+  position: relative;
+  will-change: flex-basis, opacity;
+}
+
+.why-idyll .clip-v {
+  border-radius: 6px;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--f-mono);
+  font-size: 10px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  padding: 0 7px;
+  white-space: nowrap;
+  overflow: hidden;
+  position: relative;
+}
+
+.why-idyll .clip.keep:nth-child(odd) .clip-v {
+  background: var(--accent-2);
+}
+
+.why-idyll .clip-a {
+  border-radius: 5px;
+  background: var(--accent-soft);
+  overflow: hidden;
+}
+
+.why-idyll .clip-a svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.why-idyll .clip-a rect {
+  fill: var(--accent);
+}
+
+.why-idyll .clip.bad .clip-v {
+  background: var(--clip-bad) repeating-linear-gradient(135deg, transparent 0 5px, var(--hatch) 5px 6px);
+  color: var(--muted);
+}
+
+.why-idyll .clip.bad .clip-a {
+  background: var(--lane);
+}
+
+.why-idyll .clip.bad .clip-a rect {
+  fill: var(--hatch);
+}
+
+.why-idyll .clip.bad.cut .clip-v {
+  box-shadow: inset 0 0 0 1.5px var(--accent);
+  color: var(--accent);
+}
+
+.why-idyll .clip .razor {
+  position: absolute;
+  top: -6px;
+  bottom: -4px;
+  width: 2px;
+  background: var(--accent);
+  opacity: 0;
+  border-radius: 1px;
+}
+
+.why-idyll .clip .razor.l { left: 0; }
+.why-idyll .clip .razor.r { right: 0; }
+.why-idyll .clip.bad.cut .razor { opacity: 1; }
+
+.why-idyll .playhead {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--fg);
+  border-radius: 1px;
+  pointer-events: none;
+}
+
+.why-idyll .playhead::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: -4px;
+  width: 10px;
+  height: 8px;
+  background: var(--fg);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+
+/* 2. Retention Animation */
+.why-idyll .ret svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+
+.why-idyll .ret .grid-l {
+  stroke: var(--line-2);
+  stroke-width: 1;
+}
+
+.why-idyll .ret .typ {
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 2;
+  stroke-dasharray: 4 4;
+}
+
+.why-idyll .ret .idy {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.why-idyll .ret .area {
+  fill: url(#whyIdyllRetFill);
+}
+
+.why-idyll .ret .ph {
+  stroke: var(--fg);
+  stroke-width: 1.2;
+  stroke-dasharray: 2 3;
+}
+
+.why-idyll .ret .dot-i {
+  fill: var(--card);
+  stroke: var(--accent);
+  stroke-width: 2.4;
+}
+
+.why-idyll .ret .dot-t {
+  fill: var(--card);
+  stroke: var(--muted);
+  stroke-width: 2;
+}
+
+.why-idyll .ret .mk circle {
+  fill: var(--accent);
+}
+
+.why-idyll .ret .mk rect {
+  fill: var(--card);
+  stroke: var(--line);
+}
+
+.why-idyll .ret .mk text {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  font-weight: 600;
+  fill: var(--accent);
+}
+
+.why-idyll .ret .lab {
+  font-family: var(--f-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+}
+
+.why-idyll .ret .lab.i { fill: var(--accent); }
+.why-idyll .ret .lab.t { fill: var(--muted); }
+.why-idyll .ret .ax {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  font-weight: 500;
+  fill: var(--muted);
+}
+
+/* 3. Reframe Animation */
+.why-idyll .rf {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  height: 100%;
+  gap: 12px;
+  justify-items: center;
+}
+
+.why-idyll .rf-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 142px;
+}
+
+.why-idyll .frame {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px var(--line), 0 10px 24px -14px rgba(255, 129, 86, 0.45);
+  transition: width 0.7s cubic-bezier(0.65, 0, 0.35, 1), height 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+  width: 240px;
+  height: 135px;
+  background: var(--scene-a);
+}
+
+.why-idyll .frame svg.scene {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.why-idyll .scene .s-bg { fill: var(--scene-a); }
+.why-idyll .scene .s-bg2 { fill: var(--scene-b); }
+.why-idyll .scene .s-win { fill: var(--scene-win); }
+.why-idyll .scene .s-body { fill: var(--scene-body); }
+.why-idyll .scene .s-skin { fill: var(--scene-skin); }
+.why-idyll .scene .s-acc { fill: var(--accent); }
+
+.why-idyll .ratio {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  font-family: var(--f-mono);
+  font-size: 9px;
+  font-weight: 600;
+  background: rgba(15, 23, 42, 0.72);
+  color: #fff;
+  padding: 2px 5px;
+  border-radius: 4px;
+  z-index: 3;
+  font-variant-numeric: tabular-nums;
+}
+
+.why-idyll .cap {
+  position: absolute;
+  z-index: 3;
+  font-family: var(--f-display);
+  font-weight: 700;
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
+  line-height: 1.1;
+  pointer-events: none;
+}
+
+.why-idyll .cap b {
+  color: #FFD9BF;
+}
+
+.why-idyll .f-yt .cap {
+  opacity: 1;
+  transition-delay: 0.7s;
+  left: 10px;
+  bottom: 16px;
+  font-size: 10px;
+  background: rgba(15, 23, 42, 0.72);
+  padding: 4px 7px;
+  border-radius: 4px;
+  text-shadow: none;
+  max-width: 70%;
+}
+
+.why-idyll .ov {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+
+.why-idyll .f-yt .ov-yt,
+.why-idyll .f-tt .ov-tt,
+.why-idyll .f-ig .ov-ig {
+  opacity: 1;
+  transition-delay: 0.45s;
+}
+
+.why-idyll .ov-yt .bar {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 7px;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.why-idyll .ov-yt .bar i {
+  position: absolute;
+  inset: 0 62% 0 0;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+.why-idyll .ov-tt .icons {
+  position: absolute;
+  right: 5px;
+  bottom: 22px;
+  display: grid;
+  gap: 6px;
+}
+
+.why-idyll .ov-tt .icons i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  display: block;
+}
+
+.why-idyll .ov-tt .icons i:first-child {
+  background: var(--accent);
+  box-shadow: 0 0 0 1.5px #fff;
+}
+
+.why-idyll .ov-tt .user {
+  position: absolute;
+  left: 6px;
+  bottom: 8px;
+  width: 40px;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.why-idyll .ov-ig .dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 7px;
+  display: flex;
+  gap: 3px;
+  justify-content: center;
+}
+
+.why-idyll .ov-ig .dots i {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.why-idyll .ov-ig .dots i:first-child {
+  background: #fff;
+}
+
+.why-idyll .tabs {
+  display: flex;
+  gap: 4px;
+  padding: 3px;
+  border-radius: 999px;
+  background: var(--lane);
+}
+
+.why-idyll .tabs span {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+  color: var(--muted);
+  transition: background 0.4s, color 0.4s;
+}
+
+.why-idyll .tabs span.on {
+  background: var(--card);
+  color: var(--accent);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.12);
+}
+
+/* 4. Sound Design Animation */
+.why-idyll .snd {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 10px;
+  height: 100%;
+  align-content: center;
+}
+
+.why-idyll .lanes-l {
+  display: grid;
+  grid-template-rows: repeat(3, 34px);
+  gap: 8px;
+}
+
+.why-idyll .lane-tag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.why-idyll .lane-tag b {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  display: grid;
+  place-items: center;
+  font-family: var(--f-mono);
+  font-size: 9px;
+  background: var(--accent);
+  color: #fff;
+}
+
+.why-idyll .lane-tag:nth-child(2) b {
+  background: var(--accent-2);
+}
+
+.why-idyll .lane-tag:nth-child(3) b {
+  background: var(--fg-2);
+}
+
+.why-idyll .snd-canvas {
+  position: relative;
+  height: 118px;
+  min-width: 0;
+}
+
+.why-idyll .snd-canvas canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.why-idyll .meter {
+  display: flex;
+  gap: 3px;
+  height: 118px;
+  align-items: flex-end;
+  padding-left: 2px;
+}
+
+.why-idyll .meter i {
+  width: 5px;
+  height: 100%;
+  border-radius: 3px;
+  background: var(--lane);
+  position: relative;
+  overflow: hidden;
+  display: block;
+}
+
+.why-idyll .meter i u {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 20%;
+  background: linear-gradient(to top, var(--accent-2), var(--accent));
+  border-radius: 3px;
+}
+
+.why-idyll .snd-foot {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media (max-width: 420px) {
+  .why-idyll .lane-tag .mono {
+    display: none;
+  }
+}

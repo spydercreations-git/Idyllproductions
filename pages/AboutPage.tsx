@@ -24,15 +24,19 @@ const AboutPage: React.FC = () => {
         display: block !important;
         visibility: visible !important;
         opacity: 1 !important;
-        border-radius: 9999px !important;
+        border-radius: 8px !important;
+        height: 44px !important;
         overflow: visible !important;
       }
       
       /* Fix any transform or positioning issues */
       cal-floating-button button,
       [data-cal-namespace] button {
-        border-radius: 9999px !important;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+        border-radius: 8px !important;
+        height: 44px !important;
+        min-height: 44px !important;
+        box-shadow: none !important;
+        filter: none !important;
       }
     `;
     document.head.appendChild(style);
@@ -106,34 +110,27 @@ const AboutPage: React.FC = () => {
 
   const team = [
     {
-      name: "Harsh Pawar",
+      name: "Harsh",
       role: "CEO - CHIEF EXECUTIVE OFFICER",
-      description: "CEO & Founder of Idyll Productions, and a professional motion designer."
+      description: "CEO & Founder of Idyll Productions, and a professional motion designer.",
+      slug: "/team/harsh"
     },
     {
       name: "Rohit Gaikwad",
       role: "COO - CHIEF OPERATING OFFICER",
-      description: "Operations expert who operates all teams and ensures smooth project delivery and coordination."
+      description: "Operations expert who operates all teams and ensures smooth project delivery and coordination.",
+      slug: "/team/rohit"
     },
     {
       name: "Zada",
-      role: "CSM - COMMERCIAL SALES MANAGER",
-      description: "Commercial sales manager who drives business growth and manages key client relationships."
-    },
-    {
-      name: "Smita",
       role: "CSO - CHIEF SALES OFFICER",
-      description: "Our sales officer who handles our great clients and builds lasting business relationships."
+      description: "Commercial sales manager who drives business growth and manages key client relationships.",
+      slug: "/team/zada"
     },
     {
-      name: "Void",
-      role: "CCO - CHIEF COMMERCIAL OFFICER",
-      description: "Commercial manager handling client management and business development strategies."
-    },
-    {
-      name: "Vishal",
-      role: "CIO - CHIEF INFORMATION OFFICER",
-      description: "Information manager and database saver, handling all technical data and systems."
+      name: "Nisha",
+      role: "DESIGN HEAD",
+      description: "Creative design lead overseeing visual identity, art direction, and brand graphics."
     },
     {
       name: "Aarav",
@@ -161,16 +158,19 @@ const AboutPage: React.FC = () => {
       {/* Hero Section */}
       <section className="relative pt-32 pb-16 px-4 sm:px-6 md:px-8 overflow-hidden z-10">
         <div className="max-w-6xl mx-auto text-center relative z-10">
-          <div className="inline-flex items-center gap-3 px-6 py-2 bg-slate-50 border border-slate-200/60 rounded-full mb-8 shadow-sm">
-            <span className="w-2.5 h-2.5 rounded-full animate-pulse" style={{
-              background: 'linear-gradient(135deg, #FF6B35, #FF8C00)'
-            }}></span>
-            <span className="text-slate-700 font-semibold text-xs sm:text-sm uppercase tracking-wider">
-              About Our Studio
-            </span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-[8px] mb-6" style={{
+            background: 'rgba(255, 129, 86, 0.1)',
+            border: '1px solid rgba(255, 129, 86, 0.2)'
+          }}>
+            <div className="w-2 h-2 rounded-full" style={{
+              background: '#FF8156'
+            }}></div>
+            <span className="font-medium text-sm" style={{
+              color: '#FF8156'
+            }}>About our company</span>
           </div>
           <h1 className="font-sf-pro text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-slate-900 leading-[1.1] mb-6">
-            About <span className="bg-gradient-to-r from-[#FF6B35] via-[#FF8C00] to-[#E8650A] text-transparent bg-clip-text">Idyll Productions</span>
+            About <span className="text-[#FF8156]">Idyll Productions</span>
           </h1>
           <p className="font-inter text-base sm:text-lg text-slate-500 max-w-3xl mx-auto leading-relaxed px-4">
             We are a genuine creative studio focused on editing, storytelling, and long term growth with creators and brands. No fancy words, no complicated processes. Just honest work that delivers results.
@@ -224,12 +224,12 @@ const AboutPage: React.FC = () => {
             {values.map((value, index) => (
               <div 
                 key={index}
-                className="bg-white rounded-2xl p-8 border border-slate-200 hover:border-[#FF6B35] hover:shadow-xl hover:ring-1 hover:ring-[#FF6B35] transition-all duration-300"
+                className="bg-white rounded-2xl p-8 border border-slate-200 hover:border-[#FF8156] hover:shadow-xl hover:ring-1 hover:ring-[#FF8156] transition-all duration-300"
               >
                 <div 
-                  className="w-16 h-16 rounded-xl flex items-center justify-center mb-6 bg-[#FF6B35]/10"
+                  className="w-16 h-16 rounded-xl flex items-center justify-center mb-6 bg-[#FF8156]/10"
                 >
-                  <div className="text-[#FF6B35]">
+                  <div className="text-[#FF8156]">
                     {value.icon}
                   </div>
                 </div>
@@ -242,43 +242,64 @@ const AboutPage: React.FC = () => {
       </section>
 
       {/* Team Section */}
-      <section className="py-16 px-4 sm:px-6 md:px-8 relative z-10">
+      <section id="team" className="py-16 px-4 sm:px-6 md:px-8 relative z-10">
         <div className="max-w-6xl mx-auto">
           <h2 className="font-sf-pro text-3xl sm:text-4xl font-bold text-center mb-12 text-slate-900">Our Team</h2>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {team.map((member, index) => (
-              <div 
-                key={index}
-                className="bg-white rounded-2xl p-8 border border-slate-200 hover:border-[#FF6B35] hover:shadow-xl hover:ring-1 hover:ring-[#FF6B35] transition-all duration-300 text-center"
-              >
+            {team.map((member, index) => {
+              const cardContent = (
+                <div 
+                  className="bg-white rounded-2xl p-8 border border-slate-200 hover:border-[#FF8156] hover:shadow-xl hover:ring-1 hover:ring-[#FF8156] transition-all duration-300 text-center h-full flex flex-col justify-between"
+                >
+                  <div>
+                    <div 
+                      className="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center bg-orange-50 border border-orange-200"
+                    >
+                      <Users className="w-8 h-8 text-[#FF8156]" />
+                    </div>
+                    <h3 className="text-xl font-bold mb-1 text-slate-900">{member.name}</h3>
+                    <p className="text-xs font-bold mb-3 text-[#FF8156] uppercase tracking-wider">
+                      {member.role}
+                    </p>
+                    <p className="text-slate-500 text-xs sm:text-sm leading-relaxed">{member.description}</p>
+                  </div>
+                  {member.slug && (
+                    <div className="mt-4 pt-4 border-t border-slate-100 flex items-center justify-center gap-1.5 text-xs font-bold text-[#FF8156]">
+                      <span>View Profile</span>
+                      <span className="transition-transform group-hover:translate-x-1">→</span>
+                    </div>
+                  )}
+                </div>
+              );
+
+              return member.slug ? (
+                <Link key={index} to={member.slug} className="group block h-full">
+                  {cardContent}
+                </Link>
+              ) : (
+                <div key={index} className="h-full">
+                  {cardContent}
+                </div>
+              );
+            })}
+
+            {/* Our Editors Card */}
+            <div className="bg-white rounded-2xl p-8 border border-slate-200 hover:border-[#FF8156] hover:shadow-xl hover:ring-1 hover:ring-[#FF8156] transition-all duration-300 text-center h-full flex flex-col justify-between">
+              <div>
                 <div 
                   className="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center bg-orange-50 border border-orange-200"
                 >
-                  <Users className="w-8 h-8 text-[#FF6B35]" />
+                  <Users className="w-8 h-8 text-[#FF8156]" />
                 </div>
-                <h3 className="text-xl font-bold mb-1 text-slate-900">{member.name}</h3>
-                <p className="text-xs font-bold mb-3 text-[#FF6B35] uppercase tracking-wider">
-                  {member.role}
+                <h3 className="text-xl font-bold mb-1 text-slate-900">Our Editors</h3>
+                <p className="text-xs font-bold mb-3 text-[#FF8156] uppercase tracking-wider">
+                  20+ HIGH SKILLED EDITORS
                 </p>
-                <p className="text-slate-500 text-xs sm:text-sm leading-relaxed">{member.description}</p>
+                <p className="text-slate-500 text-xs sm:text-sm leading-relaxed">
+                  A talented team of 20+ professional editors working with us to deliver exceptional content every day.
+                </p>
               </div>
-            ))}
-
-            {/* Our Editors Card */}
-            <div className="bg-white rounded-2xl p-8 border border-slate-200 hover:border-[#FF6B35] hover:shadow-xl hover:ring-1 hover:ring-[#FF6B35] transition-all duration-300 text-center">
-              <div 
-                className="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center bg-orange-50 border border-orange-200"
-              >
-                <Users className="w-8 h-8 text-[#FF6B35]" />
-              </div>
-              <h3 className="text-xl font-bold mb-1 text-slate-900">Our Editors</h3>
-              <p className="text-xs font-bold mb-3 text-[#FF6B35] uppercase tracking-wider">
-                20+ HIGH SKILLED EDITORS
-              </p>
-              <p className="text-slate-500 text-xs sm:text-sm leading-relaxed">
-                A talented team of 20+ professional editors working with us to deliver exceptional content every day.
-              </p>
             </div>
           </div>
         </div>
@@ -287,14 +308,30 @@ const AboutPage: React.FC = () => {
       {/* IdyllTrack Section */}
       <section className="py-16 px-4 sm:px-6 md:px-8 relative z-10">
         <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-2xl border border-slate-200 p-8 sm:p-12 flex flex-col sm:flex-row items-center gap-8 shadow-md hover:border-[#FF6B35] transition-all duration-300">
-            <img
-              src="https://res.cloudinary.com/dokban4io/image/upload/q_auto/f_auto/v1778411351/IdyllTrack_lynurx.png"
-              alt="IdyllTrack"
-              className="h-20 w-auto object-contain flex-shrink-0"
-            />
+          <div className="bg-white rounded-2xl border border-slate-200 p-8 sm:p-12 flex flex-col sm:flex-row items-center gap-8 shadow-md hover:border-[#FF8156] transition-all duration-300">
+            <a
+              href="https://idylltrackspayments.online"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-shrink-0 hover:opacity-90 transition-opacity"
+            >
+              <img
+                src="https://res.cloudinary.com/dokban4io/image/upload/q_auto/f_auto/v1778411351/IdyllTrack_lynurx.png"
+                alt="Idylltrackspayments.online"
+                className="h-20 w-auto object-contain"
+              />
+            </a>
             <p className="text-slate-600 text-base sm:text-lg leading-relaxed">
-              All transactions and payments are securely managed through our official application, <span className="font-semibold text-slate-900">IdyllTrack</span>.
+              All transactions and payments are securely managed through our official application,{' '}
+              <a
+                href="https://idylltrackspayments.online"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-slate-900 hover:text-[#FF8156] transition-colors"
+              >
+                Idylltrackspayments.online
+              </a>
+              .
             </p>
           </div>
         </div>
@@ -303,7 +340,7 @@ const AboutPage: React.FC = () => {
       {/* CTA Section */}
       <section className="py-16 px-4 sm:px-6 md:px-8 mb-16 relative z-10">
         <div className="max-w-5xl mx-auto rounded-3xl overflow-hidden shadow-2xl p-8 sm:p-12 md:p-16 relative" style={{
-          background: 'linear-gradient(135deg, #FF6B35 0%, #E8650A 100%)'
+          backgroundColor: '#FF8156'
         }}>
           {/* Glass Overlay effects */}
           <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-br from-yellow-300/30 to-transparent rounded-full blur-3xl pointer-events-none" />

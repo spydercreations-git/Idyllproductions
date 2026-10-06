@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Eye, Heart } from 'lucide-react';
+import Eye from 'lucide-react/dist/esm/icons/eye';
+import Heart from 'lucide-react/dist/esm/icons/heart';
 import './UGCGallery.css';
 import HlsVideo from './HlsVideo';
 
@@ -14,16 +15,21 @@ interface UGCGalleryProps {
   autoScrollSpeed?: number;
 }
 
-const UGCGallery: React.FC<UGCGalleryProps> = ({ items, autoScrollSpeed = 0.5 }) => {
-  const [showMobileMessage, setShowMobileMessage] = useState(false);
+const UGCGallery: React.FC<UGCGalleryProps> = ({ items }) => {
+  const [isMobile, setIsMobile] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth <= 768;
+    }
+    return false;
+  });
 
   useEffect(() => {
-    const isMobile = window.innerWidth <= 768;
-    if (isMobile) {
-      setShowMobileMessage(true);
-      const timer = setTimeout(() => setShowMobileMessage(false), 5000);
-      return () => clearTimeout(timer);
-    }
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   // Split items into 3 columns for desktop
@@ -31,19 +37,15 @@ const UGCGallery: React.FC<UGCGalleryProps> = ({ items, autoScrollSpeed = 0.5 })
   const column2Items = items.filter((_, i) => i % 3 === 1);
   const column3Items = items.filter((_, i) => i % 3 === 2);
 
-  // Double items for seamless loop
+  // Double items for seamless loop on desktop
   const column1Loop = [...column1Items, ...column1Items];
   const column2Loop = [...column2Items, ...column2Items];
   const column3Loop = [...column3Items, ...column3Items];
 
-  const renderVideoCard = (item: UGCItem, index: number, columnIndex: number) => (
-    <div
-      key={`${item.video}-${columnIndex}-${index}`}
-      className="ugc-video-card-grid"
-    >
+  const renderVideoCard = (item: UGCItem, key: string) => (
+    <div key={key} className="ugc-video-card-grid">
       <div className="ugc-video-wrapper">
         <div className="ugc-video-inner">
-          {/* Plain native HLS video — no player UI, autoplay, loop, muted */}
           <HlsVideo
             src={item.video}
             muted
@@ -52,7 +54,7 @@ const UGCGallery: React.FC<UGCGalleryProps> = ({ items, autoScrollSpeed = 0.5 })
             className="ugc-video"
           />
 
-          {/* Stats Overlay */}
+          {/* Stats Overlay - solid 70% dark background, zero backdrop-filter */}
           <div className="ugc-stats" style={{ zIndex: 20 }}>
             <div className="ugc-stat">
               <Eye className="w-4 h-4" />
@@ -68,39 +70,45 @@ const UGCGallery: React.FC<UGCGalleryProps> = ({ items, autoScrollSpeed = 0.5 })
     </div>
   );
 
+  // On mobile: remove this UGC gallery so mobile stays ultra-fast;
+  // all UGC videos are presented in the "Our Work" category section below.
+  if (isMobile) {
+    return null;
+  }
+
+  // Desktop: 3 infinite scrolling columns
   return (
     <div className="ugc-gallery-grid-wrapper">
-      {/* Mobile Message - Shows for 5 seconds */}
-      {showMobileMessage && (
-        <div className="ugc-mobile-message">
-          <p>💡 For better layout, switch to desktop site</p>
-        </div>
-      )}
-
       {/* Column 1 - Scrolls Down */}
       <div className="ugc-column ugc-column-down">
         <div className="ugc-column-content">
-          {column1Loop.map((item, index) => renderVideoCard(item, index, 1))}
+          {column1Loop.map((item, index) =>
+            renderVideoCard(item, `col1-${item.video}-${index}`)
+          )}
         </div>
       </div>
 
       {/* Column 2 - Scrolls Up */}
       <div className="ugc-column ugc-column-up">
         <div className="ugc-column-content">
-          {column2Loop.map((item, index) => renderVideoCard(item, index, 2))}
+          {column2Loop.map((item, index) =>
+            renderVideoCard(item, `col2-${item.video}-${index}`)
+          )}
         </div>
       </div>
 
       {/* Column 3 - Scrolls Down */}
       <div className="ugc-column ugc-column-down">
         <div className="ugc-column-content">
-          {column3Loop.map((item, index) => renderVideoCard(item, index, 3))}
+          {column3Loop.map((item, index) =>
+            renderVideoCard(item, `col3-${item.video}-${index}`)
+          )}
         </div>
       </div>
 
       {/* Top Fade */}
       <div className="ugc-grid-fade ugc-grid-fade-top"></div>
-      
+
       {/* Bottom Fade */}
       <div className="ugc-grid-fade ugc-grid-fade-bottom"></div>
     </div>
@@ -108,3 +116,4 @@ const UGCGallery: React.FC<UGCGalleryProps> = ({ items, autoScrollSpeed = 0.5 })
 };
 
 export default UGCGallery;
+

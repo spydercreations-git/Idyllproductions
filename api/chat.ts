@@ -57,7 +57,7 @@ const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 const FALLBACK_RESPONSES: { [key: string]: string } = {
   'services': "We offer professional video editing services including:\n\n• Short-form content (Reels, Shorts, TikTok)\n• Gaming video edits\n• SaaS explainer videos\n• Long-form YouTube videos\n• Cinematic travel/vlog editing\n• User-generated style ads\n\nWould you like to know more about any specific service?",
   
-  'team': "Our team includes:\n\n• Harsh Pawar - CEO & Founder (a professional motion designer and entrepreneur from Maharashtra, India, originally from the Kokan region, operating the studio from Mumbai)\n• Rohit Gaikwad - COO\n• Snow - Chief Editing Manager\n• Smita - Chief Sales Officer\n• 20+ skilled editors\n\nWe're a creative video editing studio focused on storytelling and helping creators grow.",
+  'team': "Our team includes:\n\n• Harsh - CEO & Founder (professional motion designer & creative director)\n• Rohit Gaikwad - COO\n• Zada - Chief Sales Officer\n• 20+ skilled editors\n\nWe're a creative video editing studio focused on storytelling and helping creators grow.",
   
   'process': "Our process is simple:\n\n1. Share your vision and raw footage\n2. We create a detailed editing strategy\n3. Our expert team crafts your video\n4. You receive your polished video with platform-specific formats\n\nWe focus on delivering results that help you grow.",
   
@@ -112,7 +112,7 @@ IMPORTANT BEHAVIOR RULES:
 6. Don't be repetitive - if you already answered something, acknowledge it briefly
 
 ABOUT IDYLL PRODUCTIONS (use only when relevant):
-Idyll Productions is recognized as the best video editing company, focusing on storytelling, motion design, and helping creators and brands grow through premium content. We operate from Mumbai, India, and keep things simple to deliver honest work that gets results.
+Idyll Productions is a remote creative studio focusing on video editing, UGC ads, SaaS explainers, storytelling, and motion design to help creators and brands grow through premium content. We work with clients globally and keep things simple to deliver honest work that gets results.
 
 Production value: 5-10 million rupees
 Team: 20+ skilled editors led by experienced managers
@@ -126,10 +126,9 @@ SERVICES (mention only if asked):
 • User-generated style ads
 
 KEY TEAM MEMBERS (mention only if asked):
-• Harsh Pawar - CEO & Founder, and a professional motion designer.
+• Harsh - CEO & Founder, motion designer & creative director
 • Rohit Gaikwad - COO
-• Snow - Chief Editing Manager
-• Smita - Chief Sales Officer
+• Zada - Chief Sales Officer
 • 20+ editors
 
 PERFORMANCE (mention only if asked):

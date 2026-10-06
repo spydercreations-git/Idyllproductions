@@ -170,7 +170,7 @@ const BlogPage: React.FC = () => {
       <section className="pt-32 pb-16 px-4 sm:px-6 md:px-8 bg-gradient-to-b from-slate-50 to-white">
         <div className="max-w-7xl mx-auto text-center">
           <h1 className="font-sf-pro text-4xl sm:text-5xl md:text-6xl font-bold text-slate-900 mb-6">
-            Idyll Productions Blog
+            UGC Editing Guides for SaaS
           </h1>
           <p className="font-inter text-lg sm:text-xl text-slate-600 max-w-3xl mx-auto">
             Expert insights, tutorials, and industry knowledge on video editing, AI content creation, and digital storytelling

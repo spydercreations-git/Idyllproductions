@@ -123,7 +123,7 @@ const BrandBook: React.FC = () => {
       const ctx = canvas.getContext('2d')!;
 
       // Fill orange, then clip to logo shape using destination-in
-      ctx.fillStyle = '#FF6B35';
+      ctx.fillStyle = '#FF8156';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.globalCompositeOperation = 'destination-in';
       ctx.drawImage(bitmap, 0, 0);
@@ -219,11 +219,11 @@ const BrandBook: React.FC = () => {
   const brandColors = [
     {
       name: 'Primary Brand Orange',
-      hex: '#FF6B35',
-      bg: 'bg-[#FF6B35]',
-      border: 'border-[#FF6B35]',
+      hex: '#FF8156',
+      bg: 'bg-[#FF8156]',
+      border: 'border-[#FF8156]',
       description: 'Main brand accents, highlights & buttons.',
-      textHex: 'text-[#FF6B35]'
+      textHex: 'text-[#FF8156]'
     },
     {
       name: 'Neutral Obsidian',
@@ -260,14 +260,14 @@ const BrandBook: React.FC = () => {
           
           {/* Info Card / Header (Stays Fixed) */}
           <div className="p-5 rounded-2xl border bg-white border-slate-200/80 shadow-sm flex-shrink-0 mb-6">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-[#FF6B35]">Idyll Productions</span>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-[#FF8156]">Idyll Productions</span>
             <h2 className="text-lg font-bold mt-1 tracking-tight">Brand Book</h2>
             <p className="text-xs text-slate-500 mt-1">Official brand guidelines and identity standards.</p>
 
             {/* Back to Home button */}
             <Link
               to="/"
-              className="mt-4 w-full h-10 rounded-xl flex items-center justify-center gap-2 text-xs font-semibold border transition-all duration-300 bg-slate-900 hover:bg-[#FF6B35] text-white border-slate-900 hover:border-[#FF6B35] group"
+              className="mt-4 w-full h-10 rounded-xl flex items-center justify-center gap-2 text-xs font-semibold border transition-all duration-300 bg-slate-900 hover:bg-[#FF8156] text-white border-slate-900 hover:border-[#FF8156] group"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 transition-transform duration-300 group-hover:-translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -296,17 +296,17 @@ const BrandBook: React.FC = () => {
                   onClick={() => handleScrollTo(item.id!)}
                   className={`w-full flex items-center justify-between py-2 px-3 rounded-lg text-sm font-medium transition-all duration-300 group flex-shrink-0 ${
                     isActive
-                      ? 'text-[#FF6B35] bg-[#FF6B35]/5 font-semibold translate-x-1'
+                      ? 'text-[#FF8156] bg-[#FF8156]/5 font-semibold translate-x-1'
                       : 'text-slate-500 hover:text-slate-950 hover:translate-x-1'
                   }`}
                 >
                   <span className="flex items-center gap-3">
-                    <span className={`text-[10px] font-mono tracking-wider ${isActive ? 'text-[#FF6B35]' : 'text-slate-400'}`}>
+                    <span className={`text-[10px] font-mono tracking-wider ${isActive ? 'text-[#FF8156]' : 'text-slate-400'}`}>
                       {item.num}
                     </span>
                     <span>{item.label}</span>
                   </span>
-                  <span className={`w-1.5 h-1.5 rounded-full bg-[#FF6B35] transition-all duration-300 ${
+                  <span className={`w-1.5 h-1.5 rounded-full bg-[#FF8156] transition-all duration-300 ${
                     isActive ? 'scale-100 opacity-100' : 'scale-0 opacity-0 group-hover:scale-100 group-hover:opacity-40'
                   }`} />
                 </button>
@@ -325,13 +325,13 @@ const BrandBook: React.FC = () => {
             style={{ borderColor: 'rgba(0,0,0,0.06)' }}
           >
             <div className="space-y-6">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold bg-[#FF6B35]/10 text-[#FF6B35] border border-[#FF6B35]/15 w-fit">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold bg-[#FF8156]/10 text-[#FF8156] border border-[#FF8156]/15 w-fit">
                 <Sparkles className="w-3.5 h-3.5 animate-pulse" />
                 <span>Brand Standards v1.0</span>
               </div>
               <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.05]">
                 Idyll<br />
-                <span className="bg-gradient-to-r from-[#FF6B35] via-[#FF8C00] to-[#E8650A] text-transparent bg-clip-text">Productions</span>
+                <span className="bg-gradient-to-r from-[#FF8156] via-[#FF8C00] to-[#E8650A] text-transparent bg-clip-text">Productions</span>
               </h1>
               <p className="text-lg sm:text-xl text-slate-500 font-normal leading-relaxed max-w-2xl">
                 A premium, modern design framework & philosophical foundation representing clarity, reliability, and clean creative systems.
@@ -340,7 +340,7 @@ const BrandBook: React.FC = () => {
               <div className="flex gap-4 pt-4">
                 <button 
                   onClick={() => handleScrollTo('intro')}
-                  className="h-12 px-6 bg-slate-900 text-white hover:bg-[#FF6B35] font-bold rounded-xl transition-all duration-300 flex items-center gap-2 group shadow-md"
+                  className="h-12 px-6 bg-slate-900 text-white hover:bg-[#FF8156] font-bold rounded-xl transition-all duration-300 flex items-center gap-2 group shadow-md"
                 >
                   <span>Explore Brand Book</span>
                   <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -353,21 +353,21 @@ const BrandBook: React.FC = () => {
           <section id="intro" className="brand-section scroll-mt-24">
             <div className="space-y-8">
               <div className="space-y-3">
-                <span className="text-xs font-bold uppercase tracking-widest text-[#FF6B35]">01 / Nomenclature</span>
+                <span className="text-xs font-bold uppercase tracking-widest text-[#FF8156]">01 / Nomenclature</span>
                 <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">Pronunciation & Meaning</h2>
               </div>
 
               {/* Interactive Audio Card */}
               <div className="p-6 sm:p-8 rounded-3xl border bg-white border-slate-200 relative overflow-hidden">
                 {/* Floating blur effect */}
-                <div className="absolute -top-10 -right-10 w-32 h-32 bg-[#FF6B35]/10 rounded-full blur-2xl" />
+                <div className="absolute -top-10 -right-10 w-32 h-32 bg-[#FF8156]/10 rounded-full blur-2xl" />
 
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 relative z-10">
                   <div className="space-y-2">
                     <span className="text-sm font-semibold text-slate-400">How to say it</span>
-                    <h3 className="text-4xl font-black tracking-tight text-[#FF6B35]">Idyll Productions</h3>
+                    <h3 className="text-4xl font-black tracking-tight text-[#FF8156]">Idyll Productions</h3>
                     <p className="text-lg font-medium text-slate-500">
-                      Pronounced: <span className="text-slate-900 font-bold underline decoration-[#FF6B35] decoration-2">"EYE-dull Productions"</span>
+                      Pronounced: <span className="text-slate-900 font-bold underline decoration-[#FF8156] decoration-2">"EYE-dull Productions"</span>
                     </p>
                   </div>
 
@@ -376,8 +376,8 @@ const BrandBook: React.FC = () => {
                     onClick={handleSpeak}
                     className={`h-16 w-16 sm:h-20 sm:w-20 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg relative group flex-shrink-0 ${
                       isPlaying 
-                        ? 'bg-[#FF6B35] text-white scale-95' 
-                        : 'bg-slate-900 text-white hover:bg-[#FF6B35]'
+                        ? 'bg-[#FF8156] text-white scale-95' 
+                        : 'bg-slate-900 text-white hover:bg-[#FF8156]'
                     }`}
                   >
                     {isPlaying ? (
@@ -393,7 +393,7 @@ const BrandBook: React.FC = () => {
                 </div>
 
                 <div className="mt-8 pt-6 border-t border-slate-100 flex items-start gap-4">
-                  <div className="w-8 h-8 rounded-lg bg-[#FF6B35]/10 flex items-center justify-center text-[#FF6B35] flex-shrink-0 mt-0.5">
+                  <div className="w-8 h-8 rounded-lg bg-[#FF8156]/10 flex items-center justify-center text-[#FF8156] flex-shrink-0 mt-0.5">
                     <Info className="w-4 h-4" />
                   </div>
                   <div className="space-y-1.5 text-sm leading-relaxed text-slate-500">
@@ -416,7 +416,7 @@ const BrandBook: React.FC = () => {
           <section id="story" className="brand-section scroll-mt-24">
             <div className="space-y-8">
               <div className="space-y-3">
-                <span className="text-xs font-bold uppercase tracking-widest text-[#FF6B35]">02 / Origin Narrative</span>
+                <span className="text-xs font-bold uppercase tracking-widest text-[#FF8156]">02 / Origin Narrative</span>
                 <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">Our Narrative & Story</h2>
               </div>
 
@@ -426,13 +426,13 @@ const BrandBook: React.FC = () => {
                     HP
                   </div>
                   <div>
-                    <h4 className="font-bold text-slate-900 leading-none">Harsh Pawar</h4>
+                    <h4 className="font-bold text-slate-900 leading-none">Harsh</h4>
                     <span className="text-xs text-slate-400">Founder & CEO, Idyll Productions</span>
                   </div>
                 </div>
 
                 <p>
-                  Idyll Productions was founded by <strong>Harsh Pawar</strong>, who started his journey as a dedicated video editor. Working deep in the trenches on diverse projects, he repeatedly witnessed a core struggle: creators and businesses couldn't find editors who combined artistic talent with absolute execution reliability.
+                  Idyll Productions was founded by <strong>Harsh</strong>, who started his journey as a dedicated video editor. Working deep in the trenches on diverse projects, he repeatedly witnessed a core struggle: creators and businesses couldn't find editors who combined artistic talent with absolute execution reliability.
                 </p>
                 <p>
                   Deadlines were frequently missed, quality was inconsistent, and simple communication was shockingly rare. The creative industry was filled with friction.
@@ -440,7 +440,7 @@ const BrandBook: React.FC = () => {
                 <p>
                   Instead of creating another generic freelancing profile or standard video agency, Harsh decided to build a true production partner. He wanted a company backed by robust systems and a dedicated team, capable of delivering high-quality content consistently at scale, while keeping execution stress-free and communications completely transparent.
                 </p>
-                <p className="border-l-4 border-[#FF6B35] pl-4 italic text-slate-900 font-medium">
+                <p className="border-l-4 border-[#FF8156] pl-4 italic text-slate-900 font-medium">
                   "We believe that the best creative assets are born in environments built on dependability, systems, and mutual respect."
                 </p>
               </div>
@@ -451,7 +451,7 @@ const BrandBook: React.FC = () => {
           <section id="values" className="brand-section scroll-mt-24">
             <div className="space-y-8">
               <div className="space-y-3">
-                <span className="text-xs font-bold uppercase tracking-widest text-[#FF6B35]">03 / Philosophies</span>
+                <span className="text-xs font-bold uppercase tracking-widest text-[#FF8156]">03 / Philosophies</span>
                 <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">What We Stand For</h2>
               </div>
 
@@ -460,7 +460,7 @@ const BrandBook: React.FC = () => {
                 {/* Value 1 */}
                 <div className="p-6 rounded-2xl border bg-white border-slate-200/60 shadow-sm">
                   <h4 className="font-bold text-slate-900 flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#FF6B35]" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#FF8156]" />
                     Simplicity
                   </h4>
                   <p className="text-xs text-slate-500 mt-2 leading-relaxed">
@@ -471,7 +471,7 @@ const BrandBook: React.FC = () => {
                 {/* Value 2 */}
                 <div className="p-6 rounded-2xl border bg-white border-slate-200/60 shadow-sm">
                   <h4 className="font-bold text-slate-900 flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#FF6B35]" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#FF8156]" />
                     Reliability
                   </h4>
                   <p className="text-xs text-slate-500 mt-2 leading-relaxed">
@@ -482,7 +482,7 @@ const BrandBook: React.FC = () => {
                 {/* Value 3 */}
                 <div className="p-6 rounded-2xl border bg-white border-slate-200/60 shadow-sm">
                   <h4 className="font-bold text-slate-900 flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#FF6B35]" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#FF8156]" />
                     Creativity with Purpose
                   </h4>
                   <p className="text-xs text-slate-500 mt-2 leading-relaxed">
@@ -493,7 +493,7 @@ const BrandBook: React.FC = () => {
                 {/* Value 4 */}
                 <div className="p-6 rounded-2xl border bg-white border-slate-200/60 shadow-sm">
                   <h4 className="font-bold text-slate-900 flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#FF6B35]" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#FF8156]" />
                     Smooth Collaboration
                   </h4>
                   <p className="text-xs text-slate-500 mt-2 leading-relaxed">
@@ -508,7 +508,7 @@ const BrandBook: React.FC = () => {
           <section id="logo" className="brand-section scroll-mt-24">
             <div className="space-y-8">
               <div className="space-y-3">
-                <span className="text-xs font-bold uppercase tracking-widest text-[#FF6B35]">04 / Visual Asset</span>
+                <span className="text-xs font-bold uppercase tracking-widest text-[#FF8156]">04 / Visual Asset</span>
                 <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">Logo Design & Philosophy</h2>
               </div>
 
@@ -517,7 +517,7 @@ const BrandBook: React.FC = () => {
               </p>
 
               <p className="text-sm text-slate-400 flex items-center gap-2">
-                <Download className="w-4 h-4 text-[#FF6B35]" />
+                <Download className="w-4 h-4 text-[#FF8156]" />
                 Click any logo to download it.
               </p>
 
@@ -538,7 +538,7 @@ const BrandBook: React.FC = () => {
                 <div className="w-full h-40 relative flex items-center justify-center mb-6">
                   <div 
                     style={{
-                      backgroundColor: '#FF6B35',
+                      backgroundColor: '#FF8156',
                       maskImage: `url('https://res.cloudinary.com/dxd79mrse/image/upload/v1781437519/Idyll_Productions_White_jenmwr.png')`,
                       WebkitMaskImage: `url('https://res.cloudinary.com/dxd79mrse/image/upload/v1781437519/Idyll_Productions_White_jenmwr.png')`,
                       maskSize: 'contain',
@@ -553,7 +553,7 @@ const BrandBook: React.FC = () => {
                   />
                 </div>
 
-                <span className="text-xs font-semibold text-[#FF6B35]">Orange Logo (Primary) — Click to Download</span>
+                <span className="text-xs font-semibold text-[#FF8156]">Orange Logo (Primary) — Click to Download</span>
               </button>
 
               {/* All Logo Variations Grid - click to download */}
@@ -589,7 +589,7 @@ const BrandBook: React.FC = () => {
           <section id="colors" className="brand-section scroll-mt-24">
             <div className="space-y-8">
               <div className="space-y-3">
-                <span className="text-xs font-bold uppercase tracking-widest text-[#FF6B35]">05 / Palette</span>
+                <span className="text-xs font-bold uppercase tracking-widest text-[#FF8156]">05 / Palette</span>
                 <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">Approved Colors</h2>
               </div>
 
@@ -617,7 +617,7 @@ const BrandBook: React.FC = () => {
           <section id="typography" className="brand-section scroll-mt-24">
             <div className="space-y-8">
               <div className="space-y-3">
-                <span className="text-xs font-bold uppercase tracking-widest text-[#FF6B35]">06 / Font Hierarchy</span>
+                <span className="text-xs font-bold uppercase tracking-widest text-[#FF8156]">06 / Font Hierarchy</span>
                 <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">Typography</h2>
               </div>
 
@@ -630,7 +630,7 @@ const BrandBook: React.FC = () => {
                 
                 {/* Heading Font */}
                 <div className="p-6 sm:p-8 rounded-2xl border bg-white border-slate-200/60 shadow-sm">
-                  <span className="text-[10px] font-bold tracking-widest uppercase text-[#FF6B35] block mb-3">Headings & Hero Titles</span>
+                  <span className="text-[10px] font-bold tracking-widest uppercase text-[#FF8156] block mb-3">Headings & Hero Titles</span>
                   <div className="space-y-2">
                     <h3 className="text-3xl font-bold tracking-tight">SF Pro Display / Apple System</h3>
                     <p className="text-xs text-slate-400">Weight: Bold & Extrabold. Kerning: tight tracking (-0.02em).</p>
@@ -644,7 +644,7 @@ const BrandBook: React.FC = () => {
 
                 {/* Body Font */}
                 <div className="p-6 sm:p-8 rounded-2xl border bg-white border-slate-200/60 shadow-sm">
-                  <span className="text-[10px] font-bold tracking-widest uppercase text-[#FF6B35] block mb-3">Body & Interface Text</span>
+                  <span className="text-[10px] font-bold tracking-widest uppercase text-[#FF8156] block mb-3">Body & Interface Text</span>
                   <div className="space-y-2">
                     <h3 className="text-2xl font-medium font-inter">Inter</h3>
                     <p className="text-xs text-slate-400">Weight: Light, Regular, Medium, Semi-bold. Kerning: Normal.</p>
@@ -664,7 +664,7 @@ const BrandBook: React.FC = () => {
           <section id="voice" className="brand-section scroll-mt-24">
             <div className="space-y-8">
               <div className="space-y-3">
-                <span className="text-xs font-bold uppercase tracking-widest text-[#FF6B35]">07 / Communication</span>
+                <span className="text-xs font-bold uppercase tracking-widest text-[#FF8156]">07 / Communication</span>
                 <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">Brand Voice</h2>
               </div>
 
@@ -678,7 +678,7 @@ const BrandBook: React.FC = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
                   <div className="flex gap-3">
-                    <span className="text-[#FF6B35] font-bold text-lg">✓</span>
+                    <span className="text-[#FF8156] font-bold text-lg">✓</span>
                     <div>
                       <h5 className="font-bold text-slate-900 text-sm">Confident but Humble</h5>
                       <p className="text-xs text-slate-400 mt-1">We prove our value through execution and dependable results, not boastful pitches.</p>
@@ -686,7 +686,7 @@ const BrandBook: React.FC = () => {
                   </div>
 
                   <div className="flex gap-3">
-                    <span className="text-[#FF6B35] font-bold text-lg">✓</span>
+                    <span className="text-[#FF8156] font-bold text-lg">✓</span>
                     <div>
                       <h5 className="font-bold text-slate-900 text-sm">Direct & Action-Oriented</h5>
                       <p className="text-xs text-slate-400 mt-1">We value our clients' time. We keep communications short, clear, and actionable.</p>
@@ -694,7 +694,7 @@ const BrandBook: React.FC = () => {
                   </div>
 
                   <div className="flex gap-3">
-                    <span className="text-[#FF6B35] font-bold text-lg">✓</span>
+                    <span className="text-[#FF8156] font-bold text-lg">✓</span>
                     <div>
                       <h5 className="font-bold text-slate-900 text-sm">Supportive & Collaborative</h5>
                       <p className="text-xs text-slate-400 mt-1">We talk as creative partners, maintaining respect, positivity, and patience.</p>
@@ -702,7 +702,7 @@ const BrandBook: React.FC = () => {
                   </div>
 
                   <div className="flex gap-3">
-                    <span className="text-[#FF6B35] font-bold text-lg">✓</span>
+                    <span className="text-[#FF8156] font-bold text-lg">✓</span>
                     <div>
                       <h5 className="font-bold text-slate-900 text-sm">Systemized & Structured</h5>
                       <p className="text-xs text-slate-400 mt-1">Even in conversation, we show organization, keeping feedback clear and timelines explicit.</p>
@@ -716,10 +716,10 @@ const BrandBook: React.FC = () => {
           {/* SECTION 08: CLOSING */}
           <section id="closing" className="brand-section scroll-mt-24">
             <div className="p-8 sm:p-12 rounded-3xl border text-center relative overflow-hidden bg-white border-slate-200 shadow-md">
-              <div className="absolute -bottom-20 -left-20 w-48 h-48 bg-[#FF6B35]/5 rounded-full blur-3xl" />
+              <div className="absolute -bottom-20 -left-20 w-48 h-48 bg-[#FF8156]/5 rounded-full blur-3xl" />
               
               <div className="space-y-6 relative z-10">
-                <span className="text-xs font-bold uppercase tracking-widest text-[#FF6B35]">08 / Conclusion</span>
+                <span className="text-xs font-bold uppercase tracking-widest text-[#FF8156]">08 / Conclusion</span>
                 <h3 className="text-3xl font-extrabold tracking-tight">Creating Idylls in Content Creation</h3>
                 <p className="text-slate-500 leading-relaxed max-w-xl mx-auto text-sm sm:text-base">
                   Idyll Productions exists to make content creation simpler, more reliable, and more enjoyable for brands and creators. By combining creative direction, organized systems, and dependable execution, we help our partners consistently produce elite content without the friction.

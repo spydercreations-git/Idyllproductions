@@ -138,8 +138,11 @@ This project is proprietary and confidential. All rights reserved.
 ## 📞 Contact
 
 - **Website**: [Idyll Productions](https://idyllproductions.com)
-- **Email**: idyllproductionsofficial@gmail.com
-- **Instagram**: [@idyllproductionsofficial](https://instagram.com/idyllproductionsofficial)
+- **Emails**:
+  - `harsh@idyllproductions.com` (Harsh, CEO & Partnerships)
+  - `rohitidyllproductions@gmail.com` (Rohit, COO)
+  - `zadaidyllproductions@gmail.com` (Zada, CSO)
+- **Instagram**: [@idyll.productions](https://instagram.com/idyll.productions)
 
 ---
 

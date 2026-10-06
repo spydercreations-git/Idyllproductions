@@ -1,24 +1,37 @@
-import React, { useEffect, useRef } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import React, { useEffect, useRef, Suspense, lazy } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import Lenis from 'lenis';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import Chatbot from './components/Chatbot';
 import Home from './pages/Home';
-import UGCPage from './pages/UGCPage';
-import AboutPage from './pages/AboutPage';
-import ContactPage from './pages/ContactPage';
-import BlogPage from './pages/BlogPage';
-import Blog1 from './pages/blog/Blog1';
-import ApplyEditorPage from './pages/ApplyEditorPage';
-import BrandBook from './pages/BrandBook';
 import { preloadCriticalVideos } from './utils/videoPreloader';
+import { usePageSEO } from './hooks/usePageSEO';
+
+// Lazy load non-homepage routes so homepage doesn't bundle them
+const UGCPage = lazy(() => import('./pages/UGCPage'));
+const AboutPage = lazy(() => import('./pages/AboutPage'));
+const ContactPage = lazy(() => import('./pages/ContactPage'));
+const SocialsPage = lazy(() => import('./pages/SocialsPage'));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
+const BlogPage = lazy(() => import('./pages/BlogPage'));
+const Blog1 = lazy(() => import('./pages/blog/Blog1'));
+const ApplyEditorPage = lazy(() => import('./pages/ApplyEditorPage'));
+const BrandBook = lazy(() => import('./pages/BrandBook'));
+const UgcVideoEditingPage = lazy(() => import('./pages/UgcVideoEditingPage'));
+const PricingPage = lazy(() => import('./pages/PricingPage'));
+const ServicesPage = lazy(() => import('./pages/ServicesPage'));
+const HarshPage = lazy(() => import('./pages/team/HarshPage'));
+const RohitPage = lazy(() => import('./pages/team/RohitPage'));
+const ZadaPage = lazy(() => import('./pages/team/ZadaPage'));
+
 
 // Component to handle scroll to top on route change
-const ScrollToTop: React.FC<{ lenisRef: React.RefObject<Lenis | null> }> = ({ lenisRef }) => {
+export const ScrollToTop: React.FC<{ lenisRef: React.RefObject<Lenis | null> }> = ({ lenisRef }) => {
   const location = useLocation();
   
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     // Skip scroll to top for category and section routes (excluding /ugc to scroll it to top)
     const categoryPaths = ['/category/', '/short-form', '/long-form', '/saas-tech', '/gaming', '/rhythmic-montage'];
     const shouldSkipScroll = categoryPaths.some(path => location.pathname.includes(path));
@@ -29,14 +42,10 @@ const ScrollToTop: React.FC<{ lenisRef: React.RefObject<Lenis | null> }> = ({ le
     
     // Multiple approaches to ensure scroll to top works
     const scrollToTop = () => {
-      // Method 1: Immediate scroll
       window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-      
-      // Method 2: Document scroll
       document.documentElement.scrollTop = 0;
       document.body.scrollTop = 0;
       
-      // Method 3: Force scroll on next frame
       requestAnimationFrame(() => {
         window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
         document.documentElement.scrollTop = 0;
@@ -44,15 +53,11 @@ const ScrollToTop: React.FC<{ lenisRef: React.RefObject<Lenis | null> }> = ({ le
       });
     };
     
-    // Execute immediately
     scrollToTop();
-    
-    // Also execute after a short delay to ensure it works
     setTimeout(scrollToTop, 0);
     setTimeout(scrollToTop, 10);
     setTimeout(scrollToTop, 50);
     
-    // Reset Lenis scroll position if it exists
     if (lenisRef.current) {
       lenisRef.current.scrollTo(0, { immediate: true });
     }
@@ -61,18 +66,23 @@ const ScrollToTop: React.FC<{ lenisRef: React.RefObject<Lenis | null> }> = ({ le
   return null;
 };
 
-const App: React.FC = () => {
+export const AppContent: React.FC = () => {
   const lenisRef = useRef<Lenis | null>(null);
+
+  // Dynamic SEO meta updater on route changes
+  usePageSEO();
 
   // Initialize Lenis smooth scroll
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     const lenis = new Lenis({
-      duration: 0.8, // Reduced from 1.2 for faster scrolling
+      duration: 0.8,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
-      wheelMultiplier: 1.2, // Increased for more responsive scrolling
+      wheelMultiplier: 1.2,
       smoothTouch: false,
       touchMultiplier: 2,
       infinite: false,
@@ -94,28 +104,39 @@ const App: React.FC = () => {
 
   // Preload critical videos for instant loading
   useEffect(() => {
-    // Preload after a short delay to not block initial render
+    if (typeof window === 'undefined') return;
     setTimeout(() => {
       preloadCriticalVideos();
     }, 1000);
   }, []);
 
   return (
-    <Router>
-      <div className="min-h-screen" style={{ backgroundColor: '#ffffff' }}>
-        <ScrollToTop lenisRef={lenisRef} />
-        <Navbar />
-        <main>
+    <div className="min-h-screen flex flex-col justify-between" style={{ backgroundColor: '#000000' }}>
+      <ScrollToTop lenisRef={lenisRef} />
+      <Navbar />
+      <main className="flex-grow w-full" style={{ backgroundColor: '#ffffff' }}>
+        <Suspense fallback={null}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<AboutPage />} />
+            <Route path="/work" element={<Navigate to="/" replace />} />
+            <Route path="/films" element={<Navigate to="/" replace />} />
             <Route path="/contact" element={<ContactPage />} />
+            <Route path="/socials" element={<SocialsPage />} />
+            <Route path="/ugc-video-editing" element={<UgcVideoEditingPage />} />
+            <Route path="/pricing" element={<PricingPage />} />
+            <Route path="/services" element={<ServicesPage />} />
+            <Route path="/team" element={<Navigate to="/about" replace />} />
+            <Route path="/team/harsh" element={<HarshPage />} />
+            <Route path="/team/rohit" element={<RohitPage />} />
+            <Route path="/team/zada" element={<ZadaPage />} />
             <Route path="/apply" element={<ApplyEditorPage />} />
             <Route path="/brand-book" element={<BrandBook />} />
             <Route path="/blog" element={<BlogPage />} />
             <Route path="/blog/:slug" element={<Blog1 />} />
             
             {/* Category routes with URL parameter */}
+            <Route path="/category/ugc" element={<Home />} />
             <Route path="/category/short-form-content" element={<Home />} />
             <Route path="/category/long-form" element={<Home />} />
             <Route path="/category/saas-tech-videos" element={<Home />} />
@@ -123,16 +144,27 @@ const App: React.FC = () => {
             <Route path="/category/rhythmic-montage" element={<Home />} />
             
             {/* Section anchor routes */}
-            <Route path="/ugc" element={<UGCPage />} />
+            <Route path="/ugc" element={<Home />} />
             <Route path="/short-form" element={<Home />} />
             <Route path="/long-form" element={<Home />} />
             <Route path="/saas-tech" element={<Home />} />
             <Route path="/gaming" element={<Home />} />
             <Route path="/rhythmic-montage" element={<Home />} />
+
+            {/* 404 Not Found Catch-All */}
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
-        </main>
-        <Footer />
-      </div>
+        </Suspense>
+      </main>
+      <Footer />
+    </div>
+  );
+};
+
+const App: React.FC = () => {
+  return (
+    <Router>
+      <AppContent />
     </Router>
   );
 };

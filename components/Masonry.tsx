@@ -244,6 +244,8 @@ const Masonry: React.FC<MasonryProps> = ({
             <video
               className="item-video"
               src={item.video}
+              poster="/hero-bg.webp"
+              preload="none"
               autoPlay
               loop
               muted

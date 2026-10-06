@@ -1,11 +1,30 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { 
-  ArrowRight, Play, X, Video, Gamepad2, Layout, Sparkles, 
-  CheckCircle2, ChevronRight, Maximize2, Edit3, Camera, 
-  Activity, Heart, ShieldCheck, Globe, MessageSquare, Plus, Minus,
-  Zap, Monitor, Headphones, Target, Check, Mail
-} from 'lucide-react';
+import ArrowRight from 'lucide-react/dist/esm/icons/arrow-right';
+import Play from 'lucide-react/dist/esm/icons/play';
+import X from 'lucide-react/dist/esm/icons/x';
+import Video from 'lucide-react/dist/esm/icons/video';
+import Gamepad2 from 'lucide-react/dist/esm/icons/gamepad-2';
+import Layout from 'lucide-react/dist/esm/icons/layout';
+import Sparkles from 'lucide-react/dist/esm/icons/sparkles';
+import CheckCircle2 from 'lucide-react/dist/esm/icons/check-circle-2';
+import ChevronRight from 'lucide-react/dist/esm/icons/chevron-right';
+import Maximize2 from 'lucide-react/dist/esm/icons/maximize-2';
+import Edit3 from 'lucide-react/dist/esm/icons/edit-3';
+import Camera from 'lucide-react/dist/esm/icons/camera';
+import Activity from 'lucide-react/dist/esm/icons/activity';
+import Heart from 'lucide-react/dist/esm/icons/heart';
+import ShieldCheck from 'lucide-react/dist/esm/icons/shield-check';
+import Globe from 'lucide-react/dist/esm/icons/globe';
+import MessageSquare from 'lucide-react/dist/esm/icons/message-square';
+import Plus from 'lucide-react/dist/esm/icons/plus';
+import Minus from 'lucide-react/dist/esm/icons/minus';
+import Zap from 'lucide-react/dist/esm/icons/zap';
+import Monitor from 'lucide-react/dist/esm/icons/monitor';
+import Headphones from 'lucide-react/dist/esm/icons/headphones';
+import Target from 'lucide-react/dist/esm/icons/target';
+import Check from 'lucide-react/dist/esm/icons/check';
+import Mail from 'lucide-react/dist/esm/icons/mail';
 import Button from '../components/Button';
 import { TiltCard } from '../components/ui/tilt-card';
 import { useScrollProgress } from '../hooks/useScrollProgress';
@@ -19,6 +38,11 @@ import { videoPreloader } from '../utils/videoPreloader';
 import HlsVideo, { HoverHlsVideo } from '../components/HlsVideo';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { TimelineCard, RetentionCard, ReframeCard, SoundCard } from '../components/WhyChooseIdyll';
+import ScrollTextReveal from '../components/ScrollTextReveal';
+import BrandCollaborationModal from '../components/BrandCollaborationModal';
+import '../components/HowItWorks/HowItWorks.css';
+import { HiwIcons, VisionCard, PlanningCard, EditingCard, DeliveryCard } from '../components/HowItWorks';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -115,6 +139,12 @@ const rotatingWords = ["creators", "brands", "audiences", "stories"];
 
 const editingCategories = [
   {
+    name: "UGC",
+    description: "Creator & brand ad editing",
+    text: "Engineered for high engagement, authentic hooks, and conversions.",
+    videos: getVideosForCategory("UGC")
+  },
+  {
     name: "Short-Form Content",
     description: "Reels, Shorts, TikTok",
     text: "Built for retention and scroll-stopping hooks.",
@@ -149,17 +179,33 @@ const editingCategories = [
 const Home: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [selectedCategory, setSelectedCategory] = useState<string>("Short-Form Content");
-  const [currentWord, setCurrentWord] = useState(0);
+  const [selectedCategory, setSelectedCategory] = useState<string>("UGC");
   const [scrollY, setScrollY] = useState(0);
   const [videoMuted, setVideoMuted] = useState<{ [key: number]: boolean }>({});
   const ugcSectionRef = useRef<HTMLDivElement>(null);
   const [ugcScrollProgress, setUgcScrollProgress] = useState(0);
   const [viewCount, setViewCount] = useState(300);
+  const [showBrandModal, setShowBrandModal] = useState(false);
+  const [isHeroVideoPlaying, setIsHeroVideoPlaying] = useState(false);
   const workSectionRef = useRef<HTMLDivElement>(null);
+
+  const heroSectionRef = useRef<HTMLElement>(null);
+  const logoSectionRef = useRef<HTMLDivElement>(null);
+  const testimonialsSectionRef = useRef<HTMLDivElement>(null);
+
+  const [isHeroVisible, setIsHeroVisible] = useState(true);
+  const [isLogoVisible, setIsLogoVisible] = useState(true);
+  const [isTestimonialVisible, setIsTestimonialVisible] = useState(false);
+  const [isMobile, setIsMobile] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth <= 768;
+    }
+    return false;
+  });
 
   // URL to category name mapping
   const urlToCategoryMap: { [key: string]: string } = {
+    '/category/ugc': 'UGC',
     '/category/short-form-content': 'Short-Form Content',
     '/category/long-form': 'Long-Form',
     '/category/saas-tech-videos': 'SaaS & Tech Videos',
@@ -169,7 +215,7 @@ const Home: React.FC = () => {
 
   // Section ID mapping for anchor navigation
   const sectionMap: { [key: string]: string } = {
-    '/ugc': 'ugc-section',
+    '/ugc': 'our-work',
     '/short-form': 'our-work',
     '/long-form': 'our-work',
     '/saas-tech': 'our-work',
@@ -184,7 +230,7 @@ const Home: React.FC = () => {
     // Handle category routes
     if (path.startsWith('/category/')) {
       const categoryName = urlToCategoryMap[path];
-      if (categoryName && categoryName !== selectedCategory) {
+      if (categoryName) {
         setSelectedCategory(categoryName);
         
         // Scroll to work section after category is set
@@ -193,7 +239,7 @@ const Home: React.FC = () => {
           if (workSection) {
             workSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
           }
-        }, 100);
+        }, 150);
       }
     }
     
@@ -231,7 +277,7 @@ const Home: React.FC = () => {
       const half = elapsed < duration;
       const progress = half ? elapsed / duration : 1 - (elapsed - duration) / duration;
       const value = Math.round(300 + progress * 500);
-      setViewCount(value);
+      setViewCount(prev => (prev !== value ? value : prev));
       rafId = requestAnimationFrame(animate);
     };
 
@@ -260,15 +306,19 @@ const Home: React.FC = () => {
         display: block !important;
         visibility: visible !important;
         opacity: 1 !important;
-        border-radius: 9999px !important;
+        border-radius: 8px !important;
+        height: 44px !important;
         overflow: visible !important;
       }
       
       /* Fix any transform or positioning issues */
       cal-floating-button button,
       [data-cal-namespace] button {
-        border-radius: 9999px !important;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+        border-radius: 8px !important;
+        height: 44px !important;
+        min-height: 44px !important;
+        box-shadow: none !important;
+        filter: none !important;
       }
     `;
     document.head.appendChild(style);
@@ -322,11 +372,8 @@ const Home: React.FC = () => {
     };
   }, []);
   
-  const [rotatingIcon, setRotatingIcon] = useState<number | null>(null);
   const serviceRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [serviceVisible, setServiceVisible] = useState<boolean[]>(new Array(6).fill(false));
-  const whatYouGetRef = useRef<HTMLDivElement>(null);
-  const [whatYouGetProgress, setWhatYouGetProgress] = useState(0);
   const whyChooseRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [whyChooseVisible, setWhyChooseVisible] = useState<boolean[]>(new Array(4).fill(false));
   const howItWorksLineRef = useRef<HTMLDivElement>(null);
@@ -334,29 +381,7 @@ const Home: React.FC = () => {
   const problemCardsRef = useRef<HTMLDivElement>(null);
   const [problemCardsProgress, setProblemCardsProgress] = useState(0);
   
-  const [tick, setTick] = useState(0);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTick(t => t + 1);
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  // Animation step calculations
-  const step1 = tick % 4;
-  const step2 = tick % 5;
-  const progress1 = step2 === 0 ? 60 : (step2 >= 1 ? 100 : 0);
-  const progress2 = step2 <= 0 ? 0 : (step2 === 1 ? 40 : (step2 >= 2 ? 100 : 0));
-  const step3 = tick % 4;
-  let playheadPos = "10%";
-  if (step3 === 0) playheadPos = "15%";
-  if (step3 === 1) playheadPos = "50%";
-  if (step3 === 2) playheadPos = "75%";
-  if (step3 === 3) playheadPos = "90%";
-  const step4 = tick % 6;
-  const isDone = step4 >= 3;
-  const whyChooseStep = tick % 3;
   
   // Preload videos of current category for instant loading
   useEffect(() => {
@@ -388,10 +413,10 @@ const Home: React.FC = () => {
         color: "orange",
         icon: (
           <div className="relative w-10 h-10">
-            <div className="w-8 h-6 rounded-lg transform rotate-3" style={{ background: 'linear-gradient(135deg, #FFB86A, #FF7A3A)' }}></div>
-            <div className="absolute top-1 left-1 w-6 h-4 rounded-md" style={{ background: 'rgba(255,184,106,0.5)' }}></div>
-            <div className="absolute -top-1 -right-1 w-3 h-3 rounded-full animate-pulse" style={{ background: '#F06A00' }}></div>
-            <div className="absolute bottom-0 left-2 w-4 h-1 rounded-full" style={{ background: '#FFD56A' }}></div>
+            <div className="w-8 h-6 rounded-lg transform rotate-3" style={{ background: '#FF8156' }}></div>
+            <div className="absolute top-1 left-1 w-6 h-4 rounded-md" style={{ background: 'rgba(255,107,52,0.5)' }}></div>
+            <div className="absolute -top-1 -right-1 w-3 h-3 rounded-full animate-pulse" style={{ background: '#FF8156' }}></div>
+            <div className="absolute bottom-0 left-2 w-4 h-1 rounded-full" style={{ background: '#FF8156' }}></div>
           </div>
         )
       },
@@ -466,6 +491,7 @@ const Home: React.FC = () => {
     
     // Update URL without page reload
     const categoryToUrlMap: { [key: string]: string } = {
+      'UGC': '/category/ugc',
       'Short-Form Content': '/category/short-form-content',
       'Long-Form': '/category/long-form',
       'SaaS & Tech Videos': '/category/saas-tech-videos',
@@ -519,13 +545,6 @@ const Home: React.FC = () => {
     }
   };
 
-  const handleIconClick = (iconIndex: number) => {
-    setRotatingIcon(iconIndex);
-    setTimeout(() => {
-      setRotatingIcon(null);
-    }, 1200);
-  };
-
   useEffect(() => {
     let ticking = false;
     
@@ -541,21 +560,8 @@ const Home: React.FC = () => {
             const sectionTop = rect.top;
             
             // Start animation when section enters viewport
-            // Progress from 0 to 1 as section moves from bottom to center of viewport
             const progress = Math.max(0, Math.min(1, (windowHeight - sectionTop) / (windowHeight * 0.7)));
             setUgcScrollProgress(progress);
-          }
-
-          // Calculate What You Get section scroll progress
-          if (whatYouGetRef.current) {
-            const rect = whatYouGetRef.current.getBoundingClientRect();
-            const windowHeight = window.innerHeight;
-            const sectionTop = rect.top;
-            const sectionHeight = rect.height;
-            
-            // Progress from 0 to 1 as section scrolls into view
-            const progress = Math.max(0, Math.min(1, (windowHeight - sectionTop) / (windowHeight * 0.6)));
-            setWhatYouGetProgress(progress);
           }
 
           // Check service cards visibility
@@ -613,16 +619,42 @@ const Home: React.FC = () => {
       }
     };
     
-    const wordInterval = setInterval(() => {
-      setCurrentWord((prev) => (prev + 1) % rotatingWords.length);
-    }, 2000);
-
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll(); // Initial calculation
+
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', handleResize);
+
+    let heroObserver: IntersectionObserver | null = null;
+    let logoObserver: IntersectionObserver | null = null;
+    let testimonialObserver: IntersectionObserver | null = null;
+
+    if (typeof IntersectionObserver !== 'undefined') {
+      heroObserver = new IntersectionObserver(
+        ([entry]) => setIsHeroVisible(entry.isIntersecting),
+        { threshold: 0.05 }
+      );
+      if (heroSectionRef.current) heroObserver.observe(heroSectionRef.current);
+
+      logoObserver = new IntersectionObserver(
+        ([entry]) => setIsLogoVisible(entry.isIntersecting),
+        { threshold: 0.05 }
+      );
+      if (logoSectionRef.current) logoObserver.observe(logoSectionRef.current);
+
+      testimonialObserver = new IntersectionObserver(
+        ([entry]) => setIsTestimonialVisible(entry.isIntersecting),
+        { threshold: 0.05 }
+      );
+      if (testimonialsSectionRef.current) testimonialObserver.observe(testimonialsSectionRef.current);
+    }
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      clearInterval(wordInterval);
+      window.removeEventListener('resize', handleResize);
+      heroObserver?.disconnect();
+      logoObserver?.disconnect();
+      testimonialObserver?.disconnect();
     };
   }, []);
 
@@ -656,7 +688,7 @@ const Home: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: '#ffffff' }}>
+    <div className="min-h-screen relative overflow-x-clip" style={{ backgroundColor: '#ffffff' }}>
       
       {/* Video Section Router for direct URL access */}
       <VideoSectionRouter onCategorySelect={handleCategorySelect} />
@@ -673,12 +705,12 @@ const Home: React.FC = () => {
 
 
       {/* --- HERO SECTION --- */}
-      <section className="relative pt-24 sm:pt-28 md:pt-40 pb-16 sm:pb-20 md:pb-32 px-4 sm:px-6 md:px-8 overflow-hidden">
+      <section ref={heroSectionRef} className="relative pt-24 sm:pt-28 md:pt-40 pb-16 sm:pb-20 md:pb-32 px-4 sm:px-6 md:px-8 overflow-hidden">
         {/* Hero Background Image */}
         <div 
           className="absolute inset-0"
           style={{
-            backgroundImage: 'url("https://res.cloudinary.com/dxd79mrse/image/upload/v1781428524/Background_2_c4g170.png")',
+            backgroundImage: 'url("/Background_2.webp")',
             backgroundSize: '100% 100%',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
@@ -697,13 +729,10 @@ const Home: React.FC = () => {
         
         <div className="max-w-7xl mx-auto text-center relative" style={{ zIndex: 10 }}>
           <div>
-            {/* Badge Above Title */}
-            <div className="inline-flex items-center gap-2 sm:gap-3 px-4 sm:px-8 py-1.5 sm:py-2 bg-white/80 backdrop-blur-sm border border-slate-200 rounded-[10px] mb-6 shadow-sm max-w-[90%] sm:max-w-none mx-auto">
+            {/* Badge Above Title - solid on mobile, blur only on desktop */}
+            <div className="inline-flex items-center gap-2 sm:gap-3 px-4 sm:px-8 py-1.5 sm:py-2 bg-white md:bg-white/80 md:backdrop-blur-sm border border-slate-200 rounded-[10px] mb-6 shadow-sm max-w-[90%] sm:max-w-none mx-auto">
               <span className="font-bold text-sm sm:text-lg inline-block text-right shrink-0" style={{
-                background: 'linear-gradient(135deg, #FF6B35 0%, #F7931E 33%, #FF8C00 66%, #E8650A 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
+                color: '#FF8156',
                 minWidth: '3.5rem'
               }}>{viewCount}M+</span>
               <span className="text-slate-700 font-medium text-[11px] sm:text-base whitespace-nowrap">
@@ -721,12 +750,12 @@ const Home: React.FC = () => {
               <span className="inline-block">for Modern{' '}</span>
               <div className="inline-block">
                 <div className="loader">
-                  <div className="words">
-                    <span className="word">creators</span>
-                    <span className="word">brands</span>
-                    <span className="word">audiences</span>
-                    <span className="word">stories</span>
-                    <span className="word">creators</span>
+                  <div className="words" style={{ animationPlayState: isHeroVisible ? 'running' : 'paused' }}>
+                    <span className="word" style={{ animationPlayState: isHeroVisible ? 'running' : 'paused' }}>creators</span>
+                    <span className="word" style={{ animationPlayState: isHeroVisible ? 'running' : 'paused' }}>brands</span>
+                    <span className="word" style={{ animationPlayState: isHeroVisible ? 'running' : 'paused' }}>audiences</span>
+                    <span className="word" style={{ animationPlayState: isHeroVisible ? 'running' : 'paused' }}>stories</span>
+                    <span className="word" style={{ animationPlayState: isHeroVisible ? 'running' : 'paused' }}>creators</span>
                   </div>
                 </div>
               </div>
@@ -736,19 +765,27 @@ const Home: React.FC = () => {
               We edit quietly, so your story speaks loudly.
             </p>
             
-            {/* Hero Video - With gradient border and scroll animation */}
+            {/* Hero Video - With orange border and scroll animation */}
             <div className="relative max-w-7xl mx-auto mb-12 sm:mb-16">
               <div 
                 className="aspect-video rounded-2xl overflow-hidden relative group cursor-pointer p-[3px]"
                 style={{
-                  background: 'linear-gradient(135deg, #FF6B35 0%, #F7931E 33%, #FF8C00 66%, #E8650A 100%)',
+                  background: '#FF8156',
                   boxShadow: '0 20px 60px rgba(0, 0, 0, 0.15)',
                   transform: `scale(${Math.min(1, 0.7 + (scrollY / 800))})`,
                   transformOrigin: 'center center',
                   willChange: 'transform'
                 }}
               >
-                <div className="w-full h-full rounded-[14px] overflow-hidden bg-black p-2 sm:p-3 relative">
+                <div 
+                  className="w-full h-full rounded-[14px] overflow-hidden p-2 sm:p-3 relative"
+                  style={{
+                    backgroundColor: '#0a0a0a',
+                    backgroundImage: 'url(/videoframe_8090.png)',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                  }}
+                >
                   <div className="w-full h-full rounded-xl overflow-hidden relative" style={{ minHeight: '200px' }}>
                     {/* Native HLS video — no player UI, 10% zoom, muted, autoplay, infinite loop */}
                     <HlsVideo
@@ -756,8 +793,25 @@ const Home: React.FC = () => {
                       muted
                       loop
                       zoom={1.1}
+                      poster="/videoframe_8090.png"
+                      onPlaying={() => setIsHeroVideoPlaying(true)}
                       objectFit="cover"
                       style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
+                    />
+
+                    {/* Instant thumbnail fallback: visible while video loads or buffers to eliminate black screen/lag */}
+                    <img
+                      src="/videoframe_8090.png"
+                      alt="Idyll Productions Showreel Preview"
+                      className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-out pointer-events-none z-10 ${
+                        isHeroVideoPlaying ? 'opacity-0' : 'opacity-100'
+                      }`}
+                      style={{
+                        transform: 'scale(1.1)',
+                        transformOrigin: 'center center',
+                      }}
+                      loading="eager"
+                      decoding="async"
                     />
                   </div>
                 </div>
@@ -814,12 +868,7 @@ const Home: React.FC = () => {
               }}
             >
               <h2 className="font-sf-pro text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-slate-900 mb-8">
-                Best Editors Team for <span style={{
-                  background: 'linear-gradient(135deg, #FF6B35 0%, #F7931E 33%, #FF8C00 66%, #E8650A 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text'
-                }}>UGC Content</span>
+                Best Editors Team for <span style={{ color: '#FF8156' }}>UGC Content</span>
               </h2>
               <p className="font-inter text-base sm:text-lg md:text-xl text-slate-600 leading-relaxed mb-8">
                 Our expert team can produce <span className="font-bold text-black">100+ videos per day</span> easily with scroll-stopping content that drives real engagement and conversions.
@@ -835,11 +884,25 @@ const Home: React.FC = () => {
                     src="https://res.cloudinary.com/dxd79mrse/image/upload/v1772579097/icons_j8elqn.png" 
                     alt="Meta, TikTok, YouTube, Google Ads" 
                     className="h-8 w-auto object-contain"
+                    loading="lazy"
                   />
                 </div>
               </div>
 
               <div className="flex flex-wrap gap-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleCategorySelect('UGC');
+                    document.getElementById('our-work')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }}
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-[#FF8156] text-white rounded-lg font-medium hover:bg-[#e87245] transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105 transform cursor-pointer"
+                >
+                  View All UGC Work
+                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
                 <button
                   onClick={() => document.getElementById('our-work')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
                   className="inline-flex items-center gap-2 px-6 py-3 bg-[#111111] text-white rounded-lg font-medium hover:bg-[#222222] transition-all duration-300 shadow-md hover:shadow-lg"
@@ -849,20 +912,11 @@ const Home: React.FC = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
-                <Link
-                  to="/ugc"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-white text-slate-800 border border-slate-200 rounded-lg font-medium hover:bg-slate-50 transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105 transform"
-                >
-                  UGC Grid
-                  <svg className="w-5 h-5 text-[#FF6B35]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                  </svg>
-                </Link>
               </div>
             </div>
 
-            {/* Right Content - UGC Gallery */}
-            <div className="relative">
+            {/* Right Content - UGC Gallery (Desktop only; on mobile all work is in Our Work section) */}
+            <div className="hidden lg:block relative">
               <UGCGallery items={ugcItems} autoScrollSpeed={0.5} />
             </div>
           </div>
@@ -871,43 +925,62 @@ const Home: React.FC = () => {
 
       {/* --- CLIENT LOGO STRIP --- */}
       <div className="relative py-8 sm:py-10 md:py-12 overflow-hidden" style={{ background: 'transparent' }}>
-        {/* Trusted By Badge */}
-        <div className="flex justify-center mb-6 sm:mb-8">
-          <div className="inline-flex items-center gap-3 px-4 py-2 rounded-[8px] relative"
+        {/* Featured Brands Badge in One Frame */}
+        <div className="flex justify-center mb-6 sm:mb-8 px-4">
+          <div 
+            className="flex flex-col items-center text-center px-6 py-4 sm:px-8 sm:py-5 rounded-2xl relative shadow-sm max-w-lg w-auto"
             style={{
-              background: 'linear-gradient(white, white) padding-box, linear-gradient(135deg, #FF6B35 0%, #F7931E 33%, #FF8C00 66%, #E8650A 100%) border-box',
-              border: '2px solid transparent'
+              background: '#ffffff',
+              border: '2px solid #FF8156'
             }}
           >
-            {/* Overlapping People Icons */}
-            <div className="flex items-center -space-x-2">
-              <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-semibold z-30"
-                style={{ background: 'linear-gradient(135deg, #FF6B35, #F7931E)' }}>
+            {/* 3 Client Pics on Upper Side */}
+            <div className="flex items-center -space-x-2 mb-2.5">
+              <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-semibold z-30 shadow-sm"
+                style={{ background: '#FF8156' }}>
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
                 </svg>
               </div>
-              <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-semibold z-20"
-                style={{ background: 'linear-gradient(135deg, #FF8C00, #F7931E)' }}>
+              <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-semibold z-20 shadow-sm"
+                style={{ background: '#FF8156' }}>
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
                 </svg>
               </div>
-              <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-semibold z-10"
-                style={{ background: 'linear-gradient(135deg, #E8650A, #FF6B35)' }}>
+              <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-semibold z-10 shadow-sm"
+                style={{ background: '#FF8156' }}>
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
                 </svg>
               </div>
             </div>
-            
-            {/* Text */}
-            <div className="flex flex-col">
-              <span className="font-inter text-xs text-slate-500 leading-tight">Trusted by</span>
-              <span className="font-sf-pro text-sm font-bold text-slate-900 leading-tight">200+ Clients</span>
-            </div>
+
+            {/* Text 1: Heading */}
+            <span className="font-sf-pro text-sm sm:text-base font-bold text-slate-900 leading-snug">
+              Content Featured Across Top Brands
+            </span>
+
+            {/* Know More Button */}
+            <button
+              type="button"
+              onClick={() => setShowBrandModal(true)}
+              className="mt-2.5 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-[8px] text-[11px] font-semibold text-[#FF8156] bg-[#FF8156]/10 hover:bg-[#FF8156]/20 border border-[#FF8156]/20 hover:border-[#FF8156]/40 transition-all duration-200 cursor-pointer group"
+              style={{ borderRadius: '8px' }}
+            >
+              <span>Know More</span>
+              <svg className="w-3 h-3 transform group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
           </div>
         </div>
+
+        {/* Brand Collaboration Info Modal */}
+        <BrandCollaborationModal 
+          isOpen={showBrandModal} 
+          onClose={() => setShowBrandModal(false)} 
+        />
 
         {/* Left fade */}
         <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-24 md:w-32 pointer-events-none z-10"
@@ -916,37 +989,51 @@ const Home: React.FC = () => {
         <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-24 md:w-32 pointer-events-none z-10"
           style={{ background: 'linear-gradient(to left, #ffffff, transparent)' }} />
 
-        <div className="flex logo-scroll-container" style={{ width: 'max-content' }}>
+        <div 
+          ref={logoSectionRef} 
+          className="flex logo-scroll-container" 
+          style={{ 
+            width: 'max-content',
+            animationPlayState: isLogoVisible ? 'running' : 'paused'
+          }}
+        >
           {[
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/10_bxfwdr.png',
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/6_ajbvpc.png',
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/7_qin1jy.png',
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/11_tfpwmc.png',
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/8_ckndqw.png',
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/5_cq6oxb.png',
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/1_iwfdhc.png',
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/4_viqguw.png',
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/3_yfsgon.png',
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/2_vws6tz.png',
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/9_sogiaz.png',
+            { name: 'Picsart', src: '/picsart-logo.png' },
+            { name: 'Pizza Hut', src: '/pizzahut-logo.png' },
+            { name: 'Snapchat', src: '/snapchat-logo.png' },
+            { name: 'TechFlow Solutions', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/10_bxfwdr.png' },
+            { name: 'Evo Agency', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/6_ajbvpc.png' },
+            { name: 'Physics Wallah', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/7_qin1jy.png' },
+            { name: 'Vedantu', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/11_tfpwmc.png' },
+            { name: 'Unacademy', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/8_ckndqw.png' },
+            { name: 'GrowthX', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/5_cq6oxb.png' },
+            { name: 'Scaler', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/1_iwfdhc.png' },
+            { name: 'NextWave', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/4_viqguw.png' },
+            { name: 'UpGrad', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/3_yfsgon.png' },
+            { name: 'Simplilearn', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/2_vws6tz.png' },
+            { name: 'Kofluence', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/9_sogiaz.png' },
             // duplicate for seamless loop
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/10_bxfwdr.png',
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/6_ajbvpc.png',
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/7_qin1jy.png',
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/11_tfpwmc.png',
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/8_ckndqw.png',
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/5_cq6oxb.png',
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/1_iwfdhc.png',
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/4_viqguw.png',
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/3_yfsgon.png',
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/2_vws6tz.png',
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/9_sogiaz.png',
-          ].map((src, i) => (
+            { name: 'Picsart', src: '/picsart-logo.png' },
+            { name: 'Pizza Hut', src: '/pizzahut-logo.png' },
+            { name: 'Snapchat', src: '/snapchat-logo.png' },
+            { name: 'TechFlow Solutions', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/10_bxfwdr.png' },
+            { name: 'Evo Agency', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/6_ajbvpc.png' },
+            { name: 'Physics Wallah', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/7_qin1jy.png' },
+            { name: 'Vedantu', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/11_tfpwmc.png' },
+            { name: 'Unacademy', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/8_ckndqw.png' },
+            { name: 'GrowthX', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/5_cq6oxb.png' },
+            { name: 'Scaler', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/1_iwfdhc.png' },
+            { name: 'NextWave', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/4_viqguw.png' },
+            { name: 'UpGrad', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/3_yfsgon.png' },
+            { name: 'Simplilearn', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/2_vws6tz.png' },
+            { name: 'Kofluence', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/9_sogiaz.png' },
+          ].map((item, i) => (
             <div key={i} className="flex-shrink-0 flex items-center justify-center mx-6 sm:mx-10 md:mx-12 lg:mx-14">
               <img
-                src={src}
-                alt={`client-logo-${i}`}
+                src={item.src}
+                alt={`${item.name} logo`}
                 className="h-16 sm:h-20 md:h-24 lg:h-28 w-auto object-contain opacity-80"
+                loading="lazy"
               />
             </div>
           ))}
@@ -980,30 +1067,31 @@ const Home: React.FC = () => {
 
       {/* --- WORK SHOWCASE WITH NAVIGATION --- */}
       <section id="our-work" className="pt-8 sm:pt-12 md:pt-16 pb-16 sm:pb-24 md:pb-32 px-4 sm:px-6 md:px-8 relative overflow-hidden z-10">
-        <div className="max-w-6xl mx-auto relative z-10">
+        <div className="max-w-6xl 2xl:max-w-7xl mx-auto relative z-10">
           <div className="text-center mb-12 sm:mb-16 md:mb-20">
             <h2 className="font-sf-pro text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-semibold tracking-tight text-slate-900 mb-4 sm:mb-6 md:mb-8">
               Specialized editing for every platform
             </h2>
-            <p className="font-inter text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed px-4 sm:px-0">
+            <p className="font-inter text-base sm:text-lg md:text-xl xl:text-2xl text-slate-600 max-w-2xl xl:max-w-3xl mx-auto leading-relaxed px-4 sm:px-0">
               Crafted with precision and strategic intent for maximum performance.
             </p>
           </div>
 
           {/* Category Navigation */}
-          <div className="flex items-center justify-center mb-12 sm:mb-16">
+          <div className="flex items-center justify-center mb-10 sm:mb-14 xl:mb-16">
             {/* Category Buttons */}
-            <div className="flex flex-nowrap gap-3 sm:gap-4 justify-start md:justify-center w-full max-w-6xl overflow-x-auto scrollbar-hide py-2 px-1">
+            <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 md:gap-3 lg:gap-3.5 xl:gap-4 2xl:gap-5 w-full max-w-5xl xl:max-w-6xl 2xl:max-w-7xl mx-auto py-1 px-2">
               {editingCategories.map((category, i) => (
                 <button
                   key={i}
                   data-category={category.name}
                   onClick={() => handleCategorySelect(category.name)}
-                  className={`px-5 sm:px-6 md:px-8 py-2 sm:py-2.5 md:py-3 rounded-xl font-semibold text-sm sm:text-base transition-all duration-300 whitespace-nowrap flex-shrink-0 ${
+                  className={`px-3 sm:px-3.5 md:px-4 lg:px-5 xl:px-6 2xl:px-8 py-1.5 sm:py-2 lg:py-2.5 xl:py-3.5 2xl:py-4 rounded-[8px] font-medium sm:font-semibold text-xs sm:text-sm lg:text-base xl:text-lg 2xl:text-xl transition-all duration-300 whitespace-nowrap ${
                     selectedCategory === category.name
-                      ? 'bg-[#111111] text-white'
-                      : 'bg-white text-slate-700 border-2 border-slate-200'
+                      ? 'bg-[#111111] text-white border border-[#111111] shadow-md'
+                      : 'bg-white text-slate-700 border border-slate-200 hover:border-slate-300 hover:text-slate-900 hover:shadow-sm'
                   }`}
+                  style={{ borderRadius: '8px' }}
                 >
                   {category.name}
                 </button>
@@ -1013,11 +1101,11 @@ const Home: React.FC = () => {
 
           {/* Selected Category Info */}
           {selectedCategory && (
-            <div className="text-center mb-8 sm:mb-12">
-              <h3 className="font-sf-pro text-xl sm:text-2xl md:text-3xl font-semibold text-slate-900 mb-2 sm:mb-4">
+            <div className="text-center mb-8 sm:mb-12 xl:mb-16">
+              <h3 className="font-sf-pro text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-semibold text-slate-900 mb-2 sm:mb-4">
                 {selectedCategory}
               </h3>
-              <p className="font-inter text-base sm:text-lg text-slate-600 max-w-xl mx-auto">
+              <p className="font-inter text-base sm:text-lg lg:text-xl text-slate-600 max-w-xl xl:max-w-2xl mx-auto">
                 {editingCategories.find(cat => cat.name === selectedCategory)?.text}
               </p>
             </div>
@@ -1027,21 +1115,27 @@ const Home: React.FC = () => {
           {selectedCategory && (
             <div className="relative" key={selectedCategory}>
               <div className="animate-fade-in">
-                {selectedCategory === "Short-Form Content" ? (
-                  /* Vertical layout for Short-Form Content */
+                {selectedCategory === "Short-Form Content" || selectedCategory === "UGC" ? (
+                  /* Vertical layout for Short-Form Content & UGC */
                   <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 lg:gap-8">
-                    {editingCategories.find(cat => cat.name === selectedCategory)?.videos.map((videoSrc, i) => (
-                      <div
-                        key={`${selectedCategory}-${i}`}
-                        className="relative rounded-xl overflow-hidden shadow-xl w-full max-w-[180px] sm:max-w-sm mx-auto"
-                      >
-                        <HoverHlsVideo
-                          src={videoSrc}
-                          aspectClass="aspect-[9/16]"
-                          className="w-full"
-                        />
-                      </div>
-                    ))}
+                    {editingCategories.find(cat => cat.name === selectedCategory)?.videos.map((videoSrc, i, arr) => {
+                      const isLast = i === arr.length - 1;
+                      const hideOnMobile = isLast && (selectedCategory === "UGC" || arr.length % 2 !== 0);
+                      return (
+                        <div
+                          key={`${selectedCategory}-${i}`}
+                          className={`relative rounded-xl overflow-hidden shadow-xl w-full max-w-[180px] sm:max-w-sm mx-auto ${
+                            hideOnMobile ? 'hidden lg:block' : ''
+                          }`}
+                        >
+                          <HoverHlsVideo
+                            src={videoSrc}
+                            aspectClass="aspect-[9/16]"
+                            className="w-full"
+                          />
+                        </div>
+                      );
+                    })}
                   </div>
                 ) : (
                   /* Horizontal layout for other categories */
@@ -1073,255 +1167,38 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* --- WHAT YOU GET Section --- */}
-      <section ref={whatYouGetRef} className="py-16 sm:py-20 md:py-24 px-4 sm:px-6 md:px-8 relative overflow-hidden z-10 bg-white" style={{ perspective: '1000px' }}>
-        <div 
-          className="max-w-6xl mx-auto relative z-10"
-          style={{
-            transform: `rotateX(${(1 - whatYouGetProgress) * 15}deg) scale(${0.8 + (whatYouGetProgress * 0.2)})`,
-            opacity: 0.3 + (whatYouGetProgress * 0.7),
-            transition: 'transform 0.1s ease-out, opacity 0.1s ease-out',
-            transformStyle: 'preserve-3d'
-          }}
-        >
-          {/* SVG Gradient Definitions */}
-          <svg width="0" height="0" style={{ position: 'absolute' }}>
-            <defs>
-              <linearGradient id="iconGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#FF6B35" />
-                <stop offset="25%" stopColor="#F7931E" />
-                <stop offset="50%" stopColor="#F7931E" />
-                <stop offset="75%" stopColor="#FF8C00" />
-                <stop offset="100%" stopColor="#E8650A" />
-              </linearGradient>
-              <linearGradient id="iconGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#FF6B35" />
-                <stop offset="25%" stopColor="#F7931E" />
-                <stop offset="50%" stopColor="#F7931E" />
-                <stop offset="75%" stopColor="#FF8C00" />
-                <stop offset="100%" stopColor="#E8650A" />
-              </linearGradient>
-              <linearGradient id="iconGradient3" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#FF6B35" />
-                <stop offset="25%" stopColor="#F7931E" />
-                <stop offset="50%" stopColor="#F7931E" />
-                <stop offset="75%" stopColor="#FF8C00" />
-                <stop offset="100%" stopColor="#E8650A" />
-              </linearGradient>
-              <linearGradient id="iconGradient4" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#FF6B35" />
-                <stop offset="25%" stopColor="#F7931E" />
-                <stop offset="50%" stopColor="#F7931E" />
-                <stop offset="75%" stopColor="#FF8C00" />
-                <stop offset="100%" stopColor="#E8650A" />
-              </linearGradient>
-              <linearGradient id="iconGradient5" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#FF6B35" />
-                <stop offset="25%" stopColor="#F7931E" />
-                <stop offset="50%" stopColor="#F7931E" />
-                <stop offset="75%" stopColor="#FF8C00" />
-                <stop offset="100%" stopColor="#E8650A" />
-              </linearGradient>
-              <linearGradient id="iconGradient6" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#FF6B35" />
-                <stop offset="25%" stopColor="#F7931E" />
-                <stop offset="50%" stopColor="#F7931E" />
-                <stop offset="75%" stopColor="#FF8C00" />
-                <stop offset="100%" stopColor="#E8650A" />
-              </linearGradient>
-            </defs>
-          </svg>
-
-          {/* Section Header */}
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-[8px] mb-6" style={{
-              background: 'linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(247, 147, 30, 0.1) 33%, rgba(255, 140, 0, 0.1) 66%, rgba(232, 101, 10, 0.1) 100%)',
-              border: '1px solid rgba(255, 107, 53, 0.2)'
-            }}>
-              <div className="w-2 h-2 rounded-full" style={{
-                background: 'linear-gradient(135deg, #FF6B35 0%, #F7931E 33%, #FF8C00 66%, #E8650A 100%)'
-              }}></div>
-              <span className="font-medium text-sm" style={{
-                background: 'linear-gradient(135deg, #FF6B35 0%, #F7931E 33%, #FF8C00 66%, #E8650A 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text'
-              }}>What you get</span>
-            </div>
-            <h2 className="font-sf-pro text-4xl md:text-5xl font-semibold tracking-tight text-slate-900 mb-4">
-              Videos that bring<br />customers
-            </h2>
-          </div>
-
-          {/* Benefits Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-            {/* Benefit 1 */}
-            <div className="text-center group">
-              <div 
-                onClick={() => handleIconClick(1)}
-                className="w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6 cursor-pointer" 
-                style={{
-                  background: 'linear-gradient(135deg, rgba(255, 107, 53, 0.15) 0%, rgba(247, 147, 30, 0.15) 33%, rgba(255, 140, 0, 0.15) 66%, rgba(232, 101, 10, 0.15) 100%)',
-                  transform: rotatingIcon === 1 ? 'rotateY(360deg)' : 'rotateY(0deg)',
-                  transition: 'transform 0.6s ease-in-out'
-                }}
-              >
-                <svg className="w-8 h-8" fill="none" stroke="url(#iconGradient1)" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h3 className="font-sf-pro text-xl font-semibold text-slate-900 mb-3">Videos that bring customers</h3>
-              <p className="text-slate-600 text-sm leading-relaxed">Short clips turn viewers into buyers and grow your sales each week.</p>
-            </div>
-
-            {/* Benefit 2 */}
-            <div className="text-center group">
-              <div 
-                onClick={() => handleIconClick(2)}
-                className="w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6 cursor-pointer" 
-                style={{
-                  background: 'linear-gradient(135deg, rgba(255, 107, 53, 0.15) 0%, rgba(247, 147, 30, 0.15) 33%, rgba(255, 140, 0, 0.15) 66%, rgba(232, 101, 10, 0.15) 100%)',
-                  transform: rotatingIcon === 2 ? 'rotateY(360deg)' : 'rotateY(0deg)',
-                  transition: 'transform 0.6s ease-in-out'
-                }}
-              >
-                <svg className="w-8 h-8" fill="none" stroke="url(#iconGradient2)" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-              <h3 className="font-sf-pro text-xl font-semibold text-slate-900 mb-3">Hooks that stop scrolling</h3>
-              <p className="text-slate-600 text-sm leading-relaxed">We craft strong openings that hold attention and raise watch time fast.</p>
-            </div>
-
-            {/* Benefit 3 */}
-            <div className="text-center group">
-              <div 
-                onClick={() => handleIconClick(3)}
-                className="w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6 cursor-pointer" 
-                style={{
-                  background: 'linear-gradient(135deg, rgba(255, 107, 53, 0.15) 0%, rgba(247, 147, 30, 0.15) 33%, rgba(255, 140, 0, 0.15) 66%, rgba(232, 101, 10, 0.15) 100%)',
-                  transform: rotatingIcon === 3 ? 'rotateY(360deg)' : 'rotateY(0deg)',
-                  transition: 'transform 0.6s ease-in-out'
-                }}
-              >
-                <svg className="w-8 h-8" fill="none" stroke="url(#iconGradient3)" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                </svg>
-              </div>
-              <h3 className="font-sf-pro text-xl font-semibold text-slate-900 mb-3">More leads from every video</h3>
-              <p className="text-slate-600 text-sm leading-relaxed">Each video drives clicks, messages, and calls from people ready to buy.</p>
-            </div>
-          </div>
-
-          {/* Second Row */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Benefit 4 */}
-            <div className="text-center group">
-              <div 
-                onClick={() => handleIconClick(4)}
-                className="w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6 cursor-pointer" 
-                style={{
-                  background: 'linear-gradient(135deg, rgba(255, 107, 53, 0.15) 0%, rgba(247, 147, 30, 0.15) 33%, rgba(255, 140, 0, 0.15) 66%, rgba(232, 101, 10, 0.15) 100%)',
-                  transform: rotatingIcon === 4 ? 'rotateY(360deg)' : 'rotateY(0deg)',
-                  transition: 'transform 0.6s ease-in-out'
-                }}
-              >
-                <svg className="w-8 h-8" fill="none" stroke="url(#iconGradient4)" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-              </div>
-              <h3 className="font-sf-pro text-xl font-semibold text-slate-900 mb-3">Less work for your team</h3>
-              <p className="text-slate-600 text-sm leading-relaxed">Use the checklist to catch small mistakes before publishing.</p>
-            </div>
-
-            {/* Benefit 5 */}
-            <div className="text-center group">
-              <div 
-                onClick={() => handleIconClick(5)}
-                className="w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6 cursor-pointer" 
-                style={{
-                  background: 'linear-gradient(135deg, rgba(255, 107, 53, 0.15) 0%, rgba(247, 147, 30, 0.15) 33%, rgba(255, 140, 0, 0.15) 66%, rgba(232, 101, 10, 0.15) 100%)',
-                  transform: rotatingIcon === 5 ? 'rotateY(360deg)' : 'rotateY(0deg)',
-                  transition: 'transform 0.6s ease-in-out'
-                }}
-              >
-                <svg className="w-8 h-8" fill="none" stroke="url(#iconGradient5)" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-              </div>
-              <h3 className="font-sf-pro text-xl font-semibold text-slate-900 mb-3">One style, every platform</h3>
-              <p className="text-slate-600 text-sm leading-relaxed">We resize and format videos for TikTok, Reels, and Shorts fast.</p>
-            </div>
-
-            {/* Benefit 6 */}
-            <div className="text-center group">
-              <div 
-                onClick={() => handleIconClick(6)}
-                className="w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6 cursor-pointer" 
-                style={{
-                  background: 'linear-gradient(135deg, rgba(255, 107, 53, 0.15) 0%, rgba(247, 147, 30, 0.15) 33%, rgba(255, 140, 0, 0.15) 66%, rgba(232, 101, 10, 0.15) 100%)',
-                  transform: rotatingIcon === 6 ? 'rotateY(360deg)' : 'rotateY(0deg)',
-                  transition: 'transform 0.6s ease-in-out'
-                }}
-              >
-                <svg className="w-8 h-8" fill="none" stroke="url(#iconGradient6)" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                </svg>
-              </div>
-              <h3 className="font-sf-pro text-xl font-semibold text-slate-900 mb-3">Numbers you can trust</h3>
-              <p className="text-slate-600 text-sm leading-relaxed">We track results weekly and improve what brings sales and leads.</p>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* --- SCROLL TEXT REVEAL SECTION --- */}
+      <ScrollTextReveal />
 
       {/* --- OUR SERVICES with Animated Icons --- */}
-      <section id="our-services" className="py-16 sm:py-20 md:py-32 px-4 sm:px-6 md:px-8 relative overflow-hidden z-10">
+      <section id="our-services" className="pt-12 sm:pt-16 md:pt-20 pb-16 sm:pb-20 md:pb-32 px-4 sm:px-6 md:px-8 relative overflow-hidden z-10">
         <div className="max-w-7xl mx-auto relative z-10">
           {/* SVG Gradient Definitions for Service Icons */}
           <svg width="0" height="0" style={{ position: 'absolute' }}>
             <defs>
               <linearGradient id="serviceGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#FF6B35" />
-                <stop offset="25%" stopColor="#F7931E" />
-                <stop offset="50%" stopColor="#F7931E" />
-                <stop offset="75%" stopColor="#FF8C00" />
-                <stop offset="100%" stopColor="#E8650A" />
+                <stop offset="0%" stopColor="#FF8156" />
+                <stop offset="100%" stopColor="#FF8156" />
               </linearGradient>
               <linearGradient id="serviceGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#FF6B35" />
-                <stop offset="25%" stopColor="#F7931E" />
-                <stop offset="50%" stopColor="#F7931E" />
-                <stop offset="75%" stopColor="#FF8C00" />
-                <stop offset="100%" stopColor="#E8650A" />
+                <stop offset="0%" stopColor="#FF8156" />
+                <stop offset="100%" stopColor="#FF8156" />
               </linearGradient>
               <linearGradient id="serviceGradient3" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#FF6B35" />
-                <stop offset="25%" stopColor="#F7931E" />
-                <stop offset="50%" stopColor="#F7931E" />
-                <stop offset="75%" stopColor="#FF8C00" />
-                <stop offset="100%" stopColor="#E8650A" />
+                <stop offset="0%" stopColor="#FF8156" />
+                <stop offset="100%" stopColor="#FF8156" />
               </linearGradient>
               <linearGradient id="serviceGradient4" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#FF6B35" />
-                <stop offset="25%" stopColor="#F7931E" />
-                <stop offset="50%" stopColor="#F7931E" />
-                <stop offset="75%" stopColor="#FF8C00" />
-                <stop offset="100%" stopColor="#E8650A" />
+                <stop offset="0%" stopColor="#FF8156" />
+                <stop offset="100%" stopColor="#FF8156" />
               </linearGradient>
               <linearGradient id="serviceGradient5" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#FF6B35" />
-                <stop offset="25%" stopColor="#F7931E" />
-                <stop offset="50%" stopColor="#F7931E" />
-                <stop offset="75%" stopColor="#FF8C00" />
-                <stop offset="100%" stopColor="#E8650A" />
+                <stop offset="0%" stopColor="#FF8156" />
+                <stop offset="100%" stopColor="#FF8156" />
               </linearGradient>
               <linearGradient id="serviceGradient6" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#FF6B35" />
-                <stop offset="25%" stopColor="#F7931E" />
-                <stop offset="50%" stopColor="#F7931E" />
-                <stop offset="75%" stopColor="#FF8C00" />
-                <stop offset="100%" stopColor="#E8650A" />
+                <stop offset="0%" stopColor="#FF8156" />
+                <stop offset="100%" stopColor="#FF8156" />
               </linearGradient>
             </defs>
           </svg>
@@ -1329,17 +1206,14 @@ const Home: React.FC = () => {
           <div className="text-center mb-12 sm:mb-16 md:mb-20">
             {/* Badge */}
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-[8px] mb-6" style={{
-              background: 'linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(247, 147, 30, 0.1) 33%, rgba(255, 140, 0, 0.1) 66%, rgba(232, 101, 10, 0.1) 100%)',
-              border: '1px solid rgba(255, 107, 53, 0.2)'
+              background: 'rgba(255, 107, 52, 0.1)',
+              border: '1px solid rgba(255, 107, 52, 0.2)'
             }}>
               <div className="w-2 h-2 rounded-full" style={{
-                background: 'linear-gradient(135deg, #FF6B35 0%, #F7931E 33%, #FF8C00 66%, #E8650A 100%)'
+                background: '#FF8156'
               }}></div>
               <span className="font-medium text-sm" style={{
-                background: 'linear-gradient(135deg, #FF6B35 0%, #F7931E 33%, #FF8C00 66%, #E8650A 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text'
+                color: '#FF8156'
               }}>What we offer</span>
             </div>
             
@@ -1436,7 +1310,7 @@ const Home: React.FC = () => {
                 }}
               >
                 <div className="w-14 h-14 md:w-16 md:h-16 rounded-lg flex items-center justify-center mb-6 transition-all duration-500 mx-auto group-hover:scale-110" style={{
-                  background: 'linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(247, 147, 30, 0.1) 33%, rgba(255, 140, 0, 0.1) 66%, rgba(232, 101, 10, 0.1) 100%)'
+                  background: 'linear-gradient(135deg, rgba(255, 129, 86, 0.1) 0%, rgba(247, 147, 30, 0.1) 33%, rgba(255, 140, 0, 0.1) 66%, rgba(232, 101, 10, 0.1) 100%)'
                 }}>
                   {service.icon}
                 </div>
@@ -1456,394 +1330,43 @@ const Home: React.FC = () => {
             <p className="font-inter text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed px-4 sm:px-0">We don't just edit videos, we engineer content that performs.</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10 md:gap-12 mb-12">
-            {/* Scoped styles for Card Animations */}
-            <style dangerouslySetInnerHTML={{ __html: `
-              @keyframes soundBarBounce {
-                0%, 100% { height: 8px; }
-                50% { height: 48px; }
-              }
-            `}} />
-
-            {/* Clean Storytelling - Left Card */}
-            <div 
-              ref={el => whyChooseRefs.current[0] = el}
-              style={{
-                transform: whyChooseVisible[0] ? 'translateY(0)' : 'translateY(40px)',
-                opacity: whyChooseVisible[0] ? 1 : 0,
-                transition: 'transform 1s cubic-bezier(0.16, 1, 0.3, 1), opacity 1s cubic-bezier(0.16, 1, 0.3, 1)',
-                transitionDelay: '0ms'
-              }}
-              className="w-full"
-            >
-              <div 
-                className="relative rounded-3xl overflow-hidden group shadow-sm hover:shadow-2xl transition-all duration-500 p-[2px] cursor-pointer"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(255, 107, 53, 0.15) 0%, rgba(247, 147, 30, 0.15) 50%, rgba(255, 140, 0, 0.15) 100%)'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'linear-gradient(135deg, #FF6B35 0%, #F7931E 50%, #FF8C00 100%)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255, 107, 53, 0.15) 0%, rgba(247, 147, 30, 0.15) 50%, rgba(255, 140, 0, 0.15) 100%)';
-                }}
-              >
-                <div className="w-full h-full bg-white rounded-[22px] p-7 sm:p-9">
-                  {/* Animated Visual Canvas - Clean Storytelling */}
-                  <div className="w-full h-44 bg-transparent mb-6 relative overflow-hidden flex flex-col justify-center px-4">
-                    <div className="flex items-center justify-center gap-4 w-full">
-                      {/* Block 1: Noise */}
-                      <div className={`h-20 rounded-xl border flex flex-col items-center justify-center transition-all duration-700 ease-in-out overflow-hidden
-                        ${whyChooseStep === 0 ? 'w-1/4 bg-rose-50 border-rose-200 text-rose-600 opacity-100' : 'w-0 opacity-0 border-transparent pointer-events-none'}
-                      `}>
-                        <span className="text-xs font-bold tracking-tight mb-1">Noise</span>
-                        <svg className="w-5 h-5 text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M14.12 14.12L19 19m-4.88-4.88L19 9.12M14.12 14.12L12 12m0 0L7.88 7.88M12 12L5 5m7 7l5-5m-5 5l-5 5" />
-                        </svg>
-                      </div>
-
-                      {/* Block 2: Core Story */}
-                      <div className={`h-20 rounded-xl border border-orange-200 bg-orange-50 text-orange-700 flex flex-col items-center justify-center transition-all duration-700 ease-in-out relative
-                        ${whyChooseStep === 0 ? 'w-2/4' : 'w-full shadow-md shadow-orange-100'}
-                      `}>
-                        <span className="text-[13px] font-bold tracking-tight mb-1">Core Story</span>
-                        <svg className="w-6 h-6 text-orange-600 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a2 2 0 002-2V6a2 2 0 00-2-2H4a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                        {whyChooseStep !== 0 && (
-                          <div className="absolute top-2 right-2 flex items-center gap-0.5 bg-orange-500 text-white text-[8px] font-extrabold px-1.5 py-0.5 rounded-full animate-bounce">
-                            <Check className="w-3 h-3" />
-                            <span>CLEAN</span>
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Block 3: Filler */}
-                      <div className={`h-20 rounded-xl border flex flex-col items-center justify-center transition-all duration-700 ease-in-out overflow-hidden
-                        ${whyChooseStep === 0 ? 'w-1/4 bg-rose-50 border-rose-200 text-rose-600 opacity-100' : 'w-0 opacity-0 border-transparent pointer-events-none'}
-                      `}>
-                        <span className="text-xs font-bold tracking-tight mb-1">Filler</span>
-                        <svg className="w-5 h-5 text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M14.12 14.12L19 19m-4.88-4.88L19 9.12M14.12 14.12L12 12m0 0L7.88 7.88M12 12L5 5m7 7l5-5m-5 5l-5 5" />
-                        </svg>
-                      </div>
-                    </div>
-                    
-                    {/* Progress track */}
-                    <div className="w-full h-1.5 bg-slate-100 rounded-full mt-4 overflow-hidden relative">
-                      <div 
-                        className="absolute top-0 bottom-0 bg-orange-500 rounded-full transition-all duration-1000 ease-in-out"
-                        style={{
-                          left: whyChooseStep === 0 ? '25%' : '0%',
-                          width: whyChooseStep === 0 ? '50%' : '100%'
-                        }}
-                      />
-                    </div>
-                  </div>
-
-                  <h3 className="font-sf-pro text-2xl sm:text-3xl font-bold text-slate-900 mb-3 tracking-tight">Clean Storytelling</h3>
-                  <p className="font-sf-pro text-[17px] sm:text-lg text-slate-600 leading-relaxed font-normal">Every cut serves a purpose. We eliminate noise and focus on narrative flow that keeps viewers engaged.</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Retention-Focused - Right Card (No hover) */}
-            <div 
-              ref={el => whyChooseRefs.current[1] = el}
-              style={{
-                transform: whyChooseVisible[1] ? 'translateY(0)' : 'translateY(40px)',
-                opacity: whyChooseVisible[1] ? 1 : 0,
-                transition: 'transform 1s cubic-bezier(0.16, 1, 0.3, 1), opacity 1s cubic-bezier(0.16, 1, 0.3, 1)',
-                transitionDelay: '100ms'
-              }}
-              className="w-full"
-            >
-              <div 
-                className="relative rounded-3xl overflow-hidden group shadow-sm hover:shadow-2xl transition-all duration-500 p-[2px] cursor-pointer"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(255, 107, 53, 0.15) 0%, rgba(247, 147, 30, 0.15) 50%, rgba(255, 140, 0, 0.15) 100%)'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'linear-gradient(135deg, #FF6B35 0%, #F7931E 50%, #FF8C00 100%)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255, 107, 53, 0.15) 0%, rgba(247, 147, 30, 0.15) 50%, rgba(255, 140, 0, 0.15) 100%)';
-                }}
-              >
-                <div className="w-full h-full bg-white rounded-[22px] p-7 sm:p-9">
-                  {/* Animated Visual Canvas - Retention-Focused Pacing (shapes only, orange theme) */}
-                  <div className="w-full h-44 bg-transparent mb-6 relative overflow-hidden flex items-center justify-center">
-                    <svg className="w-full h-full" viewBox="0 0 320 140" preserveAspectRatio="none">
-                      <defs>
-                        <linearGradient id="pacingGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                          <stop offset="0%" stopColor="#FF6B35" />
-                          <stop offset="50%" stopColor="#F7931E" />
-                          <stop offset="100%" stopColor="#FF8C00" />
-                        </linearGradient>
-                        <filter id="pacingGlow" x="-10%" y="-10%" width="120%" height="120%">
-                          <feDropShadow dx="0" dy="2" stdDeviation="4" floodColor="#FF6B35" floodOpacity="0.4" />
-                        </filter>
-                        <linearGradient id="fillGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                          <stop offset="0%" stopColor="#FF6B35" stopOpacity="0.12" />
-                          <stop offset="100%" stopColor="#FF6B35" stopOpacity="0" />
-                        </linearGradient>
-                      </defs>
-
-                      {/* Background Grid Lines */}
-                      <line x1="0" y1="35" x2="320" y2="35" stroke="#f1f5f9" strokeWidth="1" strokeDasharray="3,3" />
-                      <line x1="0" y1="70" x2="320" y2="70" stroke="#f1f5f9" strokeWidth="1" strokeDasharray="3,3" />
-                      <line x1="0" y1="105" x2="320" y2="105" stroke="#f1f5f9" strokeWidth="1" strokeDasharray="3,3" />
-                      <line x1="80" y1="0" x2="80" y2="130" stroke="#f1f5f9" strokeWidth="1" strokeDasharray="3,3" />
-                      <line x1="160" y1="0" x2="160" y2="130" stroke="#f1f5f9" strokeWidth="1" strokeDasharray="3,3" />
-                      <line x1="240" y1="0" x2="240" y2="130" stroke="#f1f5f9" strokeWidth="1" strokeDasharray="3,3" />
-
-                      {/* Line A: Competitor drop-off (dashed gray) */}
-                      <path 
-                        d="M 10,22 C 60,85 130,115 180,120 C 220,123 270,124 310,125" 
-                        fill="none" 
-                        stroke="#cbd5e1" 
-                        strokeWidth="1.5" 
-                        strokeDasharray="4,4" 
-                        opacity="0.7"
-                      />
-
-                      {/* Fill under the Idyll curve */}
-                      <path 
-                        d="M 10,22 C 35,22 48,28 80,14 C 112,0 130,35 160,22 C 185,12 210,44 240,24 C 270,5 295,18 310,15 L 310,130 L 10,130 Z" 
-                        fill="url(#fillGrad)"
-                      />
-
-                      {/* Line B: Idyll pacing curve (glowing orange) */}
-                      <path 
-                        d="M 10,22 C 35,22 48,28 80,14 C 112,0 130,35 160,22 C 185,12 210,44 240,24 C 270,5 295,18 310,15" 
-                        fill="none" 
-                        stroke="url(#pacingGradient)" 
-                        strokeWidth="3" 
-                        strokeLinecap="round"
-                        filter="url(#pacingGlow)"
-                      />
-
-                      {/* Timeline baseline */}
-                      <line x1="10" y1="130" x2="310" y2="130" stroke="#e2e8f0" strokeWidth="1.5" strokeLinecap="round" />
-
-                      {/* Vertical Playhead */}
-                      <line 
-                        x1={whyChooseStep === 0 ? 80 : (whyChooseStep === 1 ? 160 : 240)} 
-                        y1="0" 
-                        x2={whyChooseStep === 0 ? 80 : (whyChooseStep === 1 ? 160 : 240)} 
-                        y2="130" 
-                        stroke="#FF6B35" 
-                        strokeWidth="1.5"
-                        strokeDasharray="2,2"
-                        opacity="0.7"
-                        className="transition-all duration-700 ease-in-out"
-                      />
-
-                      {/* Diamond markers on timeline */}
-                      <rect x="77" y="127" width="6" height="6" rx="1" transform="rotate(45 80 130)" fill={whyChooseStep === 0 ? '#FF6B35' : '#e2e8f0'} className="transition-colors duration-500" />
-                      <rect x="157" y="127" width="6" height="6" rx="1" transform="rotate(45 160 130)" fill={whyChooseStep === 1 ? '#F7931E' : '#e2e8f0'} className="transition-colors duration-500" />
-                      <rect x="237" y="127" width="6" height="6" rx="1" transform="rotate(45 240 130)" fill={whyChooseStep === 2 ? '#FF8C00' : '#e2e8f0'} className="transition-colors duration-500" />
-
-                      {/* Curve peak indicator — glowing orange dot */}
-                      <circle 
-                        cx={whyChooseStep === 0 ? 80 : (whyChooseStep === 1 ? 160 : 240)} 
-                        cy={whyChooseStep === 0 ? 14 : (whyChooseStep === 1 ? 22 : 24)} 
-                        r={whyChooseStep >= 0 ? '5' : '3'}
-                        fill={whyChooseStep === 0 ? '#FF6B35' : (whyChooseStep === 1 ? '#F7931E' : '#FF8C00')}
-                        stroke="#ffffff"
-                        strokeWidth="2"
-                        className="transition-all duration-700 ease-in-out"
-                      />
-
-                      {/* Small triangle peaks at each milestone to show "spikes" */}
-                      <polygon points="80,2 75,14 85,14" fill="#FF6B35" opacity={whyChooseStep === 0 ? 0.9 : 0.2} className="transition-opacity duration-500" />
-                      <polygon points="160,10 155,22 165,22" fill="#F7931E" opacity={whyChooseStep === 1 ? 0.9 : 0.2} className="transition-opacity duration-500" />
-                      <polygon points="240,12 235,24 245,24" fill="#FF8C00" opacity={whyChooseStep === 2 ? 0.9 : 0.2} className="transition-opacity duration-500" />
-                    </svg>
-                  </div>
-
-                  <h3 className="font-sf-pro text-2xl sm:text-3xl font-bold text-slate-900 mb-3 tracking-tight">Retention-Focused Pacing</h3>
-                  <p className="font-sf-pro text-[17px] sm:text-lg text-slate-600 leading-relaxed font-normal">Strategic pacing that maximizes watch time. We understand platform algorithms and edit accordingly.</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Platform-Specific - Left Card */}
-            <div 
-              ref={el => whyChooseRefs.current[2] = el}
-              style={{
-                transform: whyChooseVisible[2] ? 'translateY(0)' : 'translateY(40px)',
-                opacity: whyChooseVisible[2] ? 1 : 0,
-                transition: 'transform 1s cubic-bezier(0.16, 1, 0.3, 1), opacity 1s cubic-bezier(0.16, 1, 0.3, 1)',
-                transitionDelay: '200ms'
-              }}
-              className="w-full"
-            >
-              <div 
-                className="relative rounded-3xl overflow-hidden group shadow-sm hover:shadow-2xl transition-all duration-500 p-[2px] cursor-pointer"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(255, 107, 53, 0.15) 0%, rgba(247, 147, 30, 0.15) 50%, rgba(255, 140, 0, 0.15) 100%)'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'linear-gradient(135deg, #FF6B35 0%, #F7931E 50%, #FF8C00 100%)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255, 107, 53, 0.15) 0%, rgba(247, 147, 30, 0.15) 50%, rgba(255, 140, 0, 0.15) 100%)';
-                }}
-              >
-                <div className="w-full h-full bg-white rounded-[22px] p-7 sm:p-9">
-                  {/* Animated Visual Canvas - Platform-Specific Edits */}
-                  <div className="w-full h-44 bg-transparent mb-6 relative overflow-hidden flex items-center justify-center">
-                    {/* Morphing Video Frame */}
-                    <div 
-                      className="border border-slate-200 bg-white rounded-xl shadow-sm flex flex-col items-center justify-between p-1 overflow-hidden transition-all duration-700 ease-in-out"
-                      style={{
-                        width: whyChooseStep === 0 ? '72px' : (whyChooseStep === 1 ? '100px' : '144px'),
-                        height: whyChooseStep === 0 ? '120px' : (whyChooseStep === 1 ? '100px' : '81px'),
-                      }}
-                    >
-                      {/* Mock Video Screen Content */}
-                      <div className="w-full flex-1 rounded-lg bg-gradient-to-tr from-orange-400 via-orange-500 to-amber-600 relative overflow-hidden flex items-center justify-center">
-                        <Play className="w-7 h-7 text-white fill-white/20 animate-pulse" />
-                        
-                        <span className="absolute bottom-1.5 left-1.5 text-[8px] font-extrabold text-white bg-black/30 px-1.5 py-0.5 rounded tracking-wider leading-none">
-                          {whyChooseStep === 0 ? '9:16' : (whyChooseStep === 1 ? '1:1' : '16:9')}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Active Platform Labels */}
-                    <div className="absolute bottom-2 flex gap-5 text-[10px] font-bold text-slate-400">
-                      <span className={`transition-all duration-300 ${whyChooseStep === 0 ? 'text-[#FF6B35] scale-110 font-extrabold' : 'opacity-45'}`}>TikTok</span>
-                      <span className={`transition-all duration-300 ${whyChooseStep === 1 ? 'text-[#F7931E] scale-110 font-extrabold' : 'opacity-45'}`}>Instagram</span>
-                      <span className={`transition-all duration-300 ${whyChooseStep === 2 ? 'text-[#FF8C00] scale-110 font-extrabold' : 'opacity-45'}`}>YouTube</span>
-                    </div>
-                  </div>
-                  <h3 className="font-sf-pro text-2xl sm:text-3xl font-bold text-slate-900 mb-3 tracking-tight">Platform-Specific Edits</h3>
-                  <p className="font-sf-pro text-[17px] sm:text-lg text-slate-600 leading-relaxed font-normal">Optimized for each platform's unique requirements. From TikTok hooks to YouTube retention curves.</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Sound Design - Right Card (No hover) */}
-            <div 
-              ref={el => whyChooseRefs.current[3] = el}
-              style={{
-                transform: whyChooseVisible[3] ? 'translateY(0)' : 'translateY(40px)',
-                opacity: whyChooseVisible[3] ? 1 : 0,
-                transition: 'transform 1s cubic-bezier(0.16, 1, 0.3, 1), opacity 1s cubic-bezier(0.16, 1, 0.3, 1)',
-                transitionDelay: '300ms'
-              }}
-              className="w-full"
-            >
-              <div 
-                className="relative rounded-3xl overflow-hidden group shadow-sm hover:shadow-2xl transition-all duration-500 p-[2px] cursor-pointer"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(255, 107, 53, 0.15) 0%, rgba(247, 147, 30, 0.15) 50%, rgba(255, 140, 0, 0.15) 100%)'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'linear-gradient(135deg, #FF6B35 0%, #F7931E 50%, #FF8C00 100%)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255, 107, 53, 0.15) 0%, rgba(247, 147, 30, 0.15) 50%, rgba(255, 140, 0, 0.15) 100%)';
-                }}
-              >
-                <div className="w-full h-full bg-white rounded-[22px] p-7 sm:p-9">
-                  {/* Animated Visual Canvas - Sound Design & Motion (Adding Sound Tracks) */}
-                  <div className="w-full h-44 bg-transparent mb-6 relative overflow-hidden flex flex-col justify-center px-4 gap-3">
-                    {/* Track 1: Voiceover */}
-                    <div className={`flex items-center gap-3 bg-orange-50/60 border border-orange-100 rounded-xl p-2.5 transition-all duration-700 ease-in-out
-                      ${whyChooseStep >= 0 ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'}
-                    `}>
-                      <div className="w-5 h-5 rounded-lg bg-orange-500 flex items-center justify-center text-white text-[9px] font-bold">VO</div>
-                      <div className="flex-1 flex items-center gap-0.5 h-6">
-                        {[3, 5, 2, 7, 4, 6, 2, 8, 3, 5, 2, 6, 4, 3, 7, 2, 5, 3].map((val, i) => (
-                          <div 
-                            key={i} 
-                            className="w-1 bg-orange-500 rounded-full transition-all duration-300"
-                            style={{ 
-                              height: `${val * 10}%`,
-                              animation: whyChooseStep >= 0 ? `soundBarBounce 1s infinite ease-in-out` : 'none',
-                              animationDelay: `${i * 0.05}s`
-                            }}
-                          />
-                        ))}
-                      </div>
-                      <span className="text-[9px] font-bold text-orange-600 tracking-wider">VOICEOVER</span>
-                    </div>
-
-                    {/* Track 2: SFX (Sound Effects) */}
-                    <div className={`flex items-center gap-3 bg-amber-50/60 border border-amber-100 rounded-xl p-2.5 transition-all duration-700 ease-in-out
-                      ${whyChooseStep >= 1 ? 'opacity-100 translate-x-0' : 'opacity-30 translate-x-4 pointer-events-none filter grayscale'}
-                    `}>
-                      <div className="w-5 h-5 rounded-lg bg-amber-500 flex items-center justify-center text-white text-[9px] font-bold">FX</div>
-                      <div className="flex-1 flex items-center gap-1.5 h-6">
-                        <div className={`h-2.5 rounded-full bg-amber-500 transition-all duration-500 ${whyChooseStep >= 1 ? 'w-12 animate-pulse' : 'w-4'}`} />
-                        <div className="w-2 h-2 rounded-full bg-amber-300" />
-                        <div className={`h-2.5 rounded-full bg-amber-500 transition-all duration-500 ${whyChooseStep >= 1 ? 'w-16' : 'w-4'}`} />
-                      </div>
-                      <span className="text-[9px] font-bold text-amber-600 tracking-wider">SFX LAYER</span>
-                    </div>
-
-                    {/* Track 3: BGM (Music) */}
-                    <div className={`flex items-center gap-3 bg-red-50/60 border border-orange-100 rounded-xl p-2.5 transition-all duration-700 ease-in-out
-                      ${whyChooseStep >= 2 ? 'opacity-100 translate-x-0' : 'opacity-30 translate-x-4 pointer-events-none filter grayscale'}
-                    `}>
-                      <div className="w-5 h-5 rounded-lg bg-red-500 flex items-center justify-center text-white text-[9px] font-bold">♫</div>
-                      <div className="flex-1 flex items-center gap-0.5 h-6">
-                        {[2, 3, 2, 4, 3, 2, 3, 4, 2, 3, 2, 4, 3, 2, 3, 4, 2, 3].map((val, i) => (
-                          <div 
-                            key={i} 
-                            className="w-1 bg-red-500 rounded-full transition-all duration-300"
-                            style={{ 
-                              height: `${val * 15}%`,
-                              animation: whyChooseStep >= 2 ? `soundBarBounce 1.5s infinite ease-in-out` : 'none',
-                              animationDelay: `${i * 0.08}s`
-                            }}
-                          />
-                        ))}
-                      </div>
-                      <span className="text-[9px] font-bold text-red-600 tracking-wider">MUSIC TRACK</span>
-                    </div>
-                  </div>
-
-                  <h3 className="font-sf-pro text-2xl sm:text-3xl font-bold text-slate-900 mb-3 tracking-tight">Sound Design & Motion</h3>
-                  <p className="font-sf-pro text-[17px] sm:text-lg text-slate-600 leading-relaxed font-normal">Immersive audio and smooth motion graphics that enhance the story without overwhelming.</p>
-                </div>
-              </div>
-            </div>
+          <div className="why-idyll grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10 md:gap-12 mb-12">
+            <TimelineCard
+              ref={el => (whyChooseRefs.current[0] = el)}
+              isVisibleOnScroll={whyChooseVisible[0]}
+            />
+            <RetentionCard
+              ref={el => (whyChooseRefs.current[1] = el)}
+              isVisibleOnScroll={whyChooseVisible[1]}
+            />
+            <ReframeCard
+              ref={el => (whyChooseRefs.current[2] = el)}
+              isVisibleOnScroll={whyChooseVisible[2]}
+            />
+            <SoundCard
+              ref={el => (whyChooseRefs.current[3] = el)}
+              isVisibleOnScroll={whyChooseVisible[3]}
+            />
           </div>
 
           {/* SVG Gradient Definitions for Why Choose Icons */}
           <svg width="0" height="0" style={{ position: 'absolute' }}>
             <defs>
               <linearGradient id="whyGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#FF6B35" />
-                <stop offset="25%" stopColor="#F7931E" />
-                <stop offset="50%" stopColor="#F7931E" />
-                <stop offset="75%" stopColor="#FF8C00" />
-                <stop offset="100%" stopColor="#E8650A" />
+                <stop offset="0%" stopColor="#FF8156" />
+                <stop offset="100%" stopColor="#FF8156" />
               </linearGradient>
               <linearGradient id="whyGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#FF6B35" />
-                <stop offset="25%" stopColor="#F7931E" />
-                <stop offset="50%" stopColor="#F7931E" />
-                <stop offset="75%" stopColor="#FF8C00" />
-                <stop offset="100%" stopColor="#E8650A" />
+                <stop offset="0%" stopColor="#FF8156" />
+                <stop offset="100%" stopColor="#FF8156" />
               </linearGradient>
               <linearGradient id="whyGradient3" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#FF6B35" />
-                <stop offset="25%" stopColor="#F7931E" />
-                <stop offset="50%" stopColor="#F7931E" />
-                <stop offset="75%" stopColor="#FF8C00" />
-                <stop offset="100%" stopColor="#E8650A" />
+                <stop offset="0%" stopColor="#FF8156" />
+                <stop offset="100%" stopColor="#FF8156" />
               </linearGradient>
               <linearGradient id="whyGradient4" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#FF6B35" />
-                <stop offset="25%" stopColor="#F7931E" />
-                <stop offset="50%" stopColor="#F7931E" />
-                <stop offset="75%" stopColor="#FF8C00" />
-                <stop offset="100%" stopColor="#E8650A" />
+                <stop offset="0%" stopColor="#FF8156" />
+                <stop offset="100%" stopColor="#FF8156" />
               </linearGradient>
             </defs>
           </svg>
@@ -1856,17 +1379,14 @@ const Home: React.FC = () => {
           {/* Section Header */}
           <div className="text-center mb-12 md:mb-14">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-[8px] mb-6" style={{
-              background: 'linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(247, 147, 30, 0.1) 33%, rgba(255, 140, 0, 0.1) 66%, rgba(232, 101, 10, 0.1) 100%)',
-              border: '1px solid rgba(255, 107, 53, 0.2)'
+              background: 'rgba(255, 107, 52, 0.1)',
+              border: '1px solid rgba(255, 107, 52, 0.2)'
             }}>
               <div className="w-2 h-2 rounded-full" style={{
-                background: 'linear-gradient(135deg, #FF6B35 0%, #F7931E 33%, #FF8C00 66%, #E8650A 100%)'
+                background: '#FF8156'
               }}></div>
               <span className="font-medium text-sm" style={{
-                background: 'linear-gradient(135deg, #FF6B35 0%, #F7931E 33%, #FF8C00 66%, #E8650A 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text'
+                color: '#FF8156'
               }}>Proof in numbers</span>
             </div>
             <h2 className="font-sf-pro text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight text-slate-900 mb-4">
@@ -1878,10 +1398,7 @@ const Home: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-10 md:gap-12 mb-12 sm:mb-16 md:mb-20">
             <div className="text-center">
               <div className="font-sf-pro font-bold mb-3 sm:mb-4 text-4xl sm:text-5xl md:text-6xl leading-none" style={{
-                background: 'linear-gradient(135deg, #FF6B35 0%, #F7931E 33%, #FF8C00 66%, #E8650A 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text'
+                color: '#FF8156'
               }}>
                 <CounterStat number={200} suffix="M+" label="" delay={0} oscillate={true} oscillateMin={200} oscillateMax={300} oscillateSpeed={4000} />
               </div>
@@ -1889,10 +1406,7 @@ const Home: React.FC = () => {
             </div>
             <div className="text-center">
               <div className="font-sf-pro font-bold mb-3 sm:mb-4 text-4xl sm:text-5xl md:text-6xl leading-none" style={{
-                background: 'linear-gradient(135deg, #FF6B35 0%, #F7931E 33%, #FF8C00 66%, #E8650A 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text'
+                color: '#FF8156'
               }}>
                 <CounterStat number={3.1} suffix="M+" label="" delay={200} oscillate={true} oscillateMin={3.1} oscillateMax={123.1} oscillateSpeed={4000} />
               </div>
@@ -1900,10 +1414,7 @@ const Home: React.FC = () => {
             </div>
             <div className="text-center">
               <div className="font-sf-pro font-bold mb-3 sm:mb-4 text-4xl sm:text-5xl md:text-6xl leading-none" style={{
-                background: 'linear-gradient(135deg, #FF6B35 0%, #F7931E 33%, #FF8C00 66%, #E8650A 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text'
+                color: '#FF8156'
               }}>
                 <CounterStat number={4.2} suffix="/5" label="" delay={400} oscillate={true} oscillateMin={4.2} oscillateMax={4.9} oscillateSpeed={4000} />
               </div>
@@ -1924,17 +1435,14 @@ const Home: React.FC = () => {
 
             <div className="text-center mb-12">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-[8px]" style={{
-                background: 'linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(247, 147, 30, 0.1) 33%, rgba(255, 140, 0, 0.1) 66%, rgba(232, 101, 10, 0.1) 100%)',
-                border: '1px solid rgba(255, 107, 53, 0.2)'
+                background: 'rgba(255, 107, 52, 0.1)',
+                border: '1px solid rgba(255, 107, 52, 0.2)'
               }}>
                 <div className="w-2 h-2 rounded-full" style={{
-                  background: 'linear-gradient(135deg, #FF6B35 0%, #F7931E 33%, #FF8C00 66%, #E8650A 100%)'
+                  background: '#FF8156'
                 }}></div>
                 <span className="font-medium text-sm" style={{
-                  background: 'linear-gradient(135deg, #FF6B35 0%, #F7931E 33%, #FF8C00 66%, #E8650A 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text'
+                  color: '#FF8156'
                 }}>If this sounds familiar</span>
               </div>
             </div>
@@ -1956,7 +1464,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* --- HOW IT WORKS - Simple Connected Steps --- */}
-      <section className="py-16 sm:py-20 md:py-32 px-4 sm:px-6 md:px-8 relative overflow-hidden z-10" id="how-it-works">
+      <section ref={howItWorksSectionRef} className="py-16 sm:py-20 md:py-32 px-4 sm:px-6 md:px-8 relative overflow-hidden z-10" id="how-it-works">
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="text-center mb-12 sm:mb-16 md:mb-20">
             {/* Gradient-underlined heading */}
@@ -1964,292 +1472,22 @@ const Home: React.FC = () => {
               <h2 className="font-sf-pro text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight text-slate-900">
                 How It Works
               </h2>
-              {/* Orange gradient underline bar */}
+              {/* Orange underline bar */}
               <div className="mt-3 mx-auto h-1.5 rounded-full" style={{
                 width: '70%',
-                background: 'linear-gradient(90deg, #FFB86A 0%, #FF7A3A 35%, #F06A00 65%, #FF6B4A 100%)'
+                background: '#FF8156'
               }} />
             </div>
             <p className="font-inter text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed px-4 sm:px-0">A streamlined process designed for speed, quality, and results.</p>
           </div>
 
           {/* Steps Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 items-stretch">
-            {/* Step 1 */}
-            <div 
-              className="relative rounded-3xl overflow-hidden group shadow-sm transition-all duration-500 p-[2px] cursor-pointer"
-              style={{
-                background: 'linear-gradient(135deg, rgba(255, 107, 53, 0.6) 0%, rgba(247, 147, 30, 0.6) 50%, rgba(255, 140, 0, 0.6) 100%)'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'linear-gradient(135deg, #FF6B35 0%, #F7931E 50%, #FF8C00 100%)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255, 107, 53, 0.6) 0%, rgba(247, 147, 30, 0.6) 50%, rgba(255, 140, 0, 0.6) 100%)';
-              }}
-            >
-              <div className="w-full h-full bg-white rounded-[22px] p-6 flex flex-col justify-between">
-                <div>
-                  {/* Animated Visual Canvas - Submit Brief */}
-                  <div className="w-full h-40 bg-transparent mb-6 relative overflow-hidden flex items-center justify-around px-4">
-                    {/* Brief Document Form Mock */}
-                    <div className="flex flex-col gap-1.5 p-2 bg-white rounded-lg border border-slate-200/80 shadow-sm w-24 relative z-10">
-                      <div className="w-10 h-1 bg-[#FF6B35] rounded-full" />
-                      <div className="w-16 h-1 bg-slate-200 rounded-full" />
-                      <div className="w-12 h-1 bg-slate-200 rounded-full" />
-                    </div>
-
-                    {/* Moving File */}
-                    <div 
-                      className={`absolute z-20 flex items-center gap-1.5 p-1.5 bg-white border border-[#FF6B35]/30 rounded-md shadow-md transition-all duration-1000 ease-in-out
-                        ${step1 === 0 ? 'opacity-0 scale-75 translate-x-[-30px] translate-y-[10px]' : ''}
-                        ${step1 === 1 ? 'opacity-100 scale-100 translate-x-[0px] translate-y-[-10px]' : ''}
-                        ${step1 === 2 ? 'opacity-0 scale-50 translate-x-[35px] translate-y-[0px]' : ''}
-                        ${step1 === 3 ? 'opacity-0 scale-0' : ''}
-                      `}
-                    >
-                      <svg className="w-4 h-4 text-[#FF6B35]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                      </svg>
-                      <span className="text-[9px] font-bold text-slate-500">Brief.pdf</span>
-                    </div>
-
-                    {/* Drive Folder Mock */}
-                    <div className={`relative z-10 flex flex-col items-center justify-center transition-transform duration-300 ${step1 === 2 ? 'scale-110' : 'scale-100'}`}>
-                      <div className={`w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-500
-                        ${step1 === 2 || step1 === 3 ? 'bg-emerald-50 text-emerald-500 border border-emerald-200' : 'bg-slate-50 text-slate-400 border border-slate-200'}
-                      `}>
-                        {step1 === 2 || step1 === 3 ? (
-                          <Check className="w-6 h-6" />
-                        ) : (
-                          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-                          </svg>
-                        )}
-                      </div>
-                      <span className={`text-[9px] font-bold mt-1 tracking-wider ${step1 === 2 || step1 === 3 ? 'text-emerald-500' : 'text-slate-400'}`}>
-                        {step1 === 2 || step1 === 3 ? 'UPLOADED' : 'DRIVE'}
-                      </span>
-                    </div>
-                  </div>
-
-                  <h3 className="font-sf-pro text-lg font-bold text-slate-900 mb-2">Share Your Vision</h3>
-                  <p className="font-sf-pro text-sm text-slate-500 leading-relaxed">
-                    Send us your raw footage and creative brief. We'll understand your goals.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Step 2 */}
-            <div 
-              className="relative rounded-3xl overflow-hidden group shadow-sm transition-all duration-500 p-[2px] cursor-pointer"
-              style={{
-                background: 'linear-gradient(135deg, rgba(255, 107, 53, 0.6) 0%, rgba(247, 147, 30, 0.6) 50%, rgba(255, 140, 0, 0.6) 100%)'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'linear-gradient(135deg, #FF6B35 0%, #F7931E 50%, #FF8C00 100%)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255, 107, 53, 0.6) 0%, rgba(247, 147, 30, 0.6) 50%, rgba(255, 140, 0, 0.6) 100%)';
-              }}
-            >
-              <div className="w-full h-full bg-white rounded-[22px] p-6 flex flex-col justify-between">
-                <div>
-                  {/* Animated Visual Canvas - Strategic Planning */}
-                  <div className="w-full h-40 bg-transparent mb-6 relative overflow-hidden flex flex-col justify-center px-4 gap-2.5">
-                    <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 leading-none">Strategy & Scripting</div>
-                    
-                    {/* Checklist item 1 */}
-                    <div className="flex items-center gap-2 bg-white p-2.5 border border-slate-200/60 rounded-md shadow-sm">
-                      <div className={`w-4 h-4 rounded-full flex items-center justify-center transition-colors duration-300
-                        ${step2 >= 1 ? 'bg-emerald-50 text-emerald-500 border border-emerald-200' : 'bg-slate-50 border border-slate-200 text-transparent'}
-                      `}>
-                        <Check className="w-3 h-3" />
-                      </div>
-                      <span className={`text-[10px] font-bold transition-colors duration-300 ${step2 >= 1 ? 'text-slate-800' : 'text-slate-400'}`}>1. Hook Concept</span>
-                    </div>
-
-                    {/* Checklist item 2 */}
-                    <div className="flex items-center gap-2 bg-white p-2.5 border border-slate-200/60 rounded-md shadow-sm">
-                      <div className={`w-4 h-4 rounded-full flex items-center justify-center transition-colors duration-300
-                        ${step2 >= 3 ? 'bg-emerald-50 text-emerald-500 border border-emerald-200' : 'bg-slate-50 border border-slate-200 text-transparent'}
-                      `}>
-                        <Check className="w-3 h-3" />
-                      </div>
-                      <span className={`text-[10px] font-bold transition-colors duration-300 ${step2 >= 3 ? 'text-slate-800' : 'text-slate-400'}`}>2. Pacing Blueprint</span>
-                    </div>
-                  </div>
-
-                  <h3 className="font-sf-pro text-lg font-bold text-slate-900 mb-2">Strategic Planning</h3>
-                  <p className="font-sf-pro text-sm text-slate-500 leading-relaxed">
-                    We analyze your content and create a detailed editing strategy.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Step 3 */}
-            <div 
-              className="relative rounded-3xl overflow-hidden group shadow-sm transition-all duration-500 p-[2px] cursor-pointer"
-              style={{
-                background: 'linear-gradient(135deg, rgba(255, 107, 53, 0.6) 0%, rgba(247, 147, 30, 0.6) 50%, rgba(255, 140, 0, 0.6) 100%)'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'linear-gradient(135deg, #FF6B35 0%, #F7931E 50%, #FF8C00 100%)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255, 107, 53, 0.6) 0%, rgba(247, 147, 30, 0.6) 50%, rgba(255, 140, 0, 0.6) 100%)';
-              }}
-            >
-              <div className="w-full h-full bg-white rounded-[22px] p-6 flex flex-col justify-between">
-                <div>
-                  {/* Animated Visual Canvas - Expert Editing */}
-                  <div className="w-full h-40 bg-transparent mb-6 relative overflow-hidden flex flex-col justify-center px-3 gap-1">
-                    {/* Scissor tool indicator */}
-                    <div className={`absolute top-3 left-[46%] z-30 text-white rounded-full p-0.5 shadow-md transition-all duration-300
-                      ${step3 === 1 ? 'scale-100 opacity-100 rotate-[-15deg]' : 'scale-50 opacity-0'}
-                    `} style={{ background: 'linear-gradient(135deg, #FF7A3A, #F06A00)' }}>
-                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.12 14.12L19 19m-4.88-4.88L19 9.12M14.12 14.12L12 12m0 0L7.88 7.88M12 12L5 5m7 7l5-5m-5 5l-5 5" />
-                      </svg>
-                    </div>
-
-                    {/* Video Track Label */}
-                    <div className="text-[8px] font-bold text-slate-400 mb-1 tracking-wider uppercase leading-none">Timeline (V1)</div>
-
-                    {/* Video Tracks */}
-                    <div className="h-7 bg-slate-100/50 rounded relative flex items-center px-1 border border-slate-200/80">
-                      {/* Block 1 (solid or split) */}
-                      {step3 === 0 ? (
-                        <div className="h-5 rounded text-[8px] text-white font-bold flex items-center pl-2 shadow-sm w-[75%] transition-all duration-500 leading-none" style={{ background: 'linear-gradient(135deg, #FF7A3A, #F06A00)' }}>
-                          Timeline_Raw
-                        </div>
-                      ) : (
-                        <div className="flex gap-0.5 w-full transition-all duration-500">
-                          <div className="h-5 rounded text-[7px] text-white font-bold flex items-center pl-2 shadow-sm w-[35%] leading-none" style={{ background: '#FF7A3A' }}>
-                            Cut_A
-                          </div>
-                          <div className={`h-5 rounded text-[7px] text-white font-bold flex items-center pl-2 shadow-sm transition-all duration-500
-                            ${step3 === 1 ? 'w-[35%]' : 'w-[18%]'}
-                            leading-none
-                          `} style={{ background: '#F06A00' }}>
-                            {step3 === 1 ? 'Cut_B' : 'Trim'}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Audio Track Label & Visualizer */}
-                    <div className="text-[8px] font-bold text-slate-400 mt-2.5 mb-1 tracking-wider uppercase leading-none">Audio (A1)</div>
-                    <div className="h-5 bg-slate-100/30 rounded flex items-center gap-0.5 px-2 border border-slate-200/50">
-                      {[1, 3, 2, 4, 1, 2, 3, 2, 4, 2, 1, 3, 4, 2, 1, 3, 2, 4, 1, 3, 2, 4, 2, 1].map((val, idx) => {
-                        const playheadPercent = parseFloat(playheadPos);
-                        const indicatorPercent = (idx / 24) * 100;
-                        return (
-                          <div 
-                            key={idx} 
-                            className="w-0.5 rounded-full transition-colors duration-300"
-                            style={{ 
-                              height: `${val * 20}%`,
-                              background: playheadPercent >= indicatorPercent ? '#FF7A3A' : '#cbd5e1'
-                            }}
-                          />
-                        );
-                      })}
-                    </div>
-
-                    {/* Playhead line */}
-                    <div 
-                      className="absolute top-2 bottom-2 w-[1.5px] bg-rose-500 z-20 shadow-md transition-all duration-1000 ease-in-out"
-                      style={{ left: playheadPos }}
-                    >
-                      <div className="absolute top-0 -translate-x-[3.5px] w-2 h-2 bg-rose-500 rotate-45 rounded-sm" />
-                    </div>
-                  </div>
-
-                  <h3 className="font-sf-pro text-lg font-bold text-slate-900 mb-2">Expert Editing</h3>
-                  <p className="font-sf-pro text-sm text-slate-500 leading-relaxed">
-                    Our team crafts your video with precision, focusing on engagement.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Step 4 */}
-            <div 
-              className="relative rounded-3xl overflow-hidden group shadow-sm transition-all duration-500 p-[2px] cursor-pointer"
-              style={{
-                background: 'linear-gradient(135deg, rgba(255, 107, 53, 0.6) 0%, rgba(247, 147, 30, 0.6) 50%, rgba(255, 140, 0, 0.6) 100%)'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'linear-gradient(135deg, #FF6B35 0%, #F7931E 50%, #FF8C00 100%)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255, 107, 53, 0.6) 0%, rgba(247, 147, 30, 0.6) 50%, rgba(255, 140, 0, 0.6) 100%)';
-              }}
-            >
-              <div className="w-full h-full bg-white rounded-[22px] p-6 flex flex-col justify-between">
-                <div>
-                  {/* Animated Visual Canvas - Deliver & Optimize */}
-                  <div className="w-full h-40 bg-transparent mb-6 relative overflow-hidden flex flex-col justify-center px-2.5 gap-2">
-                    {/* Deliverables Header Bar */}
-                    <div className="flex items-center gap-1.5 border-b border-slate-200 pb-1.5">
-                      <div className="w-2 h-2 rounded-full bg-slate-300" />
-                      <span className="text-[9px] font-bold text-slate-500 uppercase tracking-wider leading-none">Deliverables</span>
-                    </div>
-
-                    {/* Final File Mock */}
-                    <div className="bg-white border border-slate-200/80 rounded-xl p-2.5 shadow-sm flex items-center justify-between relative z-10">
-                      <div className="flex items-center gap-2 min-w-0">
-                        <svg className="w-4 h-4 text-slate-600 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
-                          <polyline points="14 2 14 8 20 8" />
-                        </svg>
-                        <span className="text-[10px] font-bold text-slate-800 truncate">video_final.mov</span>
-                      </div>
-
-                      {/* Notion-style Status Dropdown */}
-                      <div className="flex items-center gap-1 flex-shrink-0">
-                        <span className={`px-2 py-0.5 text-[8px] font-bold rounded flex items-center gap-0.5 transition-all duration-500
-                          ${isDone 
-                            ? 'bg-emerald-50 text-emerald-600 border border-emerald-200' 
-                            : 'bg-amber-50 text-amber-600 border border-amber-200'
-                          } leading-none`}
-                        >
-                          {isDone ? (
-                            <>
-                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                              Done
-                            </>
-                          ) : (
-                            <>
-                              <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping" />
-                              Progress
-                            </>
-                          )}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Comment Feedback Bubble */}
-                    <div className={`absolute bottom-2.5 right-2 bg-emerald-500 text-white text-[8px] font-bold px-2 py-0.5 rounded shadow-md transition-all duration-500 flex items-center gap-0.5 z-20
-                      ${isDone ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-2 opacity-0 scale-75 pointer-events-none'}
-                    `}>
-                      <svg className="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
-                      </svg>
-                      Approved!
-                    </div>
-                  </div>
-
-                  <h3 className="font-sf-pro text-lg font-bold text-slate-900 mb-2">Deliver & Optimize</h3>
-                  <p className="font-sf-pro text-sm text-slate-500 leading-relaxed">
-                    Receive your polished video with platform-specific formats.
-                  </p>
-                </div>
-              </div>
-            </div>
+          <div className="how-it-works-cards">
+            <HiwIcons />
+            <VisionCard />
+            <PlanningCard />
+            <EditingCard />
+            <DeliveryCard />
           </div>
         </div>
       </section>
@@ -2268,16 +1506,21 @@ const Home: React.FC = () => {
             <div className="absolute left-0 top-0 bottom-0 w-10 sm:w-20 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
             <div className="absolute right-0 top-0 bottom-0 w-10 sm:w-20 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
             
-            <div className="overflow-hidden">
-              <div className="flex gap-4 sm:gap-8 mobile-testimonial-scroll" style={{
-                width: 'max-content',
-                animation: 'scroll-left 40s linear infinite'
-              }}>
-                {[...testimonials, ...testimonials].map((testimonial, i) => (
-                  <div key={i} className="flex-shrink-0 w-72 sm:w-80 md:w-96 bg-white/80 backdrop-blur-sm rounded-lg p-5 sm:p-6 md:p-8 shadow-sm border border-[#FF6B35]">
+            <div className="overflow-x-auto md:overflow-hidden scrollbar-hide">
+              <div 
+                ref={testimonialsSectionRef}
+                className="flex gap-4 sm:gap-8 mobile-testimonial-scroll" 
+                style={{
+                  width: 'max-content',
+                  animation: 'scroll-left 40s linear infinite',
+                  animationPlayState: isTestimonialVisible ? 'running' : 'paused'
+                }}
+              >
+                {(isMobile ? testimonials : [...testimonials, ...testimonials]).map((testimonial, i) => (
+                  <div key={i} className="flex-shrink-0 w-72 sm:w-80 md:w-96 bg-white md:bg-white/80 md:backdrop-blur-sm rounded-lg p-5 sm:p-6 md:p-8 shadow-sm border border-[#FF8156]">
                     <div className="flex items-center gap-1 sm:gap-2 mb-3 sm:mb-4">
                       {[...Array(testimonial.rating)].map((_, starIndex) => (
-                        <svg key={starIndex} className="w-4 h-4 sm:w-5 sm:h-5 text-[#FF6B35]" fill="currentColor" viewBox="0 0 20 20">
+                        <svg key={starIndex} className="w-4 h-4 sm:w-5 sm:h-5 text-[#FF8156]" fill="currentColor" viewBox="0 0 20 20">
                           <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                         </svg>
                       ))}
@@ -2315,22 +1558,13 @@ const Home: React.FC = () => {
               className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-105"
             >
               <div className="w-14 h-14 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-sm transition-all duration-300" style={{
-                background: 'linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(247, 147, 30, 0.1) 33%, rgba(255, 140, 0, 0.1) 66%, rgba(232, 101, 10, 0.1) 100%)'
+                background: 'rgba(255, 107, 52, 0.08)'
               }}>
-                <svg className="w-7 h-7" fill="url(#whatsappGradient)" viewBox="0 0 24 24">
-                  <defs>
-                    <linearGradient id="whatsappGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#FF6B35" />
-                      <stop offset="25%" stopColor="#F7931E" />
-                      <stop offset="50%" stopColor="#F7931E" />
-                      <stop offset="75%" stopColor="#FF8C00" />
-                      <stop offset="100%" stopColor="#E8650A" />
-                    </linearGradient>
-                  </defs>
+                <svg className="w-7 h-7" fill="#FF8156" viewBox="0 0 24 24">
                   <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.346"/>
                 </svg>
               </div>
-              <h3 className="font-sf-pro text-base font-semibold text-slate-900 group-hover:bg-gradient-to-r group-hover:from-[#FF6B35] group-hover:to-[#FF8C00] group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">WhatsApp</h3>
+              <h3 className="font-sf-pro text-base font-semibold text-slate-900 group-hover:text-[#FF8156] transition-all duration-300">WhatsApp</h3>
             </a>
 
             {/* Discord */}
@@ -2341,22 +1575,13 @@ const Home: React.FC = () => {
               className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-105"
             >
               <div className="w-14 h-14 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-sm transition-all duration-300" style={{
-                background: 'linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(247, 147, 30, 0.1) 33%, rgba(255, 140, 0, 0.1) 66%, rgba(232, 101, 10, 0.1) 100%)'
+                background: 'rgba(255, 107, 52, 0.08)'
               }}>
-                <svg className="w-7 h-7" fill="url(#discordGradient)" viewBox="0 0 24 24">
-                  <defs>
-                    <linearGradient id="discordGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#FF6B35" />
-                      <stop offset="25%" stopColor="#F7931E" />
-                      <stop offset="50%" stopColor="#F7931E" />
-                      <stop offset="75%" stopColor="#FF8C00" />
-                      <stop offset="100%" stopColor="#E8650A" />
-                    </linearGradient>
-                  </defs>
+                <svg className="w-7 h-7" fill="#FF8156" viewBox="0 0 24 24">
                   <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419-.0002 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1568 2.4189Z"/>
                 </svg>
               </div>
-              <h3 className="font-sf-pro text-base font-semibold text-slate-900 group-hover:bg-gradient-to-r group-hover:from-[#FF6B35] group-hover:to-[#FF8C00] group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">Discord</h3>
+              <h3 className="font-sf-pro text-base font-semibold text-slate-900 group-hover:text-[#FF8156] transition-all duration-300">Discord</h3>
             </a>
 
             {/* Instagram */}
@@ -2367,22 +1592,13 @@ const Home: React.FC = () => {
               className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-105"
             >
               <div className="w-14 h-14 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-sm transition-all duration-300" style={{
-                background: 'linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(247, 147, 30, 0.1) 33%, rgba(255, 140, 0, 0.1) 66%, rgba(232, 101, 10, 0.1) 100%)'
+                background: 'rgba(255, 107, 52, 0.08)'
               }}>
-                <svg className="w-7 h-7 transition-all duration-300" fill="url(#instagramGradient)" viewBox="0 0 24 24">
-                  <defs>
-                    <linearGradient id="instagramGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#FF6B35" />
-                      <stop offset="25%" stopColor="#F7931E" />
-                      <stop offset="50%" stopColor="#F7931E" />
-                      <stop offset="75%" stopColor="#FF8C00" />
-                      <stop offset="100%" stopColor="#E8650A" />
-                    </linearGradient>
-                  </defs>
+                <svg className="w-7 h-7 transition-all duration-300" fill="#FF8156" viewBox="0 0 24 24">
                   <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
                 </svg>
               </div>
-              <h3 className="font-sf-pro text-base font-semibold text-slate-900 group-hover:bg-gradient-to-r group-hover:from-[#FF6B35] group-hover:to-[#FF8C00] group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">Instagram</h3>
+              <h3 className="font-sf-pro text-base font-semibold text-slate-900 group-hover:text-[#FF8156] transition-all duration-300">Instagram</h3>
             </a>
 
             {/* Twitter/X */}
@@ -2393,83 +1609,74 @@ const Home: React.FC = () => {
               className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-105"
             >
               <div className="w-14 h-14 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-sm transition-all duration-300" style={{
-                background: 'linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(247, 147, 30, 0.1) 33%, rgba(255, 140, 0, 0.1) 66%, rgba(232, 101, 10, 0.1) 100%)'
+                background: 'rgba(255, 107, 52, 0.08)'
               }}>
-                <svg className="w-7 h-7 transition-all duration-300" fill="url(#twitterGradient)" viewBox="0 0 24 24">
-                  <defs>
-                    <linearGradient id="twitterGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#FF6B35" />
-                      <stop offset="25%" stopColor="#F7931E" />
-                      <stop offset="50%" stopColor="#F7931E" />
-                      <stop offset="75%" stopColor="#FF8C00" />
-                      <stop offset="100%" stopColor="#E8650A" />
-                    </linearGradient>
-                  </defs>
+                <svg className="w-7 h-7 transition-all duration-300" fill="#FF8156" viewBox="0 0 24 24">
                   <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
                 </svg>
               </div>
-              <h3 className="font-sf-pro text-base font-semibold text-slate-900 group-hover:bg-gradient-to-r group-hover:from-[#FF6B35] group-hover:to-[#FF8C00] group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">Twitter</h3>
+              <h3 className="font-sf-pro text-base font-semibold text-slate-900 group-hover:text-[#FF8156] transition-all duration-300">Twitter</h3>
             </a>
           </div>
 
           {/* Email Address Buttons */}
           <div className="mb-8">
             <p className="font-inter text-lg text-slate-600 mb-6 text-center">Email us directly:</p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 max-w-4xl mx-auto px-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 max-w-6xl mx-auto px-4">
               <a 
                 href="https://mail.google.com/mail/?view=cm&fs=1&to=harsh@idyllproductions.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative rounded-xl p-2.5 transition-all duration-300 hover:scale-[1.02] bg-[#FF6B35]/5 border border-[#FF6B35]/15 hover:border-[#FF6B35]/50 hover:shadow-md flex flex-row items-center gap-3 shadow-sm min-w-0 text-slate-800 visited:text-slate-800 hover:text-[#FF6B35] visited:hover:text-[#FF6B35]"
+                className="group relative rounded-xl p-3 transition-all duration-300 hover:scale-[1.02] bg-[#FF8156]/5 border border-[#FF8156]/15 hover:border-[#FF8156]/50 hover:shadow-md flex flex-row items-center gap-3 shadow-sm min-w-0 text-slate-800 visited:text-slate-800 hover:text-[#FF8156] visited:hover:text-[#FF8156]"
               >
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-white border border-[#FF6B35]/20 shadow-xs transition-all duration-300 group-hover:scale-110 shrink-0">
-                  <Mail className="w-4.5 h-4.5 text-[#FF6B35]" />
+                <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-white border border-[#FF8156]/20 shadow-xs transition-all duration-300 group-hover:scale-110 shrink-0">
+                  <Mail className="w-4.5 h-4.5 text-[#FF8156]" />
                 </div>
                 <div className="flex flex-col min-w-0 text-left">
                   <span className="font-semibold text-current transition-colors duration-300 text-xs sm:text-sm whitespace-nowrap overflow-hidden text-ellipsis w-full">harsh@idyllproductions.com</span>
-                  <span className="text-[10px] text-slate-500 font-medium">General inquiries</span>
-                </div>
-              </a>
-              <a 
-                href="https://mail.google.com/mail/?view=cm&fs=1&to=harshidyllproductions@gmail.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group relative rounded-xl p-2.5 transition-all duration-300 hover:scale-[1.02] bg-[#FF6B35]/5 border border-[#FF6B35]/15 hover:border-[#FF6B35]/50 hover:shadow-md flex flex-row items-center gap-3 shadow-sm min-w-0 text-slate-800 visited:text-slate-800 hover:text-[#FF6B35] visited:hover:text-[#FF6B35]"
-              >
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-white border border-[#FF6B35]/20 shadow-xs transition-all duration-300 group-hover:scale-110 shrink-0">
-                  <Mail className="w-4.5 h-4.5 text-[#FF6B35]" />
-                </div>
-                <div className="flex flex-col min-w-0 text-left">
-                  <span className="font-semibold text-current transition-colors duration-300 text-xs sm:text-sm whitespace-nowrap overflow-hidden text-ellipsis w-full">harshidyllproductions@gmail.com</span>
-                  <span className="text-[10px] text-slate-500 font-medium">CEO - Executive Partnerships</span>
+                  <span className="text-[10px] text-slate-500 font-medium">Harsh • CEO & Partnerships</span>
                 </div>
               </a>
               <a 
                 href="https://mail.google.com/mail/?view=cm&fs=1&to=rohitidyllproductions@gmail.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative rounded-xl p-2.5 transition-all duration-300 hover:scale-[1.02] bg-[#FF6B35]/5 border border-[#FF6B35]/15 hover:border-[#FF6B35]/50 hover:shadow-md flex flex-row items-center gap-3 shadow-sm min-w-0 text-slate-800 visited:text-slate-800 hover:text-[#FF6B35] visited:hover:text-[#FF6B35]"
+                className="group relative rounded-xl p-3 transition-all duration-300 hover:scale-[1.02] bg-[#FF8156]/5 border border-[#FF8156]/15 hover:border-[#FF8156]/50 hover:shadow-md flex flex-row items-center gap-3 shadow-sm min-w-0 text-slate-800 visited:text-slate-800 hover:text-[#FF8156] visited:hover:text-[#FF8156]"
               >
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-white border border-[#FF6B35]/20 shadow-xs transition-all duration-300 group-hover:scale-110 shrink-0">
-                  <Mail className="w-4.5 h-4.5 text-[#FF6B35]" />
+                <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-white border border-[#FF8156]/20 shadow-xs transition-all duration-300 group-hover:scale-110 shrink-0">
+                  <Mail className="w-4.5 h-4.5 text-[#FF8156]" />
                 </div>
                 <div className="flex flex-col min-w-0 text-left">
                   <span className="font-semibold text-current transition-colors duration-300 text-xs sm:text-sm whitespace-nowrap overflow-hidden text-ellipsis w-full">rohitidyllproductions@gmail.com</span>
-                  <span className="text-[10px] text-slate-500 font-medium">Chief Operating Officer</span>
+                  <span className="text-[10px] text-slate-500 font-medium">Rohit • Chief Operating Officer</span>
                 </div>
               </a>
               <a 
-                href="https://mail.google.com/mail/?view=cm&fs=1&to=voididyllproductions@gmail.com"
+                href="https://mail.google.com/mail/?view=cm&fs=1&to=zadaidyllproductions@gmail.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative rounded-xl p-2.5 transition-all duration-300 hover:scale-[1.02] bg-[#FF6B35]/5 border border-[#FF6B35]/15 hover:border-[#FF6B35]/50 hover:shadow-md flex flex-row items-center gap-3 shadow-sm min-w-0 text-slate-800 visited:text-slate-800 hover:text-[#FF6B35] visited:hover:text-[#FF6B35]"
+                className="group relative rounded-xl p-3 transition-all duration-300 hover:scale-[1.02] bg-[#FF8156]/5 border border-[#FF8156]/15 hover:border-[#FF8156]/50 hover:shadow-md flex flex-row items-center gap-3 shadow-sm min-w-0 text-slate-800 visited:text-slate-800 hover:text-[#FF8156] visited:hover:text-[#FF8156]"
               >
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-white border border-[#FF6B35]/20 shadow-xs transition-all duration-300 group-hover:scale-110 shrink-0">
-                  <Mail className="w-4.5 h-4.5 text-[#FF6B35]" />
+                <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-white border border-[#FF8156]/20 shadow-xs transition-all duration-300 group-hover:scale-110 shrink-0">
+                  <Mail className="w-4.5 h-4.5 text-[#FF8156]" />
                 </div>
                 <div className="flex flex-col min-w-0 text-left">
-                  <span className="font-semibold text-current transition-colors duration-300 text-xs sm:text-sm whitespace-nowrap overflow-hidden text-ellipsis w-full">voididyllproductions@gmail.com</span>
-                  <span className="text-[10px] text-slate-500 font-medium">Chief Commercial Officer</span>
+                  <span className="font-semibold text-current transition-colors duration-300 text-xs sm:text-sm whitespace-nowrap overflow-hidden text-ellipsis w-full">zadaidyllproductions@gmail.com</span>
+                  <span className="text-[10px] text-slate-500 font-medium">Zada • Chief Sales Officer</span>
+                </div>
+              </a>
+              <a 
+                href="https://mail.google.com/mail/?view=cm&fs=1&to=nishaidyllproductions@gmail.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative rounded-xl p-3 transition-all duration-300 hover:scale-[1.02] bg-[#FF8156]/5 border border-[#FF8156]/15 hover:border-[#FF8156]/50 hover:shadow-md flex flex-row items-center gap-3 shadow-sm min-w-0 text-slate-800 visited:text-slate-800 hover:text-[#FF8156] visited:hover:text-[#FF8156]"
+              >
+                <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-white border border-[#FF8156]/20 shadow-xs transition-all duration-300 group-hover:scale-110 shrink-0">
+                  <Mail className="w-4.5 h-4.5 text-[#FF8156]" />
+                </div>
+                <div className="flex flex-col min-w-0 text-left">
+                  <span className="font-semibold text-current transition-colors duration-300 text-xs sm:text-sm whitespace-nowrap overflow-hidden text-ellipsis w-full">nishaidyllproductions@gmail.com</span>
+                  <span className="text-[10px] text-slate-500 font-medium">Nisha • Design Head</span>
                 </div>
               </a>
             </div>
@@ -2623,7 +1830,7 @@ const FAQItem: React.FC<{ question: string; answer: string; index: number }> = (
               ? 'rotate-180' 
               : 'bg-slate-100'
           }`}
-          style={isOpen ? { background: 'linear-gradient(135deg, #FF7A3A, #F06A00)' } : {}}
+          style={isOpen ? { background: '#FF8156' } : {}}
         >
           {isOpen ? (
             <Minus className="w-4 h-4 text-white" />

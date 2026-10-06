@@ -1,6 +1,13 @@
+# 301 Redirect old domain idyllproductions.in to idyllproductions.com
+https://idyllproductions.in/*  https://idyllproductions.com/:splat  301!
+http://idyllproductions.in/*   https://idyllproductions.com/:splat  301!
+
 # Serve sitemap and robots as static files
 /sitemap.xml  /sitemap.xml  200
 /robots.txt   /robots.txt   200
 
-# SPA fallback - must be last
-/*  /index.html  200
+# Proxy Resend API requests to avoid CORS
+/api/resend/*  https://api.resend.com/:splat  200!
+
+# Custom 404 fallback for URLs that do not exist
+/*  /404.html  404

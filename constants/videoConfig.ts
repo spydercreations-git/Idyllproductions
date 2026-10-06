@@ -9,7 +9,8 @@ export const HERO_VIDEO = hls('71b0d8a0-c6ea-46ee-944b-f3b5382f1ec7');
 
 // UGC ads gallery (home page + UGC page)
 export const UGC_VIDEOS = [
-  { video: hls('98b9241e-f614-4517-97fc-4c57d3f84cf4'), views: '1.6M', likes: '124K' },
+  { video: hls('d29c6637-ec0d-429f-bfb8-58cb161829a5'), views: '1.9M', likes: '142K' },
+  { video: hls('e7811cf3-b1cb-4f44-b7b4-cc3c8d3c540f'), views: '2.4M', likes: '178K' },
   { video: hls('5aaede28-9e55-4440-9310-5ad64dcf9513'), views: '1.2M', likes: '89K' },
   { video: hls('f01c6017-979b-49ed-ac4d-387380405f02'), views: '2.8M', likes: '198K' },
   { video: hls('0a24b72a-48c5-4ce6-8dd9-9cc36bc5d63f'), views: '2.4M', likes: '156K' },
@@ -27,6 +28,7 @@ export const UGC_VIDEOS = [
 
 // Editing category showcase videos
 const BUNNY_VIDEOS = {
+  'UGC': UGC_VIDEOS.map(v => v.video),
   'Short-Form Content': [
     hls('5c721b3b-4d78-408b-95bf-6571d420ca75'),
     hls('6373df8f-4d2f-4a3d-8f42-fb2da451da0e'),

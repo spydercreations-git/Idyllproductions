@@ -33,6 +33,20 @@ const GlassSurface: React.FC<GlassSurfaceProps> = ({
   mixBlendMode = 'normal',
   border,
 }) => {
+  const [isMobile, setIsMobile] = React.useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth <= 768;
+    }
+    return false;
+  });
+
+  React.useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   const blurAmount = Math.abs(distortionScale) / 10;
   
   const style: CSSProperties = {
@@ -41,9 +55,9 @@ const GlassSurface: React.FC<GlassSurfaceProps> = ({
     borderRadius: `${borderRadius}px`,
     opacity,
     mixBlendMode,
-    backdropFilter: `blur(${blurAmount}px) brightness(${brightness}%) saturate(120%)`,
-    WebkitBackdropFilter: `blur(${blurAmount}px) brightness(${brightness}%) saturate(120%)`,
-    background: `rgba(255, 255, 255, ${displace * 0.3})`,
+    backdropFilter: isMobile ? 'none' : `blur(${blurAmount}px) brightness(${brightness}%) saturate(120%)`,
+    WebkitBackdropFilter: isMobile ? 'none' : `blur(${blurAmount}px) brightness(${brightness}%) saturate(120%)`,
+    background: isMobile ? 'rgba(255, 255, 255, 0.95)' : `rgba(255, 255, 255, ${displace * 0.3})`,
     border: border || '1px solid rgba(255, 255, 255, 0.3)',
   };
 

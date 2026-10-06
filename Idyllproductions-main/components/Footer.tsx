@@ -41,7 +41,7 @@ const Footer: React.FC = () => {
             <h3 className="text-[9px] font-black uppercase tracking-[0.3em] text-black">Quick Links</h3>
             <div className="flex flex-col gap-3 text-xs font-bold text-black">
               <Link to="/" className="hover:opacity-70 transition-opacity">Home</Link>
-              <Link to="/work" className="hover:opacity-70 transition-opacity">Work</Link>
+              <a href="/#our-work" className="hover:opacity-70 transition-opacity">Work</a>
               <button 
                 onClick={() => scrollToSection('our-services')}
                 className="hover:opacity-70 transition-opacity text-left"

@@ -1,0 +1,513 @@
+/* Scoped CSS for How It Works Section */
+.how-it-works-cards {
+  --hiw-bg: #FFFFFF;
+  --hiw-card: #FFFFFF;
+  --hiw-line: rgba(255, 129, 86, 0.28);
+  --hiw-line-2: #EEF0F4;
+  --hiw-fg: #0F172A;
+  --hiw-fg-2: #4B5565;
+  --hiw-muted: #9AA3B2;
+  --hiw-accent: #FF8156;
+  --hiw-accent-2: #FFA266;
+  --hiw-accent-soft: rgba(255, 129, 86, 0.08);
+  --hiw-lane: #F7F8FA;
+  --hiw-hatch: #D3D8E0;
+  --hiw-ok: #16A34A;
+  --hiw-ok-soft: #EAF7EE;
+  --hiw-f-display: "Inter Tight", "Inter", system-ui, sans-serif;
+  --hiw-f-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  width: 100%;
+}
+
+@media (max-width: 980px) {
+  .how-it-works-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+}
+
+@media (max-width: 560px) {
+  .how-it-works-cards {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+}
+
+.how-it-works-cards .hiw-card {
+  background: var(--hiw-card);
+  border: 1.5px solid var(--hiw-line);
+  border-radius: 22px;
+  padding: 24px 22px 28px;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 22px;
+  min-width: 0;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.02);
+}
+
+.how-it-works-cards .hiw-card:hover {
+  border-color: var(--hiw-accent);
+  box-shadow: 0 10px 25px -5px rgba(255, 129, 86, 0.12), 0 8px 10px -6px rgba(255, 129, 86, 0.05);
+}
+
+@media (max-width: 420px) {
+  .how-it-works-cards .hiw-card {
+    padding: 20px 18px 22px;
+  }
+}
+
+.how-it-works-cards .hiw-viz {
+  height: 172px;
+  position: relative;
+  min-width: 0;
+  display: grid;
+  align-content: center;
+}
+
+.how-it-works-cards .hiw-step {
+  font-family: var(--hiw-f-body);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--hiw-accent);
+  margin-bottom: 6px;
+  display: block;
+}
+
+.how-it-works-cards .hiw-card h3,
+.how-it-works-cards .hiw-title {
+  font-family: var(--hiw-f-display);
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  margin: 0 0 8px;
+  color: var(--hiw-fg);
+}
+
+.how-it-works-cards .hiw-card p,
+.how-it-works-cards .hiw-desc {
+  font-family: var(--hiw-f-body);
+  margin: 0;
+  color: var(--hiw-fg-2);
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+
+.how-it-works-cards .hiw-lbl {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--hiw-fg-2);
+}
+
+.how-it-works-cards .hiw-sub {
+  font-size: 11px;
+  color: var(--hiw-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.how-it-works-cards .hiw-chip {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--hiw-accent-soft);
+  color: var(--hiw-accent);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+.how-it-works-cards .hiw-chip.ok {
+  background: var(--hiw-ok-soft);
+  color: var(--hiw-ok);
+}
+
+.how-it-works-cards .hiw-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.how-it-works-cards .hiw-ico {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  display: block;
+}
+
+/* 1. Upload / Vision */
+.how-it-works-cards .hiw-up-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+  padding: 7px 9px;
+  border-radius: 10px;
+  border: 1px solid var(--hiw-line-2);
+  background: var(--hiw-card);
+  margin-bottom: 6px;
+  will-change: transform, opacity;
+}
+
+.how-it-works-cards .hiw-up-row .hiw-name {
+  font-size: 11.5px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--hiw-fg);
+}
+
+.how-it-works-cards .hiw-up-row .hiw-bar {
+  grid-column: 2/3;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--hiw-lane);
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.how-it-works-cards .hiw-up-row .hiw-bar i {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--hiw-accent);
+  border-radius: 2px;
+}
+
+.how-it-works-cards .hiw-up-row .hiw-st {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1.5px solid var(--hiw-hatch);
+  display: grid;
+  place-items: center;
+  transition: background 0.25s, border-color 0.25s;
+}
+
+.how-it-works-cards .hiw-up-row.done .hiw-st {
+  background: var(--hiw-accent);
+  border-color: var(--hiw-accent);
+}
+
+.how-it-works-cards .hiw-up-row .hiw-st svg {
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.how-it-works-cards .hiw-up-row.done .hiw-st svg {
+  opacity: 1;
+}
+
+.how-it-works-cards .hiw-drive {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.how-it-works-cards .hiw-drive .hiw-f {
+  width: 26px;
+  height: 22px;
+  border-radius: 6px;
+  background: var(--hiw-accent-soft);
+  display: grid;
+  place-items: center;
+  will-change: transform;
+}
+
+/* 2. Planning */
+.how-it-works-cards .hiw-pl-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--hiw-line-2);
+  margin-bottom: 6px;
+  transition: border-color 0.3s, background 0.3s;
+}
+
+.how-it-works-cards .hiw-pl-row.on {
+  border-color: var(--hiw-accent);
+  background: var(--hiw-accent-soft);
+}
+
+.how-it-works-cards .hiw-cb {
+  width: 16px;
+  height: 16px;
+  border-radius: 5px;
+  border: 1.5px solid var(--hiw-hatch);
+  display: grid;
+  place-items: center;
+  margin-top: 1px;
+  transition: background 0.25s, border-color 0.25s;
+}
+
+.how-it-works-cards .hiw-pl-row.done .hiw-cb {
+  background: var(--hiw-accent);
+  border-color: var(--hiw-accent);
+}
+
+.how-it-works-cards .hiw-cb svg {
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.how-it-works-cards .hiw-pl-row.done .hiw-cb svg {
+  opacity: 1;
+}
+
+.how-it-works-cards .hiw-pl-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--hiw-fg);
+}
+
+.how-it-works-cards .hiw-pl-det {
+  display: flex;
+  gap: 4px;
+  margin-top: 5px;
+  height: 16px;
+  align-items: center;
+}
+
+.how-it-works-cards .hiw-pill {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: var(--hiw-card);
+  border: 1px solid var(--hiw-line);
+  color: var(--hiw-accent);
+  opacity: 0;
+  transform: scale(0.6);
+  will-change: transform, opacity;
+}
+
+.how-it-works-cards .hiw-seg {
+  height: 8px;
+  border-radius: 3px;
+  background: var(--hiw-accent);
+  width: 0;
+}
+
+.how-it-works-cards .hiw-seg:nth-child(2) {
+  background: var(--hiw-accent-2);
+}
+
+.how-it-works-cards .hiw-seg:nth-child(3) {
+  background: var(--hiw-accent);
+}
+
+.how-it-works-cards .hiw-seg:nth-child(4) {
+  background: var(--hiw-accent-2);
+}
+
+/* 3. Editing */
+.how-it-works-cards .hiw-trk {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 7px;
+}
+
+.how-it-works-cards .hiw-trk .hiw-tg {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--hiw-muted);
+}
+
+.how-it-works-cards .hiw-lane {
+  height: 26px;
+  border-radius: 7px;
+  background: var(--hiw-lane);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  gap: 2px;
+  padding: 2px;
+}
+
+.how-it-works-cards .hiw-lane.thin {
+  height: 16px;
+}
+
+.how-it-works-cards .hiw-clip {
+  height: 100%;
+  border-radius: 5px;
+  background: var(--hiw-accent);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  padding: 0 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.how-it-works-cards .hiw-clip:nth-child(even) {
+  background: var(--hiw-accent-2);
+}
+
+.how-it-works-cards .hiw-cap {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  border-radius: 3px;
+  background: var(--hiw-fg-2);
+  opacity: 0;
+}
+
+.how-it-works-cards .hiw-wv {
+  position: absolute;
+  inset: 2px 4px;
+  display: flex;
+  gap: 2px;
+  align-items: center;
+}
+
+.how-it-works-cards .hiw-wv i {
+  flex: 1;
+  background: var(--hiw-accent-2);
+  border-radius: 1px;
+  height: 10%;
+  opacity: 0.85;
+}
+
+.how-it-works-cards .hiw-edit-body {
+  position: relative;
+}
+
+.how-it-works-cards .hiw-ph {
+  position: absolute;
+  top: -6px;
+  bottom: -2px;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--hiw-fg);
+  border-radius: 1px;
+  pointer-events: none;
+}
+
+.how-it-works-cards .hiw-ph::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: -4px;
+  width: 10px;
+  height: 8px;
+  background: var(--hiw-fg);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+
+.how-it-works-cards .hiw-ph-wrap {
+  position: absolute;
+  left: 32px;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+/* 4. Deliver */
+.how-it-works-cards .hiw-dl-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+  padding: 7px 9px;
+  border-radius: 10px;
+  border: 1px solid var(--hiw-line-2);
+  margin-bottom: 6px;
+  transition: border-color 0.3s;
+  background: var(--hiw-card);
+}
+
+.how-it-works-cards .hiw-dl-row.flash {
+  border-color: var(--hiw-accent);
+}
+
+.how-it-works-cards .hiw-dl-row .hiw-name {
+  font-size: 11.5px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--hiw-fg);
+}
+
+.how-it-works-cards .hiw-dl-row .hiw-bar {
+  grid-column: 2/3;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--hiw-lane);
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.how-it-works-cards .hiw-dl-row .hiw-bar i {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--hiw-accent);
+  border-radius: 2px;
+}
+
+.how-it-works-cards .hiw-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: var(--hiw-lane);
+  color: var(--hiw-muted);
+  white-space: nowrap;
+  transition: background 0.25s, color 0.25s;
+}
+
+.how-it-works-cards .hiw-badge.ready {
+  background: var(--hiw-ok-soft);
+  color: var(--hiw-ok);
+}
+
+.how-it-works-cards .hiw-badge.work {
+  background: var(--hiw-accent-soft);
+  color: var(--hiw-accent);
+}
+
+.how-it-works-cards .hiw-msg {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.how-it-works-cards .hiw-msg .hiw-av {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--hiw-fg-2);
+  flex: none;
+}
+
+.how-it-works-cards .hiw-msg .hiw-bub {
+  font-size: 11.5px;
+  background: var(--hiw-lane);
+  border-radius: 10px 10px 10px 3px;
+  padding: 6px 9px;
+  color: var(--hiw-fg);
+}

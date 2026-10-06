@@ -35,7 +35,7 @@ const ContactPage: React.FC = () => {
       });
       cal.ns["quick-meet"]("ui", {
         "cssVarsPerTheme": {
-          "light": { "cal-brand": "#FF6B35" },
+          "light": { "cal-brand": "#FF8156" },
           "dark": { "cal-brand": "#ffffff" }
         },
         "hideEventTypeDetails": false,
@@ -55,7 +55,7 @@ const ContactPage: React.FC = () => {
     // Admin Email HTML Layout
     const adminHtml = `
       <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 8px;">
-        <h2 style="color: #FF6B35; border-bottom: 2px solid #FF6B35; padding-bottom: 10px;">New Contact Form Submission</h2>
+        <h2 style="color: #FF8156; border-bottom: 2px solid #FF8156; padding-bottom: 10px;">New Contact Form Submission</h2>
         <p>A new message has been submitted from the Contact page:</p>
         <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
           <tr>
@@ -100,7 +100,7 @@ const ContactPage: React.FC = () => {
         <hr style="border: 0; border-top: 1px solid #EAEAEA; margin-bottom: 30px;" />
 
         <!-- Title Section with Left Orange Border -->
-        <div style="border-left: 4px solid #FF6B35; padding-left: 16px; margin-bottom: 30px;">
+        <div style="border-left: 4px solid #FF8156; padding-left: 16px; margin-bottom: 30px;">
           <h1 style="font-size: 24px; font-weight: bold; color: #111111; margin: 0; line-height: 1.2;">Thank you! We have received your project information.</h1>
         </div>
 
@@ -114,11 +114,11 @@ const ContactPage: React.FC = () => {
 
         <!-- Contact Us Button -->
         <div style="margin-bottom: 40px;">
-          <a href="${contactLink}" style="background-color: #FF6B35; color: #ffffff; font-size: 14px; font-weight: bold; text-decoration: none; padding: 14px 28px; border-radius: 4px; display: inline-block; letter-spacing: 0.5px; text-transform: uppercase;">CONTACT US</a>
+          <a href="${contactLink}" style="background-color: #FF8156; color: #ffffff; font-size: 14px; font-weight: bold; text-decoration: none; padding: 14px 28px; border-radius: 4px; display: inline-block; letter-spacing: 0.5px; text-transform: uppercase;">CONTACT US</a>
         </div>
 
         <!-- Footer Box -->
-        <table style="width: 100%; border-collapse: collapse; background-color: #FFF2EE; border-top: 3px solid #FF6B35; border-radius: 4px; padding: 16px 20px;">
+        <table style="width: 100%; border-collapse: collapse; background-color: #FFF2EE; border-top: 3px solid #FF8156; border-radius: 4px; padding: 16px 20px;">
           <tr>
             <td style="padding: 16px 20px;">
               <table style="width: 100%; border-collapse: collapse;">
@@ -150,7 +150,7 @@ const ContactPage: React.FC = () => {
         },
         body: JSON.stringify({
           from: 'Idyll Productions <info@idyllproductions.work>',
-          to: ['harshidyllproductions@gmail.com'],
+          to: ['harsh@idyllproductions.com'],
           subject: 'New Contact Form Submission',
           html: adminHtml
         })
@@ -215,8 +215,8 @@ const ContactPage: React.FC = () => {
         }} />
 
         <div className="max-w-md w-full bg-white rounded-3xl p-8 sm:p-10 border border-slate-200/80 shadow-2xl text-center relative z-10">
-          <div className="w-16 h-16 bg-[#FF6B35]/10 rounded-full flex items-center justify-center mx-auto mb-6">
-            <Check className="w-8 h-8 text-[#FF6B35] stroke-[3]" />
+          <div className="w-16 h-16 bg-[#FF8156]/10 rounded-full flex items-center justify-center mx-auto mb-6">
+            <Check className="w-8 h-8 text-[#FF8156] stroke-[3]" />
           </div>
           <h2 className="font-sf-pro text-3xl font-bold text-slate-900 mb-4">
             Thank You!
@@ -255,15 +255,19 @@ const ContactPage: React.FC = () => {
         
         {/* Header */}
         <div className="text-center mb-16 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-3 px-6 py-2 bg-slate-50 border border-slate-200/60 rounded-full mb-6 shadow-sm">
-            <span className="w-2.5 h-2.5 rounded-full animate-pulse bg-gradient-to-r from-[#FF6B35] to-[#FF8C00]"></span>
-            <span className="text-slate-700 font-semibold text-xs sm:text-sm uppercase tracking-wider">
-              Get in Touch
-            </span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-[8px] mb-6" style={{
+            background: 'rgba(255, 129, 86, 0.1)',
+            border: '1px solid rgba(255, 129, 86, 0.2)'
+          }}>
+            <div className="w-2 h-2 rounded-full" style={{
+              background: '#FF8156'
+            }}></div>
+            <span className="font-medium text-sm" style={{
+              color: '#FF8156'
+            }}>Get in touch</span>
           </div>
           <h1 className="font-sf-pro text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-slate-900 leading-[1.1] mb-6">
-            Let's Create Something{' '}
-            <span className="bg-gradient-to-r from-[#FF6B35] via-[#FF8C00] to-[#E8650A] text-transparent bg-clip-text">Amazing Together</span>
+            Contact <span className="bg-gradient-to-r from-[#FF8156] via-[#FF8C00] to-[#E8650A] text-transparent bg-clip-text">Idyll Productions</span>
           </h1>
           <p className="font-inter text-base sm:text-lg text-slate-500 leading-relaxed px-4">
             Ready to elevate your content? Drop us a message or schedule an onboarding strategy call directly.
@@ -275,7 +279,7 @@ const ContactPage: React.FC = () => {
           <div className="lg:col-span-7 bg-white rounded-3xl p-6 sm:p-10 border border-slate-200/80 shadow-xl flex flex-col justify-between h-full">
             <div>
               <h2 className="text-xl sm:text-2xl font-bold text-slate-900 mb-6 flex items-center gap-2 pb-2 border-b border-slate-100">
-                <span className="flex items-center justify-center w-7 h-7 rounded-full bg-[#FF6B35] text-white text-sm font-bold">1</span>
+                <span className="flex items-center justify-center w-7 h-7 rounded-full bg-[#FF8156] text-white text-sm font-bold">1</span>
                 Send Us a Message
               </h2>
               
@@ -283,7 +287,7 @@ const ContactPage: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="firstName" className="block text-sm font-semibold text-slate-700 mb-1.5">
-                      First Name <span className="text-[#FF6B35]">*</span>
+                      First Name <span className="text-[#FF8156]">*</span>
                     </label>
                     <input
                       type="text"
@@ -291,7 +295,7 @@ const ContactPage: React.FC = () => {
                       required
                       value={formData.firstName}
                       onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                      className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-[#FF6B35] focus:ring-1 focus:ring-[#FF6B35] focus:outline-none transition-all duration-200 text-sm"
+                      className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-[#FF8156] focus:ring-1 focus:ring-[#FF8156] focus:outline-none transition-all duration-200 text-sm"
                       placeholder="John"
                     />
                   </div>
@@ -304,7 +308,7 @@ const ContactPage: React.FC = () => {
                       id="lastName"
                       value={formData.lastName}
                       onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                      className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-[#FF6B35] focus:ring-1 focus:ring-[#FF6B35] focus:outline-none transition-all duration-200 text-sm"
+                      className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-[#FF8156] focus:ring-1 focus:ring-[#FF8156] focus:outline-none transition-all duration-200 text-sm"
                       placeholder="Doe"
                     />
                   </div>
@@ -312,7 +316,7 @@ const ContactPage: React.FC = () => {
 
                 <div>
                   <label htmlFor="email" className="block text-sm font-semibold text-slate-700 mb-1.5">
-                    Email Address <span className="text-[#FF6B35]">*</span>
+                    Email Address <span className="text-[#FF8156]">*</span>
                   </label>
                   <input
                     type="email"
@@ -320,7 +324,7 @@ const ContactPage: React.FC = () => {
                     required
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-[#FF6B35] focus:ring-1 focus:ring-[#FF6B35] focus:outline-none transition-all duration-200 text-sm"
+                    className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-[#FF8156] focus:ring-1 focus:ring-[#FF8156] focus:outline-none transition-all duration-200 text-sm"
                     placeholder="john@example.com"
                   />
                 </div>
@@ -333,7 +337,7 @@ const ContactPage: React.FC = () => {
                     id="project"
                     value={formData.projectType}
                     onChange={(e) => setFormData({ ...formData, projectType: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-[#FF6B35] focus:ring-1 focus:ring-[#FF6B35] focus:outline-none transition-all duration-200 text-sm font-medium text-slate-800 bg-white"
+                    className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-[#FF8156] focus:ring-1 focus:ring-[#FF8156] focus:outline-none transition-all duration-200 text-sm font-medium text-slate-800 bg-white"
                   >
                     <option>Short-form content</option>
                     <option>SaaS & Tech videos</option>
@@ -346,7 +350,7 @@ const ContactPage: React.FC = () => {
 
                 <div>
                   <label htmlFor="message" className="block text-sm font-semibold text-slate-700 mb-1.5">
-                    Tell Us About Your Project <span className="text-[#FF6B35]">*</span>
+                    Tell Us About Your Project <span className="text-[#FF8156]">*</span>
                   </label>
                   <textarea
                     id="message"
@@ -354,7 +358,7 @@ const ContactPage: React.FC = () => {
                     rows={5}
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-[#FF6B35] focus:ring-1 focus:ring-[#FF6B35] focus:outline-none transition-all duration-200 text-sm resize-none"
+                    className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-[#FF8156] focus:ring-1 focus:ring-[#FF8156] focus:outline-none transition-all duration-200 text-sm resize-none"
                     placeholder="Describe your project, goals, editing style, and timeline..."
                   ></textarea>
                 </div>
@@ -383,25 +387,39 @@ const ContactPage: React.FC = () => {
             </div>
 
             {/* Email and Social Platform Links */}
-            <div className="pt-6 mt-8 border-t border-slate-100 flex flex-col sm:flex-row justify-between items-center gap-4 text-slate-500">
-              <div className="flex items-center gap-2">
-                <Mail className="w-4 h-4 text-[#FF6B35]" />
-                <a href="mailto:harsh@idyllproductions.com" className="text-xs sm:text-sm font-semibold text-slate-700 hover:text-[#FF6B35] transition-colors">
-                  harsh@idyllproductions.com
-                </a>
+            <div className="pt-6 mt-8 border-t border-slate-100 flex flex-col gap-4 text-slate-500">
+              <div className="flex flex-wrap items-center justify-between gap-3 text-xs sm:text-sm">
+                <div className="flex flex-wrap items-center gap-3">
+                  <span className="font-bold text-slate-700">Direct Contact:</span>
+                  <a href="mailto:harsh@idyllproductions.com" className="font-semibold text-slate-700 hover:text-[#FF8156] transition-colors">
+                    harsh@idyllproductions.com
+                  </a>
+                  <span className="text-slate-300">•</span>
+                  <a href="mailto:rohitidyllproductions@gmail.com" className="font-semibold text-slate-700 hover:text-[#FF8156] transition-colors">
+                    rohitidyllproductions@gmail.com
+                  </a>
+                  <span className="text-slate-300">•</span>
+                  <a href="mailto:zadaidyllproductions@gmail.com" className="font-semibold text-slate-700 hover:text-[#FF8156] transition-colors">
+                    zadaidyllproductions@gmail.com
+                  </a>
+                  <span className="text-slate-300">•</span>
+                  <a href="mailto:nishaidyllproductions@gmail.com" className="font-semibold text-slate-700 hover:text-[#FF8156] transition-colors">
+                    nishaidyllproductions@gmail.com
+                  </a>
+                </div>
               </div>
               
               <div className="flex items-center gap-3">
-                <a href="https://www.instagram.com/idyll.productions/" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-slate-50 hover:bg-[#FF6B35]/10 text-slate-400 hover:text-[#FF6B35] transition-all flex items-center justify-center border border-slate-100 shadow-sm" title="Instagram">
+                <a href="https://www.instagram.com/idyll.productions/" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-slate-50 hover:bg-[#FF8156]/10 text-slate-400 hover:text-[#FF8156] transition-all flex items-center justify-center border border-slate-100 shadow-sm" title="Instagram">
                   <Instagram className="w-4 h-4" />
                 </a>
-                <a href="https://x.com/madebyidyll" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-slate-50 hover:bg-[#FF6B35]/10 text-slate-400 hover:text-[#FF6B35] transition-all flex items-center justify-center border border-slate-100 shadow-sm" title="Twitter/X">
+                <a href="https://x.com/madebyidyll" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-slate-50 hover:bg-[#FF8156]/10 text-slate-400 hover:text-[#FF8156] transition-all flex items-center justify-center border border-slate-100 shadow-sm" title="Twitter/X">
                   <Twitter className="w-4 h-4" />
                 </a>
-                <a href="https://discord.com/users/1466675809568817246" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-slate-50 hover:bg-[#FF6B35]/10 text-slate-400 hover:text-[#FF6B35] transition-all flex items-center justify-center border border-slate-100 shadow-sm" title="Discord">
+                <a href="https://discord.com/users/1466675809568817246" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-slate-50 hover:bg-[#FF8156]/10 text-slate-400 hover:text-[#FF8156] transition-all flex items-center justify-center border border-slate-100 shadow-sm" title="Discord">
                   <MessageSquare className="w-4 h-4" />
                 </a>
-                <a href="https://wa.me/919373032009?text=Hi%20Idyll%20Productions,%20I%20want%20to%20discuss%20a%20video%20project" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-slate-50 hover:bg-[#FF6B35]/10 text-slate-400 hover:text-[#FF6B35] transition-all flex items-center justify-center border border-slate-100 shadow-sm" title="WhatsApp">
+                <a href="https://wa.me/919373032009?text=Hi%20Idyll%20Productions,%20I%20want%20to%20discuss%20a%20video%20project" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-slate-50 hover:bg-[#FF8156]/10 text-slate-400 hover:text-[#FF8156] transition-all flex items-center justify-center border border-slate-100 shadow-sm" title="WhatsApp">
                   <MessageCircle className="w-4 h-4" />
                 </a>
               </div>
@@ -412,7 +430,7 @@ const ContactPage: React.FC = () => {
           <div className="lg:col-span-5 bg-white rounded-3xl p-6 sm:p-10 border border-slate-200/80 shadow-xl flex flex-col justify-between h-full min-h-[600px]">
             <div>
               <h2 className="text-xl sm:text-2xl font-bold text-slate-900 mb-2 flex items-center gap-2 pb-2 border-b border-slate-100">
-                <span className="flex items-center justify-center w-7 h-7 rounded-full bg-[#FF6B35] text-white text-sm font-bold">2</span>
+                <span className="flex items-center justify-center w-7 h-7 rounded-full bg-[#FF8156] text-white text-sm font-bold">2</span>
                 Book a Strategy Call
               </h2>
               <p className="text-slate-500 text-xs sm:text-sm mb-6 leading-relaxed">

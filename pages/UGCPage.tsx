@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowLeft, Eye, Heart, Check, X, Calendar, Play, Sparkles, Shield, Zap } from 'lucide-react';
 import { UGC_VIDEOS, getVideosForCategory } from '../constants/videoConfig';
 import { HoverHlsVideo } from '../components/HlsVideo';
+import BrandCollaborationModal from '../components/BrandCollaborationModal';
 
 const UGCPage: React.FC = () => {
   const [tick, setTick] = useState(0);
@@ -30,6 +31,7 @@ const UGCPage: React.FC = () => {
 
   // Display all UGC_VIDEOS dynamically
   const ugcVideos = UGC_VIDEOS;
+  const [showBrandModal, setShowBrandModal] = useState(false);
 
   // Comparison metrics dataset for responsive table
   // Form States
@@ -106,7 +108,7 @@ Custom Specifications:
     // Admin Notification HTML Layout
     const adminHtml = `
       <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 8px;">
-        <h2 style="color: #FF6B35; border-bottom: 2px solid #FF6B35; padding-bottom: 10px;">New UGC Lead Form Submission</h2>
+        <h2 style="color: #FF8156; border-bottom: 2px solid #FF8156; padding-bottom: 10px;">New UGC Lead Form Submission</h2>
         <p>A new lead form has been submitted with the following details:</p>
         <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
           <tr>
@@ -150,7 +152,7 @@ Custom Specifications:
           ` : ''}
           <tr>
             <td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #eee;">Estimated Budget:</td>
-            <td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold; color: #FF6B35;">$${calculatedBudget.toLocaleString()}</td>
+            <td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold; color: #FF8156;">$${calculatedBudget.toLocaleString()}</td>
           </tr>
           ${isNegotiating && formData.expectedBudget ? `
           <tr>
@@ -188,7 +190,7 @@ Custom Specifications:
         <hr style="border: 0; border-top: 1px solid #EAEAEA; margin-bottom: 30px;" />
 
         <!-- Title Section with Left Orange Border -->
-        <div style="border-left: 4px solid #FF6B35; padding-left: 16px; margin-bottom: 30px;">
+        <div style="border-left: 4px solid #FF8156; padding-left: 16px; margin-bottom: 30px;">
           <h1 style="font-size: 24px; font-weight: bold; color: #111111; margin: 0; line-height: 1.2;">Thank you! We have received your project information.</h1>
         </div>
 
@@ -202,11 +204,11 @@ Custom Specifications:
 
         <!-- Contact Us Button -->
         <div style="margin-bottom: 40px;">
-          <a href="${contactLink}" style="background-color: #FF6B35; color: #ffffff; font-size: 14px; font-weight: bold; text-decoration: none; padding: 14px 28px; border-radius: 4px; display: inline-block; letter-spacing: 0.5px; text-transform: uppercase;">CONTACT US</a>
+          <a href="${contactLink}" style="background-color: #FF8156; color: #ffffff; font-size: 14px; font-weight: bold; text-decoration: none; padding: 14px 28px; border-radius: 4px; display: inline-block; letter-spacing: 0.5px; text-transform: uppercase;">CONTACT US</a>
         </div>
 
         <!-- Footer Box -->
-        <table style="width: 100%; border-collapse: collapse; background-color: #FFF2EE; border-top: 3px solid #FF6B35; border-radius: 4px; padding: 16px 20px;">
+        <table style="width: 100%; border-collapse: collapse; background-color: #FFF2EE; border-top: 3px solid #FF8156; border-radius: 4px; padding: 16px 20px;">
           <tr>
             <td style="padding: 16px 20px;">
               <table style="width: 100%; border-collapse: collapse;">
@@ -238,7 +240,7 @@ Custom Specifications:
         },
         body: JSON.stringify({
           from: 'Idyll Productions <info@idyllproductions.work>',
-          to: ['harshidyllproductions@gmail.com'],
+          to: ['harsh@idyllproductions.com'],
           subject: isNegotiating ? 'New Lead Form Submission (Negotiation)' : 'New Lead Form Submission',
           html: adminHtml
         })
@@ -341,8 +343,8 @@ Custom Specifications:
         }} />
 
         <div className="max-w-md w-full bg-white rounded-3xl p-8 sm:p-10 border border-slate-200/80 shadow-2xl text-center relative z-10">
-          <div className="w-16 h-16 bg-[#FF6B35]/10 rounded-full flex items-center justify-center mx-auto mb-6">
-            <Check className="w-8 h-8 text-[#FF6B35] stroke-[3]" />
+          <div className="w-16 h-16 bg-[#FF8156]/10 rounded-full flex items-center justify-center mx-auto mb-6">
+            <Check className="w-8 h-8 text-[#FF8156] stroke-[3]" />
           </div>
           <h2 className="font-sf-pro text-3xl font-bold text-slate-900 mb-4">
             Thank You!
@@ -387,7 +389,7 @@ Custom Specifications:
           <div className="flex justify-start mb-8">
             <Link 
               to="/" 
-              className="inline-flex items-center gap-2 font-medium text-slate-600 hover:text-[#FF6B35] transition-all duration-300 hover:translate-x-[-4px]"
+              className="inline-flex items-center gap-2 font-medium text-slate-600 hover:text-[#FF8156] transition-all duration-300 hover:translate-x-[-4px]"
             >
               <ArrowLeft className="w-5 h-5" />
               <span>Back to Home</span>
@@ -395,11 +397,11 @@ Custom Specifications:
           </div>
 
           {/* Badge Above Title */}
-          <div className="inline-flex items-center gap-3 px-6 py-2 bg-[#FF6B35]/5 border border-[#FF6B35]/15 rounded-full mb-8 shadow-sm">
+          <div className="inline-flex items-center gap-3 px-6 py-2 bg-[#FF8156]/5 border border-[#FF8156]/15 rounded-full mb-8 shadow-sm">
             <span className="w-2.5 h-2.5 rounded-full animate-pulse" style={{
-              background: 'linear-gradient(135deg, #FF6B35, #FF69B4)'
+              background: 'linear-gradient(135deg, #FF8156, #FF69B4)'
             }}></span>
-            <span className="text-[#FF6B35] font-semibold text-xs sm:text-sm uppercase tracking-wider">
+            <span className="text-[#FF8156] font-semibold text-xs sm:text-sm uppercase tracking-wider">
               UGC Performance Marketing
             </span>
           </div>
@@ -407,7 +409,7 @@ Custom Specifications:
           {/* Headline */}
           <h1 className="font-sf-pro text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-slate-900 leading-[1.1] mb-8 max-w-4xl mx-auto">
             High-Performance UGC Video Ads That{' '}
-            <span className="bg-gradient-to-r from-[#FF6B35] via-[#FF8C00] to-[#E8650A] text-transparent bg-clip-text">Drive Millions</span>
+            <span className="bg-gradient-to-r from-[#FF8156] via-[#FF8C00] to-[#E8650A] text-transparent bg-clip-text">Drive Millions</span>
           </h1>
 
           {/* Subtitle */}
@@ -429,7 +431,7 @@ Custom Specifications:
             <div className="hidden sm:block w-px h-16 bg-slate-200"></div>
 
             <div className="flex flex-col items-center">
-              <span className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-[#FF6B35] tracking-tight mb-2">
+              <span className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-[#FF8156] tracking-tight mb-2">
                 1 Billion+
               </span>
               <span className="font-inter text-xs sm:text-sm font-medium text-slate-500 uppercase tracking-[0.15em]">
@@ -459,9 +461,26 @@ Custom Specifications:
 
       {/* --- CLIENT LOGO STRIP --- */}
       <div className="relative py-12 overflow-hidden z-10 bg-white/40 backdrop-blur-sm border-y border-slate-100/50">
-        <div className="text-center mb-8">
-          <p className="font-inter text-sm font-semibold text-slate-500 uppercase tracking-wider">Trusted by 200+ Leading Brands</p>
+        <div className="text-center mb-8 px-4 flex flex-col items-center">
+          <p className="font-inter text-sm font-semibold text-slate-700 uppercase tracking-wider">Content Featured Across Top Brands</p>
+          <button
+            type="button"
+            onClick={() => setShowBrandModal(true)}
+            className="mt-2.5 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-[8px] text-[11px] font-semibold text-[#FF8156] bg-[#FF8156]/10 hover:bg-[#FF8156]/20 border border-[#FF8156]/20 hover:border-[#FF8156]/40 transition-all duration-200 cursor-pointer group"
+            style={{ borderRadius: '8px' }}
+          >
+            <span>Know More</span>
+            <svg className="w-3 h-3 transform group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
         </div>
+
+        {/* Brand Collaboration Info Modal */}
+        <BrandCollaborationModal 
+          isOpen={showBrandModal} 
+          onClose={() => setShowBrandModal(false)} 
+        />
 
         {/* Left fade */}
         <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-24 md:w-32 pointer-events-none z-20"
@@ -472,40 +491,46 @@ Custom Specifications:
 
         <div className="flex logo-scroll-container" style={{ width: 'max-content' }}>
           {[
-            'https://res.cloudinary.com/dtocytxbv/image/upload/v1783348262/5_qpo0au.png',
-            'https://res.cloudinary.com/dtocytxbv/image/upload/v1783348261/4_g6tdq0.png',
-            'https://res.cloudinary.com/dtocytxbv/image/upload/v1783348258/3_kjlyap.png',
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/10_bxfwdr.png',
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/6_ajbvpc.png',
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/7_qin1jy.png',
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/11_tfpwmc.png',
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/8_ckndqw.png',
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/5_cq6oxb.png',
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/1_iwfdhc.png',
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/4_viqguw.png',
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/3_yfsgon.png',
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/2_vws6tz.png',
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/9_sogiaz.png',
+            { name: 'Picsart', src: '/picsart-logo.png' },
+            { name: 'Pizza Hut', src: '/pizzahut-logo.png' },
+            { name: 'Snapchat', src: '/snapchat-logo.png' },
+            { name: 'MotionApp', src: 'https://res.cloudinary.com/dtocytxbv/image/upload/v1783348262/5_qpo0au.png' },
+            { name: 'CreatorFlow', src: 'https://res.cloudinary.com/dtocytxbv/image/upload/v1783348261/4_g6tdq0.png' },
+            { name: 'ScaleMedia', src: 'https://res.cloudinary.com/dtocytxbv/image/upload/v1783348258/3_kjlyap.png' },
+            { name: 'TechFlow Solutions', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/10_bxfwdr.png' },
+            { name: 'Evo Agency', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/6_ajbvpc.png' },
+            { name: 'Physics Wallah', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/7_qin1jy.png' },
+            { name: 'Vedantu', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/11_tfpwmc.png' },
+            { name: 'Unacademy', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/8_ckndqw.png' },
+            { name: 'GrowthX', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/5_cq6oxb.png' },
+            { name: 'Scaler', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/1_iwfdhc.png' },
+            { name: 'NextWave', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/4_viqguw.png' },
+            { name: 'UpGrad', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/3_yfsgon.png' },
+            { name: 'Simplilearn', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/2_vws6tz.png' },
+            { name: 'Kofluence', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/9_sogiaz.png' },
             // duplicate for seamless loop
-            'https://res.cloudinary.com/dtocytxbv/image/upload/v1783348262/5_qpo0au.png',
-            'https://res.cloudinary.com/dtocytxbv/image/upload/v1783348261/4_g6tdq0.png',
-            'https://res.cloudinary.com/dtocytxbv/image/upload/v1783348258/3_kjlyap.png',
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/10_bxfwdr.png',
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/6_ajbvpc.png',
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/7_qin1jy.png',
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/11_tfpwmc.png',
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/8_ckndqw.png',
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/5_cq6oxb.png',
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/1_iwfdhc.png',
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/4_viqguw.png',
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/3_yfsgon.png',
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/2_vws6tz.png',
-            'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/9_sogiaz.png',
-          ].map((src, i) => (
+            { name: 'Picsart', src: '/picsart-logo.png' },
+            { name: 'Pizza Hut', src: '/pizzahut-logo.png' },
+            { name: 'Snapchat', src: '/snapchat-logo.png' },
+            { name: 'MotionApp', src: 'https://res.cloudinary.com/dtocytxbv/image/upload/v1783348262/5_qpo0au.png' },
+            { name: 'CreatorFlow', src: 'https://res.cloudinary.com/dtocytxbv/image/upload/v1783348261/4_g6tdq0.png' },
+            { name: 'ScaleMedia', src: 'https://res.cloudinary.com/dtocytxbv/image/upload/v1783348258/3_kjlyap.png' },
+            { name: 'TechFlow Solutions', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/10_bxfwdr.png' },
+            { name: 'Evo Agency', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/6_ajbvpc.png' },
+            { name: 'Physics Wallah', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/7_qin1jy.png' },
+            { name: 'Vedantu', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/11_tfpwmc.png' },
+            { name: 'Unacademy', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/8_ckndqw.png' },
+            { name: 'GrowthX', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317981/5_cq6oxb.png' },
+            { name: 'Scaler', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/1_iwfdhc.png' },
+            { name: 'NextWave', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/4_viqguw.png' },
+            { name: 'UpGrad', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/3_yfsgon.png' },
+            { name: 'Simplilearn', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/2_vws6tz.png' },
+            { name: 'Kofluence', src: 'https://res.cloudinary.com/dxd79mrse/image/upload/v1779317980/9_sogiaz.png' },
+          ].map((item, i) => (
             <div key={i} className="flex-shrink-0 flex items-center justify-center mx-6 sm:mx-10 md:mx-12 lg:mx-14">
               <img
-                src={src}
-                alt={`client-logo-${i}`}
+                src={item.src}
+                alt={`${item.name} logo`}
                 className="h-[53px] sm:h-[70px] md:h-[88px] lg:h-[106px] w-auto object-contain opacity-75 hover:opacity-100 grayscale transition-all duration-300"
               />
             </div>
@@ -544,9 +569,9 @@ Custom Specifications:
           
           {/* Section Title */}
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#FF6B35]/10 border border-[#FF6B35]/20 rounded-full mb-4">
-              <Sparkles className="w-4 h-4 text-[#FF6B35]" />
-              <span className="text-[#FF6B35] font-semibold text-xs uppercase tracking-wider">UGC Gallery</span>
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#FF8156]/10 border border-[#FF8156]/20 rounded-full mb-4">
+              <Sparkles className="w-4 h-4 text-[#FF8156]" />
+              <span className="text-[#FF8156] font-semibold text-xs uppercase tracking-wider">UGC Gallery</span>
             </div>
             <h2 className="font-sf-pro text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-slate-900 mb-4">
               Our UGC Creative Grid
@@ -558,15 +583,19 @@ Custom Specifications:
 
           {/* Videos Grid */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 lg:gap-8">
-            {ugcVideos.map((item, index) => (
-              <div 
-                key={index}
-                className="relative rounded-2xl overflow-hidden group shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 p-[2px]"
+            {ugcVideos.map((item, index) => {
+              const isLast = index === ugcVideos.length - 1;
+              return (
+                <div 
+                  key={index}
+                  className={`relative rounded-2xl overflow-hidden group shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 p-[2px] ${
+                    isLast ? 'hidden md:block' : ''
+                  }`}
                 style={{
                   background: 'linear-gradient(135deg, rgba(241, 245, 249, 1) 0%, rgba(226, 232, 240, 1) 100%)'
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'linear-gradient(135deg, #FF6B35 0%, #F7931E 33%, #FF8C00 66%, #E8650A 100%)';
+                  e.currentTarget.style.background = '#FF8156';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.background = 'linear-gradient(135deg, rgba(241, 245, 249, 1) 0%, rgba(226, 232, 240, 1) 100%)';
@@ -592,18 +621,19 @@ Custom Specifications:
                   <div className="absolute bottom-3 left-3 right-3 flex justify-between items-center z-20 pointer-events-none">
                     <div className="flex gap-2">
                       <div className="flex items-center gap-1 bg-black/70 backdrop-blur-sm px-2.5 py-1 rounded-full text-white text-xs font-semibold">
-                        <Eye className="w-3.5 h-3.5 text-[#FF6B35]" />
+                        <Eye className="w-3.5 h-3.5 text-[#FF8156]" />
                         <span>{item.views}</span>
                       </div>
                       <div className="flex items-center gap-1 bg-black/70 backdrop-blur-sm px-2.5 py-1 rounded-full text-white text-xs font-semibold">
-                        <Heart className="w-3.5 h-3.5 text-[#FF6B35]" />
+                        <Heart className="w-3.5 h-3.5 text-[#FF8156]" />
                         <span>{item.likes}</span>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            ))}
+            );
+          })}
           </div>
 
         </div>
@@ -615,9 +645,9 @@ Custom Specifications:
           
           {/* Header */}
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#FF6B35]/10 border border-[#FF6B35]/20 rounded-full mb-4">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#FF6B35]"></span>
-              <span className="text-[#FF6B35] font-semibold text-xs uppercase tracking-wider">Proven Process</span>
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#FF8156]/10 border border-[#FF8156]/20 rounded-full mb-4">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#FF8156]"></span>
+              <span className="text-[#FF8156] font-semibold text-xs uppercase tracking-wider">Proven Process</span>
             </div>
             <h2 className="font-sf-pro text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-slate-900 mb-4">
               Top-Notch UGC Video Ads In Just A Few Clicks
@@ -632,7 +662,7 @@ Custom Specifications:
             
             {/* Step 1 */}
             <div className="bg-white rounded-2xl p-6 border border-slate-200 relative overflow-hidden flex flex-col justify-between h-full">
-              <div className="absolute top-4 right-6 font-sf-pro text-5xl font-extrabold bg-gradient-to-r from-[#FF6B35] to-[#F7931E] text-transparent bg-clip-text opacity-20">
+              <div className="absolute top-4 right-6 font-sf-pro text-5xl font-extrabold text-[#FF8156] opacity-20">
                 01
               </div>
               
@@ -640,21 +670,21 @@ Custom Specifications:
               <div className="w-full h-32 bg-slate-50 border border-slate-100 rounded-xl mb-6 relative overflow-hidden flex items-center justify-around px-4">
                 {/* Brief Document Form Mock */}
                 <div className="flex flex-col gap-1.5 p-2 bg-white rounded-lg border border-slate-200/80 shadow-sm w-20 relative z-10">
-                  <div className="w-8 h-1 bg-[#FF6B35] rounded-full" />
+                  <div className="w-8 h-1 bg-[#FF8156] rounded-full" />
                   <div className="w-12 h-1 bg-slate-200 rounded-full" />
                   <div className="w-10 h-1 bg-slate-200 rounded-full" />
                 </div>
 
                 {/* Moving File */}
                 <div 
-                  className={`absolute z-20 flex items-center gap-1 p-1 bg-white border border-[#FF6B35]/30 rounded-md shadow-md transition-all duration-1000 ease-in-out
+                  className={`absolute z-20 flex items-center gap-1 p-1 bg-white border border-[#FF8156]/30 rounded-md shadow-md transition-all duration-1000 ease-in-out
                     ${step1 === 0 ? 'opacity-0 scale-75 translate-x-[-30px] translate-y-[10px]' : ''}
                     ${step1 === 1 ? 'opacity-100 scale-100 translate-x-[0px] translate-y-[-10px]' : ''}
                     ${step1 === 2 ? 'opacity-0 scale-50 translate-x-[35px] translate-y-[0px]' : ''}
                     ${step1 === 3 ? 'opacity-0 scale-0' : ''}
                   `}
                 >
-                  <svg className="w-4 h-4 text-[#FF6B35]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 text-[#FF8156]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
                   <span className="text-[8px] font-semibold text-slate-500">Brief.pdf</span>
@@ -687,7 +717,7 @@ Custom Specifications:
 
             {/* Step 2 */}
             <div className="bg-white rounded-2xl p-6 border border-slate-200 relative overflow-hidden flex flex-col justify-between h-full">
-              <div className="absolute top-4 right-6 font-sf-pro text-5xl font-extrabold bg-gradient-to-r from-[#FF6B35] to-[#F7931E] text-transparent bg-clip-text opacity-20">
+              <div className="absolute top-4 right-6 font-sf-pro text-5xl font-extrabold text-[#FF8156] opacity-20">
                 02
               </div>
               
@@ -696,7 +726,7 @@ Custom Specifications:
                 {/* Clip 1 */}
                 <div className="bg-white p-1.5 border border-slate-200/80 rounded-lg shadow-sm flex items-center justify-between gap-2">
                   <div className="flex items-center gap-1.5 min-w-0">
-                    <div className="w-5 h-5 rounded bg-orange-50 border border-orange-100 flex items-center justify-center text-[#FF6B35] flex-shrink-0">
+                    <div className="w-5 h-5 rounded bg-orange-50 border border-orange-100 flex items-center justify-center text-[#FF8156] flex-shrink-0">
                       <Play className="w-2.5 h-2.5 fill-current" />
                     </div>
                     <div className="flex flex-col min-w-0">
@@ -706,21 +736,21 @@ Custom Specifications:
                   </div>
                   <div className="flex-1 max-w-[60px] h-1 bg-slate-100 rounded-full overflow-hidden relative">
                     <div 
-                      className="h-full bg-gradient-to-r from-[#FF6B35] to-[#F7931E] rounded-full transition-all duration-500 ease-out"
+                      className="h-full bg-[#FF8156] rounded-full transition-all duration-500 ease-out"
                       style={{ width: `${progress1}%` }}
                     />
                   </div>
                   {progress1 === 100 ? (
                     <Check className="w-3 h-3 text-emerald-500 bg-emerald-50 rounded-full p-0.5 flex-shrink-0" />
                   ) : (
-                    <div className="w-3 h-3 border-2 border-[#FF6B35] border-t-transparent rounded-full animate-spin flex-shrink-0" />
+                    <div className="w-3 h-3 border-2 border-[#FF8156] border-t-transparent rounded-full animate-spin flex-shrink-0" />
                   )}
                 </div>
  
                 {/* Clip 2 */}
                 <div className="bg-white p-1.5 border border-slate-200/80 rounded-lg shadow-sm flex items-center justify-between gap-2">
                   <div className="flex items-center gap-1.5 min-w-0">
-                    <div className="w-5 h-5 rounded bg-orange-50 border border-orange-100 flex items-center justify-center text-[#FF6B35] flex-shrink-0">
+                    <div className="w-5 h-5 rounded bg-orange-50 border border-orange-100 flex items-center justify-center text-[#FF8156] flex-shrink-0">
                       <Play className="w-2.5 h-2.5 fill-current" />
                     </div>
                     <div className="flex flex-col min-w-0">
@@ -730,7 +760,7 @@ Custom Specifications:
                   </div>
                   <div className="flex-1 max-w-[60px] h-1 bg-slate-100 rounded-full overflow-hidden relative">
                     <div 
-                      className="h-full bg-gradient-to-r from-[#FF6B35] to-[#F7931E] rounded-full transition-all duration-500 ease-out"
+                      className="h-full bg-[#FF8156] rounded-full transition-all duration-500 ease-out"
                       style={{ width: `${progress2}%` }}
                     />
                   </div>
@@ -740,7 +770,7 @@ Custom Specifications:
                     progress2 === 0 ? (
                       <span className="text-[7px] font-semibold text-slate-400 flex-shrink-0">Waiting</span>
                     ) : (
-                      <div className="w-3 h-3 border-2 border-[#FF6B35] border-t-transparent rounded-full animate-spin flex-shrink-0" />
+                      <div className="w-3 h-3 border-2 border-[#FF8156] border-t-transparent rounded-full animate-spin flex-shrink-0" />
                     )
                   )}
                 </div>
@@ -754,14 +784,14 @@ Custom Specifications:
 
             {/* Step 3 */}
             <div className="bg-white rounded-2xl p-6 border border-slate-200 relative overflow-hidden flex flex-col justify-between h-full">
-              <div className="absolute top-4 right-6 font-sf-pro text-5xl font-extrabold bg-gradient-to-r from-[#FF6B35] to-[#F7931E] text-transparent bg-clip-text opacity-20">
+              <div className="absolute top-4 right-6 font-sf-pro text-5xl font-extrabold text-[#FF8156] opacity-20">
                 03
               </div>
               
               {/* Animated Visual Canvas - Performance Editing */}
               <div className="w-full h-32 bg-slate-50 border border-slate-100 rounded-xl mb-6 relative overflow-hidden flex flex-col justify-center px-3">
                 {/* Scissor tool indicator */}
-                <div className={`absolute top-1.5 left-[46%] z-30 bg-[#FF6B35] text-white rounded-full p-0.5 shadow-md transition-all duration-300
+                <div className={`absolute top-1.5 left-[46%] z-30 bg-[#FF8156] text-white rounded-full p-0.5 shadow-md transition-all duration-300
                   ${step3 === 1 ? 'scale-100 opacity-100 rotate-[-15deg]' : 'scale-50 opacity-0'}
                 `}>
                   <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -776,15 +806,15 @@ Custom Specifications:
                 <div className="h-5 bg-slate-200/50 rounded relative flex items-center px-1 border border-slate-200">
                   {/* Block 1 (solid or split) */}
                   {step3 === 0 ? (
-                    <div className="h-3.5 bg-gradient-to-r from-[#FF6B35] to-[#F7931E] rounded text-[7px] text-white font-bold flex items-center pl-1.5 shadow-sm w-[75%] transition-all duration-500">
+                    <div className="h-3.5 bg-[#FF8156] rounded text-[7px] text-white font-bold flex items-center pl-1.5 shadow-sm w-[75%] transition-all duration-500">
                       UGC_Raw_Footage
                     </div>
                   ) : (
                     <div className="flex gap-0.5 w-full transition-all duration-500">
-                      <div className="h-3.5 bg-[#FF6B35] rounded text-[6px] text-white font-bold flex items-center pl-1.5 shadow-sm w-[35%]">
+                      <div className="h-3.5 bg-[#FF8156] rounded text-[6px] text-white font-bold flex items-center pl-1.5 shadow-sm w-[35%]">
                         Clip_A
                       </div>
-                      <div className={`h-3.5 bg-[#F7931E] rounded text-[6px] text-white font-bold flex items-center pl-1.5 shadow-sm transition-all duration-500
+                      <div className={`h-3.5 bg-[#FF8156] rounded text-[6px] text-white font-bold flex items-center pl-1.5 shadow-sm transition-all duration-500
                         ${step3 === 1 ? 'w-[35%]' : 'w-[18%]'}
                       `}>
                         {step3 === 1 ? 'Clip_B' : 'Trim'}
@@ -803,7 +833,7 @@ Custom Specifications:
                       <div 
                         key={idx} 
                         className={`w-0.5 rounded-full transition-colors duration-300
-                          ${playheadPercent >= indicatorPercent ? 'bg-[#FF6B35]' : 'bg-slate-300'}
+                          ${playheadPercent >= indicatorPercent ? 'bg-[#FF8156]' : 'bg-slate-300'}
                         `}
                         style={{ height: `${val * 20}%` }}
                       />
@@ -828,7 +858,7 @@ Custom Specifications:
 
             {/* Step 4 */}
             <div className="bg-white rounded-2xl p-6 border border-slate-200 relative overflow-hidden flex flex-col justify-between h-full">
-              <div className="absolute top-4 right-6 font-sf-pro text-5xl font-extrabold bg-gradient-to-r from-[#FF6B35] to-[#F7931E] text-transparent bg-clip-text opacity-20">
+              <div className="absolute top-4 right-6 font-sf-pro text-5xl font-extrabold text-[#FF8156] opacity-20">
                 04
               </div>
               
@@ -899,9 +929,9 @@ Custom Specifications:
           
           {/* Header */}
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#FF6B35]/10 border border-[#FF6B35]/20 rounded-full mb-4">
-              <Sparkles className="w-4 h-4 text-[#FF6B35]" />
-              <span className="text-[#FF6B35] font-semibold text-xs uppercase tracking-wider">Start Editing</span>
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#FF8156]/10 border border-[#FF8156]/20 rounded-full mb-4">
+              <Sparkles className="w-4 h-4 text-[#FF8156]" />
+              <span className="text-[#FF8156] font-semibold text-xs uppercase tracking-wider">Start Editing</span>
             </div>
             <h2 className="font-sf-pro text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-slate-900 mb-4">
               UGC Video Editing Lead Form
@@ -921,7 +951,7 @@ Custom Specifications:
               {/* Section 1: Contact Information */}
               <div>
                 <h3 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2 pb-2 border-b border-slate-100">
-                  <span className="flex items-center justify-center w-7 h-7 rounded-full bg-[#FF6B35] text-white text-sm font-bold">1</span>
+                  <span className="flex items-center justify-center w-7 h-7 rounded-full bg-[#FF8156] text-white text-sm font-bold">1</span>
                   Contact Information
                 </h3>
                 
@@ -929,7 +959,7 @@ Custom Specifications:
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-semibold text-slate-700 mb-1.5">
-                        Full Name <span className="text-[#FF6B35]">*</span>
+                        Full Name <span className="text-[#FF8156]">*</span>
                       </label>
                       <input
                         type="text"
@@ -937,13 +967,13 @@ Custom Specifications:
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         placeholder="John Doe"
-                        className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-[#FF6B35] focus:ring-1 focus:ring-[#FF6B35] focus:outline-none transition-all duration-200 text-sm"
+                        className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-[#FF8156] focus:ring-1 focus:ring-[#FF8156] focus:outline-none transition-all duration-200 text-sm"
                       />
                     </div>
 
                     <div>
                       <label className="block text-sm font-semibold text-slate-700 mb-1.5">
-                        Email Address <span className="text-[#FF6B35]">*</span>
+                        Email Address <span className="text-[#FF8156]">*</span>
                       </label>
                       <input
                         type="email"
@@ -951,7 +981,7 @@ Custom Specifications:
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         placeholder="john@example.com"
-                        className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-[#FF6B35] focus:ring-1 focus:ring-[#FF6B35] focus:outline-none transition-all duration-200 text-sm"
+                        className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-[#FF8156] focus:ring-1 focus:ring-[#FF8156] focus:outline-none transition-all duration-200 text-sm"
                       />
                     </div>
                   </div>
@@ -965,7 +995,7 @@ Custom Specifications:
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       placeholder="+1 (555) 000-0000"
-                      className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-[#FF6B35] focus:ring-1 focus:ring-[#FF6B35] focus:outline-none transition-all duration-200 text-sm"
+                      className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-[#FF8156] focus:ring-1 focus:ring-[#FF8156] focus:outline-none transition-all duration-200 text-sm"
                     />
                   </div>
 
@@ -979,7 +1009,7 @@ Custom Specifications:
                           key={method}
                           className={`flex flex-col items-center justify-center p-3 rounded-lg border text-xs font-semibold cursor-pointer transition-all duration-200 text-center
                             ${formData.contactMethod === method
-                              ? 'border-[#FF6B35] bg-[#FF6B35]/5 text-[#FF6B35]'
+                              ? 'border-[#FF8156] bg-[#FF8156]/5 text-[#FF8156]'
                               : 'border-slate-200 text-slate-600 hover:bg-slate-50'
                             }`}
                         >
@@ -1002,14 +1032,14 @@ Custom Specifications:
               {/* Section 2: Project Details */}
               <div>
                 <h3 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2 pb-2 border-b border-slate-100">
-                  <span className="flex items-center justify-center w-7 h-7 rounded-full bg-[#FF6B35] text-white text-sm font-bold">2</span>
+                  <span className="flex items-center justify-center w-7 h-7 rounded-full bg-[#FF8156] text-white text-sm font-bold">2</span>
                   Project Details
                 </h3>
 
                 <div className="space-y-5">
                   <div>
                     <label className="block text-sm font-semibold text-slate-700 mb-1.5">
-                      How Many Videos Do You Need Edited Per Month? <span className="text-[#FF6B35]">*</span>
+                      How Many Videos Do You Need Edited Per Month? <span className="text-[#FF8156]">*</span>
                     </label>
                     <input
                       type="number"
@@ -1017,14 +1047,14 @@ Custom Specifications:
                       required
                       value={formData.videoCount}
                       onChange={(e) => setFormData({ ...formData, videoCount: parseInt(e.target.value) || 0 })}
-                      className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-[#FF6B35] focus:ring-1 focus:ring-[#FF6B35] focus:outline-none transition-all duration-200 font-semibold text-slate-800 text-sm"
+                      className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-[#FF8156] focus:ring-1 focus:ring-[#FF8156] focus:outline-none transition-all duration-200 font-semibold text-slate-800 text-sm"
                     />
                   </div>
 
                   {formData.isCustomPackage && (
                     <div className="p-5 bg-slate-50 border border-slate-200/80 rounded-2xl space-y-4">
                       <div className="flex items-center gap-2 pb-2 border-b border-slate-200">
-                        <Sparkles className="w-4 h-4 text-[#FF6B35]" />
+                        <Sparkles className="w-4 h-4 text-[#FF8156]" />
                         <h4 className="text-sm font-bold text-slate-800">Customize Your Package Options</h4>
                       </div>
 
@@ -1039,7 +1069,7 @@ Custom Specifications:
                             min="1"
                             value={formData.customPricePerVideo}
                             onChange={(e) => setFormData({ ...formData, customPricePerVideo: parseInt(e.target.value) || 0 })}
-                            className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-[#FF6B35] focus:ring-1 focus:ring-[#FF6B35] focus:outline-none transition-all duration-200 font-semibold text-slate-800 text-sm bg-white"
+                            className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-[#FF8156] focus:ring-1 focus:ring-[#FF8156] focus:outline-none transition-all duration-200 font-semibold text-slate-800 text-sm bg-white"
                           />
                         </div>
 
@@ -1051,11 +1081,11 @@ Custom Specifications:
                             <div 
                               onClick={() => setFormData({ ...formData, customCaptions: !formData.customCaptions })}
                               className={`flex items-center gap-3 p-3 rounded-lg border text-xs font-medium cursor-pointer transition-all duration-200 bg-white select-none
-                                ${formData.customCaptions ? 'border-[#FF6B35] text-[#FF6B35]' : 'border-slate-200 text-slate-600'}`}
+                                ${formData.customCaptions ? 'border-[#FF8156] text-[#FF8156]' : 'border-slate-200 text-slate-600'}`}
                             >
                               <div className={`w-4 h-4 rounded flex items-center justify-center border transition-all duration-200 flex-shrink-0
                                 ${formData.customCaptions 
-                                  ? 'bg-[#FF6B35] border-[#FF6B35] text-white' 
+                                  ? 'bg-[#FF8156] border-[#FF8156] text-white' 
                                   : 'border-slate-300 bg-white'
                                 }`}
                               >
@@ -1067,11 +1097,11 @@ Custom Specifications:
                             <div 
                               onClick={() => setFormData({ ...formData, customHook: !formData.customHook })}
                               className={`flex items-center gap-3 p-3 rounded-lg border text-xs font-medium cursor-pointer transition-all duration-200 bg-white select-none
-                                ${formData.customHook ? 'border-[#FF6B35] text-[#FF6B35]' : 'border-slate-200 text-slate-600'}`}
+                                ${formData.customHook ? 'border-[#FF8156] text-[#FF8156]' : 'border-slate-200 text-slate-600'}`}
                             >
                               <div className={`w-4 h-4 rounded flex items-center justify-center border transition-all duration-200 flex-shrink-0
                                 ${formData.customHook 
-                                  ? 'bg-[#FF6B35] border-[#FF6B35] text-white' 
+                                  ? 'bg-[#FF8156] border-[#FF8156] text-white' 
                                   : 'border-slate-300 bg-white'
                                 }`}
                               >
@@ -1083,11 +1113,11 @@ Custom Specifications:
                             <div 
                               onClick={() => setFormData({ ...formData, customManager: !formData.customManager })}
                               className={`flex items-center gap-3 p-3 rounded-lg border text-xs font-medium cursor-pointer transition-all duration-200 bg-white select-none
-                                ${formData.customManager ? 'border-[#FF6B35] text-[#FF6B35]' : 'border-slate-200 text-slate-600'}`}
+                                ${formData.customManager ? 'border-[#FF8156] text-[#FF8156]' : 'border-slate-200 text-slate-600'}`}
                             >
                               <div className={`w-4 h-4 rounded flex items-center justify-center border transition-all duration-200 flex-shrink-0
                                 ${formData.customManager 
-                                  ? 'bg-[#FF6B35] border-[#FF6B35] text-white' 
+                                  ? 'bg-[#FF8156] border-[#FF8156] text-white' 
                                   : 'border-slate-300 bg-white'
                                 }`}
                               >
@@ -1099,11 +1129,11 @@ Custom Specifications:
                             <div 
                               onClick={() => setFormData({ ...formData, customNotion: !formData.customNotion })}
                               className={`flex items-center gap-3 p-3 rounded-lg border text-xs font-medium cursor-pointer transition-all duration-200 bg-white select-none
-                                ${formData.customNotion ? 'border-[#FF6B35] text-[#FF6B35]' : 'border-slate-200 text-slate-600'}`}
+                                ${formData.customNotion ? 'border-[#FF8156] text-[#FF8156]' : 'border-slate-200 text-slate-600'}`}
                             >
                               <div className={`w-4 h-4 rounded flex items-center justify-center border transition-all duration-200 flex-shrink-0
                                 ${formData.customNotion 
-                                  ? 'bg-[#FF6B35] border-[#FF6B35] text-white' 
+                                  ? 'bg-[#FF8156] border-[#FF8156] text-white' 
                                   : 'border-slate-300 bg-white'
                                 }`}
                               >
@@ -1126,7 +1156,7 @@ Custom Specifications:
                       onChange={(e) => setFormData({ ...formData, referenceLinks: e.target.value })}
                       placeholder="Share examples of editing styles, creators, or brands you'd like us to match."
                       rows={3}
-                      className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-[#FF6B35] focus:ring-1 focus:ring-[#FF6B35] focus:outline-none transition-all duration-200 text-sm"
+                      className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-[#FF8156] focus:ring-1 focus:ring-[#FF8156] focus:outline-none transition-all duration-200 text-sm"
                     />
                   </div>
 
@@ -1139,7 +1169,7 @@ Custom Specifications:
                       onChange={(e) => setFormData({ ...formData, additionalDetails: e.target.value })}
                       placeholder="Tell us about your brand, editing style, turnaround expectations, or any special requirements."
                       rows={3}
-                      className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-[#FF6B35] focus:ring-1 focus:ring-[#FF6B35] focus:outline-none transition-all duration-200 text-sm"
+                      className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-[#FF8156] focus:ring-1 focus:ring-[#FF8156] focus:outline-none transition-all duration-200 text-sm"
                     />
                   </div>
 
@@ -1174,7 +1204,7 @@ Custom Specifications:
               {/* Section 3: Budget Confirmation */}
               <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-xl space-y-6">
                 <h3 className="text-xl font-bold text-slate-900 pb-2 border-b border-slate-100 flex items-center gap-2">
-                  <span className="flex items-center justify-center w-7 h-7 rounded-full bg-[#FF6B35] text-white text-sm font-bold">3</span>
+                  <span className="flex items-center justify-center w-7 h-7 rounded-full bg-[#FF8156] text-white text-sm font-bold">3</span>
                   Budget Confirmation
                 </h3>
 
@@ -1231,13 +1261,13 @@ Custom Specifications:
                           value={formData.expectedBudget}
                           onChange={(e) => setFormData({ ...formData, expectedBudget: e.target.value })}
                           placeholder="Enter your expected budget here (e.g. $1,200)"
-                          className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-[#FF6B35] focus:ring-1 focus:ring-[#FF6B35] focus:outline-none transition-all duration-200 text-sm mb-3"
+                          className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-[#FF8156] focus:ring-1 focus:ring-[#FF8156] focus:outline-none transition-all duration-200 text-sm mb-3"
                         />
                         <button
                           type="button"
                           onClick={handleNegotiate}
                           disabled={isSubmitting}
-                          className="w-full h-12 bg-[#FF6B35] hover:bg-[#E8650A] text-white font-bold rounded-lg transition-all duration-200 shadow-md flex items-center justify-center gap-2 text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="w-full h-12 bg-[#FF8156] hover:bg-[#E8650A] text-white font-bold rounded-lg transition-all duration-200 shadow-md flex items-center justify-center gap-2 text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           {isSubmitting ? (
                             <>
@@ -1274,7 +1304,7 @@ Custom Specifications:
                     'Scalable editing team for high-volume content'
                   ].map((bullet, index) => (
                     <li key={index} className="flex items-start gap-3 text-slate-700 font-medium text-sm">
-                      <div className="flex-shrink-0 w-5 h-5 rounded-full bg-orange-50 border border-orange-200/60 flex items-center justify-center text-[#FF6B35] mt-0.5">
+                      <div className="flex-shrink-0 w-5 h-5 rounded-full bg-orange-50 border border-orange-200/60 flex items-center justify-center text-[#FF8156] mt-0.5">
                         <Check className="w-3.5 h-3.5 stroke-[3]" />
                       </div>
                       <span>{bullet}</span>
@@ -1292,7 +1322,7 @@ Custom Specifications:
       {/* --- CALL TO ACTION --- */}
       <section className="py-20 px-4 sm:px-6 md:px-8 relative z-10 bg-slate-50">
         <div className="max-w-5xl mx-auto rounded-3xl overflow-hidden shadow-2xl p-8 sm:p-12 md:p-16 relative" style={{
-          background: 'linear-gradient(135deg, #FF6B35 0%, #E8650A 100%)'
+          background: 'linear-gradient(135deg, #FF8156 0%, #E8650A 100%)'
         }}>
           {/* Glass Overlay effects */}
           <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-br from-yellow-300/30 to-transparent rounded-full blur-3xl pointer-events-none" />
@@ -1311,7 +1341,7 @@ Custom Specifications:
                 onClick={handleBookCall}
                 className="w-full sm:w-auto relative h-12 px-10 rounded-lg text-base font-semibold text-slate-900 bg-white hover:bg-slate-50 transition-all duration-300 hover:shadow-lg hover:scale-105 transform flex items-center justify-center gap-2"
               >
-                <Calendar className="w-5 h-5 text-[#FF6B35]" />
+                <Calendar className="w-5 h-5 text-[#FF8156]" />
                 Schedule Your Call
               </button>
               

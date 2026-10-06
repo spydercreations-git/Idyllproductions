@@ -19,7 +19,15 @@
     transparent 100%);
 }
 
-/* Mobile Message Card */
+/* Mobile - Hide UGC Gallery completely on mobile screens */
+@media (max-width: 1023px) {
+  .ugc-gallery-grid-wrapper,
+  .ugc-mobile-static-grid {
+    display: none !important;
+  }
+}
+
+/* Mobile Message Card (solid background, no blur) */
 .ugc-mobile-message {
   position: absolute;
   top: 20px;
@@ -27,7 +35,6 @@
   transform: translateX(-50%);
   z-index: 100;
   background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(10px);
   color: white;
   padding: 12px 20px;
   border-radius: 12px;
@@ -49,12 +56,6 @@
   }
 }
 
-@media (max-width: 768px) {
-  .ugc-mobile-message {
-    display: block;
-  }
-}
-
 .ugc-column {
   position: relative;
   overflow: hidden;
@@ -69,13 +70,13 @@
   animation-iteration-count: infinite;
 }
 
-/* Column 1 & 3 - Scroll Down - Desktop */
+/* Column 1 & 3 - Scroll Down - Desktop only */
 .ugc-column-down .ugc-column-content {
   animation: scrollDown 45s linear infinite;
   will-change: transform;
 }
 
-/* Column 2 - Scroll Up - Desktop */
+/* Column 2 - Scroll Up - Desktop only */
 .ugc-column-up .ugc-column-content {
   animation: scrollUp 45s linear infinite;
   will-change: transform;
@@ -104,12 +105,12 @@
   }
 }
 
+/* Video card in grid — NO will-change to avoid layer explosion */
 .ugc-video-card-grid {
   flex: 0 0 auto;
   width: 100%;
   cursor: pointer;
   transition: transform 0.3s ease;
-  will-change: transform;
 }
 
 .ugc-video-card-grid:hover {
@@ -136,53 +137,13 @@
   background: linear-gradient(to top, white, transparent);
 }
 
-/* Original horizontal scroll styles (kept for backwards compatibility) */
-.ugc-gallery-wrapper {
-  position: relative;
-  width: 100%;
-  max-width: 100%;
-  overflow: hidden;
-  -webkit-mask-image: linear-gradient(to right, 
-    transparent 0%, 
-    black 15%, 
-    black 85%, 
-    transparent 100%);
-  mask-image: linear-gradient(to right, 
-    transparent 0%, 
-    black 15%, 
-    black 85%, 
-    transparent 100%);
-}
-
-.ugc-scroll-container {
-  display: flex;
-  gap: 20px;
-  overflow-x: hidden;
-  overflow-y: hidden;
-  padding: 20px 0;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  user-select: none;
-}
-
-.ugc-scroll-container::-webkit-scrollbar {
-  display: none;
-}
-
-.ugc-video-card {
-  flex: 0 0 auto;
-  width: 280px;
-  cursor: pointer;
-}
-
 .ugc-video-wrapper {
   position: relative;
   width: 100%;
   aspect-ratio: 9/16;
   border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  background: linear-gradient(135deg, #FF6B35 0%, #F7931E 33%, #FF8C00 66%, #E8650A 100%);
+  background: #FF8156;
   padding: 3px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   overflow: visible;
@@ -197,32 +158,20 @@
   background: #000;
 }
 
-.ugc-video-card-grid:hover .ugc-video-wrapper,
-.ugc-video-card:hover .ugc-video-wrapper {
+.ugc-video-card-grid:hover .ugc-video-wrapper {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
+/* Video element: NO will-change, NO 3D translateZ to prevent layer spam */
 .ugc-video {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
   pointer-events: none;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
 }
 
-/* Wrapper that clips Bunny player chrome by overflowing the container */
-.ugc-video-clip-wrapper {
-  position: absolute;
-  top: -6%;
-  left: 0;
-  width: 100%;
-  height: 112%;
-  pointer-events: none;
-}
-
+/* Stat badges: solid dark with 70% opacity, ZERO backdrop-filter */
 .ugc-stats {
   position: absolute;
   bottom: 16px;
@@ -237,7 +186,6 @@
   align-items: center;
   gap: 6px;
   background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(8px);
   padding: 6px 12px;
   border-radius: 20px;
   font-size: 13px;
@@ -258,7 +206,6 @@
   height: 40px;
   border-radius: 50%;
   background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(8px);
   border: none;
   color: white;
   display: flex;
@@ -285,19 +232,12 @@
   }
 }
 
-/* Fade overlays - removed, using mask instead */
-.ugc-fade {
-  display: none;
-}
-
-/* Responsive Styles */
 @media (max-width: 1024px) {
   .ugc-gallery-grid-wrapper {
     height: 500px;
     gap: 16px;
   }
 
-  /* Slower animation for tablets */
   .ugc-column-down .ugc-column-content {
     animation: scrollDown 80s linear infinite;
   }
@@ -308,38 +248,6 @@
 }
 
 @media (max-width: 768px) {
-  /* Mobile: 2 columns side by side, very slow scroll */
-  .ugc-gallery-grid-wrapper {
-    height: 500px;
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 12px;
-  }
-
-  /* Slow but visible animation for mobile - 2 minutes */
-  .ugc-column-down .ugc-column-content {
-    animation: scrollDown 120s linear infinite !important;
-    animation-duration: 120s !important;
-  }
-
-  .ugc-column-up .ugc-column-content {
-    animation: scrollUp 120s linear infinite !important;
-    animation-duration: 120s !important;
-  }
-
-  /* Hide third column on mobile */
-  .ugc-column:nth-child(3) {
-    display: none !important;
-  }
-
-  .ugc-scroll-container {
-    padding: 20px 0;
-    gap: 16px;
-  }
-
-  .ugc-video-card {
-    width: 220px;
-  }
-
   .ugc-video-wrapper {
     border-radius: 14px;
     padding: 2px;
@@ -370,6 +278,7 @@
   .ugc-stat {
     padding: 4px 8px;
     font-size: 11px;
+    background: rgba(0, 0, 0, 0.7);
   }
 
   .ugc-stat svg {
@@ -377,37 +286,12 @@
     height: 13px;
   }
 
-  .ugc-fade {
-    width: 150px;
-  }
-
-  /* Disable hover effects on mobile */
   .ugc-video-card-grid:hover {
     transform: none;
   }
 }
 
 @media (max-width: 480px) {
-  .ugc-gallery-grid-wrapper {
-    height: 480px;
-    gap: 10px;
-  }
-
-  /* Slow but visible for small phones - 2.5 minutes */
-  .ugc-column-down .ugc-column-content {
-    animation: scrollDown 150s linear infinite !important;
-    animation-duration: 150s !important;
-  }
-
-  .ugc-column-up .ugc-column-content {
-    animation: scrollUp 150s linear infinite !important;
-    animation-duration: 150s !important;
-  }
-
-  .ugc-fade {
-    width: 60px;
-  }
-
   .ugc-video-wrapper {
     border-radius: 12px;
   }
@@ -425,6 +309,7 @@
   .ugc-stat {
     padding: 3px 6px;
     font-size: 10px;
+    background: rgba(0, 0, 0, 0.7);
   }
 
   .ugc-stat svg {
